@@ -1,5 +1,15 @@
 #!/bin/bash
 
+URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.0.5/BloodHound-linux-x64.zip'
+URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.13.1/bettercap_linux_amd64_2.13.1.zip'
+URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
+URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
+URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
+URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
+URL_DBEAVER='wget https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
+URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
+URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
+
 clear
 RUID=$(who | awk 'FNR == 1 {print $1}')
 RUSER_UID=$(id -u ${RUID})
@@ -55,6 +65,9 @@ git clone https://github.com/vysec/linkedint
 git clone https://github.com/SimplySecurity/simplyemail
 git clone https://github.com/SySS-Research/seth
 git clone https://github.com/dirkjanm/privexchange #httpattack.py msut be configured
+git clone https://github.com/m8r0wn/nullinux
+git clone https://github.com/m8r0wn/enumdb
+git clone https://github.com/m8r0wn/pymeta
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -108,7 +121,7 @@ python setup.py install
 
 clear && echo "Installing BloodHound"
 cd /opt/
-wget 'https://github.com/BloodHoundAD/BloodHound/releases/download/2.0.5/BloodHound-linux-x64.zip'
+wget $URL_BLOODHOUND
 unzip BloodHound-linux-x64.zip
 rm BloodHound*.zip
 mv BloodHound-linux-x64/ bloodhound-bin/
@@ -167,14 +180,14 @@ clear && echo "Installing gowitness"
 cd /opt/
 mkdir gowitness
 cd /opt/gowitness
-wget 'https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
+wget $URL_GOWITNESS
 chmod +x gowitness-linux-amd64
 
 clear && echo "Installing ruler"
 cd /opt/
 mkdir /opt/ruler
 cd /opt/ruler
-wget 'https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
+wget $URL_RULER
 chmod +x ruler-linux64
 
 clear && echo "Installing SilentTrinity"
@@ -189,6 +202,25 @@ chmod +x /usr/bin/silenttrinity
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;' > /usr/share/applications/silenttrinity.desktop"
 
 ########## ---------- ##########
+# Generic
+########## ---------- ##########
+clear && echo "Installing DBeaver"
+cd /opt/
+wget $URL_DBEAVER
+apt-get install ./dbeaver*.deb
+rm dbeaver*.deb
+
+clear && echo "Installing nullinux"
+cd /opt/nullinux
+chmod +x setup.sh
+./setup.sh
+
+clear && echo "Installing enumdb"
+cd /opt/enumdb
+chmod +x setup.sh
+./setup.sh
+
+########## ---------- ##########
 # Wireless
 ########## ---------- ##########
 
@@ -201,7 +233,7 @@ airodump-ng-oui-update
 clear && echo "Installing coWPAtty"
 apt-get install -y libpcap-dev
 cd /opt/
-wget 'http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
+wget $URL_COWPATTY
 tar xvzf cowpatty-*.tgz
 rm -r cowpatty-*.tgz
 cd cowpatty*
@@ -222,14 +254,14 @@ bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nN
 
 clear && echo "Installing hashcat"
 cd /opt/
-wget 'https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
+wget $URL_HASHCAT
 7zr x hashcat-*.7z
 rm hashcat-*.7z
 mv hashcat-*/ hashcat/
 
 clear && echo "Installing hashcat-utils"
 cd /opt/
-wget 'https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
+wget $URL_HASHCAT_UTILS
 7zr x hashcat-utils-*.7z
 rm hashcat-utils-*.7z
 mv hashcat-utils-*/ hashcat-utils/
@@ -260,7 +292,7 @@ clear && echo "Installing Gobuster"
 apt-get install -y gobuster
 #dirbuster directory lists
 cd /opt/
-wget 'https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
+wget $URL_DIRBUSTER_LISTS
 tar xvf DirBuster-Lists.tar.bz2
 mv DirBuster-Lists dirbuster-lists
 rm DirBuster-Lists.tar.bz2
@@ -285,7 +317,7 @@ apt-get install -y libnetfilter-queue-dev
 cd /opt/
 mkdir /opt/bettercap
 cd /opt/bettercap/
-wget 'https://github.com/bettercap/bettercap/releases/download/v2.13.1/bettercap_linux_amd64_2.13.1.zip'
+wget $URL_BETTERCAP
 unzip bettercap_linux_amd64_*.zip
 rm bettercap*.zip
 wget 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O logo.png
@@ -318,7 +350,7 @@ sudo -u ${RUID} wine regedit.exe /s system.reg
 sudo -u ${RUID} winetricks python26
 mkdir /opt/fuzzbunch
 cd /opt/fuzzbunch
-wget https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg -O logo.svg
+wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O logo.svg
 bash -c "echo -e '#\!/bin/bash\n(cd \$HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py)' > /usr/bin/fuzzbunch"
 chmod +x /usr/bin/fuzzbunch
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;' > /usr/share/applications/fuzzbunch.desktop"
@@ -352,6 +384,12 @@ clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
 python -m pip install -r requirements.txt
 python -m pip install thready
+
+clear && echo "Installing pymeta"
+cd /opt/pymeta
+chmod +x setup.sh
+./setup.sh
+chmod +x pymeta.py
 
 ########## ---------- ##########
 # Wireless
