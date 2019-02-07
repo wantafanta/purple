@@ -6,7 +6,7 @@ URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/go
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
 URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
-URL_DBEAVER='wget https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
+URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
 URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
 URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
 
