@@ -30,6 +30,10 @@ clear && echo "Installing snaps"
 snap install powershell --classic
 snap install docker
 snap install remmina
+snap connect remmina:avahi-observe :avahi-observe
+snap connect remmina:cups-control :cups-control
+snap connect remmina:mount-observe :mount-observe
+snap connect remmina:password-manager-service :password-manager-service
 snap install john-the-ripper
 
 clear && echo "Installing pips"
