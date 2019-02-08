@@ -20,6 +20,10 @@ apt-get update && apt-get upgrade -y
 clear && echo "Installing apt packages"
 apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4
 
+clear && echo "Installing Firewall"
+apt install -y gufw
+ufw enable
+
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
 
@@ -68,7 +72,7 @@ git clone https://github.com/D4Vinci/cr3dov3r
 git clone https://github.com/vysec/linkedint
 git clone https://github.com/SimplySecurity/simplyemail
 git clone https://github.com/SySS-Research/seth
-git clone https://github.com/dirkjanm/privexchange #httpattack.py msut be configured
+git clone https://github.com/dirkjanm/privexchange #httpattack.py must be configured
 git clone https://github.com/m8r0wn/nullinux
 git clone https://github.com/m8r0wn/enumdb
 git clone https://github.com/m8r0wn/pymeta
@@ -99,6 +103,8 @@ pip3 install -r requirements.txt
 
 clear && echo "Installing Empire"
 cd /opt/empire/setup/
+python -m pip install pip==18.1
+python -m pip install -r requirements.txt
 ./install.sh
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/empire && sudo ./empire)' > /usr/bin/empire"
 chmod +x /usr/bin/empire
@@ -348,6 +354,7 @@ dpkg --add-architecture i386 && apt-get update && apt-get -y -qq install wine32
 sudo -u ${RUID} WINEPREFIX="/home/${RUID}/.wine-fuzzbunch" WINEARCH=win32 wine wineboot
 cd /home/${RUID}/.wine-fuzzbunch/drive_c/
 git clone https://github.com/mdiazcl/fuzzbunch-debian.git
+echo "export WINEPREFIX=/home/${RUID}/.wine-fuzzbunch" >> /home/${RUID}/.bashrc
 sudo -u ${RUID} export WINEPREFIX=/home/${RUID}/.wine-fuzzbunch
 sudo -u ${RUID} bash -c "echo -e 'Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\\Environment]\n\"Path\"=\"c:\\\\\windows;c:\\\\\windows\\\\\system;C:\\\\\Python26;C:\\\\\\\fuzzbunch-debian\\\\\windows\\\\\\\fuzzbunch\"' > /home/${RUID}/.wine-fuzzbunch/drive_c/system.reg"
 sudo -u ${RUID} wine regedit.exe /s system.reg
