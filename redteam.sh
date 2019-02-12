@@ -26,6 +26,17 @@ ufw enable
 
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
+wget 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
+git clone https://github.com/scipag/vulscan /usr/share/nmap/scripts/
+wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -O '/usr/share/nmap/scripts/vulscan/osvdb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -O '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -O '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -O '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -O '/usr/share/nmap/scripts/vulscan/xforce.csv'
+nmap --script-updatedb
 
 clear && echo "Installing File Cracks"
 apt-get install -y fcrackzip
@@ -77,6 +88,10 @@ git clone https://github.com/m8r0wn/nullinux
 git clone https://github.com/m8r0wn/enumdb
 git clone https://github.com/m8r0wn/pymeta
 
+#-- PRIVILEGE ESCALATION
+git clone https://github.com/GDSSecurity/windows-exploit-suggester
+git clone https://github.com/mzet-/linux-exploit-suggester
+
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
 
@@ -92,6 +107,15 @@ sed -i 's/^  password:.*/  password: msf/g' /opt/metasploit-framework/embedded/f
 sudo -u postgres bash -c "psql -c \"CREATE USER metasploit_framework_development WITH PASSWORD 'msf';\""
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE metasploit_framework_development;\""
 sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE metasploit_framework_development TO metasploit_framework_development;\""
+
+clear && echo "Installing searchsploit"
+git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb
+sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
+ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
+
+clear && echo "Updating Windows Exploit Suggester"
+cd /opt/windows-exploit-suggester/
+python windows-exploit-suggester.py --update
 
 clear && echo "Installing DNScan"
 cd /opt/dnscan/
