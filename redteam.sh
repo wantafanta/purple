@@ -292,6 +292,7 @@ wget $URL_HASHCAT
 7zr x hashcat-*.7z
 rm hashcat-*.7z
 mv hashcat-*/ hashcat/
+ln -sf /opt/hashcat/hashcat64.bin /usr/local/bin/hashcat
 
 clear && echo "Installing hashcat-utils"
 cd /opt/
@@ -429,6 +430,27 @@ chmod +x pymeta.py
 ########## ---------- ##########
 # Wireless
 ########## ---------- ##########
+
+clear && echo "Installing wifite"
+apt install -y wifite tshark
+git clone https://github.com/ZerBea/hcxdumptool /opt/hcxdumptool
+cd /opt/hcxdumptool
+make
+make install
+cd /opt/
+rm -r /opt/hcxdumptool
+git clone https://github.com/ZerBea/hcxtools /opt/hcxtools
+cd /opt/hcxtools
+make
+make install
+cd /opt/
+rm -r /opt/hcxtools
+git clone https://github.com/aanarchyy/bully /opt/bully
+cd /opt/bully/src/
+make
+make install
+cd /opt/
+rm -r /opt/bully
 
 clear && echo "Installing Kismet"
 apt-get install -y kismet
