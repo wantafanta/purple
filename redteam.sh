@@ -431,27 +431,6 @@ chmod +x pymeta.py
 # Wireless
 ########## ---------- ##########
 
-clear && echo "Installing wifite"
-apt install -y wifite tshark
-git clone https://github.com/ZerBea/hcxdumptool /opt/hcxdumptool
-cd /opt/hcxdumptool
-make
-make install
-cd /opt/
-rm -r /opt/hcxdumptool
-git clone https://github.com/ZerBea/hcxtools /opt/hcxtools
-cd /opt/hcxtools
-make
-make install
-cd /opt/
-rm -r /opt/hcxtools
-git clone https://github.com/aanarchyy/bully /opt/bully
-cd /opt/bully/src/
-make
-make install
-cd /opt/
-rm -r /opt/bully
-
 clear && echo "Installing Kismet"
 apt-get install -y kismet
 usermod -aG kismet ${RUID}
@@ -474,6 +453,26 @@ git clone 'https://github.com/s0lst1c3/eaphammer'
 cd /opt/eaphammer/
 ./kali-setup
 
+clear && echo "Installing wifite"
+apt install -y wifite tshark
+cd /opt/
+git clone https://github.com/ZerBea/hcxdumptool
+git clone https://github.com/ZerBea/hcxtools
+git clone https://github.com/aanarchyy/bully
+cd /opt/hcxdumptool
+make
+make install
+cd /opt/hcxtools
+make
+make install
+cd /opt/bully/src/
+make
+make install
+cd /opt/
+rm -r /opt/hcxdumptool
+rm -r /opt/hcxtools
+rm -r /opt/bully
+
 #Sets the favourite bar
 sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'fuzzbunch.desktop', 'silenttrinity.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
@@ -482,8 +481,8 @@ sudo systemctl stop lighttpd.service
 apt autoremove -y
 cat /dev/null > ~/.bash_history && history -c
 
-#sudo nano /etc/systemd/system/multi-user.target.wants/open-vm-tools.service
-#After=display-manager.service
+# fix vmware display
+sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /etc/systemd/system/multi-user.target.wants/open-vm-tools.service
 
 cd /opt/
 clear
