@@ -10,8 +10,8 @@ Tools
 * BeEF
 * bettercap
 * BloodHound
- * neo4j
- * Aclpwn
+  * neo4j
+  * Aclpwn
 * Burp Suite Community Edition
 * Crackpmapexec
 * crEAP
@@ -21,23 +21,23 @@ Tools
 * DeathStar
 * DNScan
 * Docker
- * cameradar
+  * cameradar
 * eaphammer
 * Empire
 * enumdb
 * Evil-SSDP
 * File Cracks
 * Fluxion
- * Aircrack
- * coWPAtty
- * Mdk3
+  * Aircrack
+  * coWPAtty
+  * Mdk3
 * FUZZBUNCH
 * Gobuster
 * Gowitness
- * Google Chrome
+  * Google Chrome
 * Gufw Firewall
 * hashcat
- * hashcat-utils
+  * hashcat-utils
 * Impacket
 * Jackit
 * john-the-ripper
@@ -48,9 +48,9 @@ Tools
 * mitm6
 * nikto
 * nmap
- * zenmap
- * vulners
- * vulscan
+  * zenmap
+  * vulners
+  * vulscan
 * nullinux
 * Powershell
 * PRET
