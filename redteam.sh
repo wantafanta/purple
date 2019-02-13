@@ -22,7 +22,7 @@ apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois 
 
 clear && echo "Installing Firewall"
 apt install -y gufw
-ufw enable
+ufw disable
 
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
