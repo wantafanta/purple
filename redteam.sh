@@ -493,6 +493,7 @@ echo 'View Docker images via "sudo docker images"'
 #echo 'Run "cme" to setup initial CrackMapExec database'
 echo 'Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
 echo 'BeEF username and password have been set ( u:admin p:beef )'
+echo 'Download Burp Suite CA Certificate from http://burp/cert'
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
 read -p "Press Enter to reboot." </dev/tty
