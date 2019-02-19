@@ -20,6 +20,10 @@ apt-get update && apt-get upgrade -y
 clear && echo "Installing apt packages"
 apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4
 
+clear && echo "Configuring TMUX"
+echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
+chown -R ${RUID}:${RUID} ~/.tmux.conf
+
 clear && echo "Installing Firewall"
 apt install -y gufw
 ufw disable
