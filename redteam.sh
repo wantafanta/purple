@@ -65,7 +65,7 @@ git clone --recursive https://github.com/byt3bl33d3r/crackmapexec
 git clone https://github.com/rbsec/dnscan
 git clone https://github.com/byt3bl33d3r/deathstar
 git clone https://github.com/byt3bl33d3r/silenttrinity
-git clone https://github.com/EmpireProject/empire
+git clone https://github.com/EmpireProject/empire --branch dev
 git clone https://github.com/fox-it/mitm6
 git clone https://github.com/BloodHoundAD/bloodhound
 git clone https://github.com/SpiderLabs/responder
@@ -95,6 +95,7 @@ git clone https://github.com/m8r0wn/pymeta
 #-- PRIVILEGE ESCALATION
 git clone https://github.com/GDSSecurity/windows-exploit-suggester
 git clone https://github.com/mzet-/linux-exploit-suggester
+git clone https://github.com/diego-treitos/linux-smart-enumeration
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -131,7 +132,7 @@ pip3 install -r requirements.txt
 
 clear && echo "Installing Empire"
 cd /opt/empire/setup/
-python -m pip install pip==18.1
+#python -m pip install pip==18.1
 python -m pip install -r requirements.txt
 ./install.sh
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/empire && sudo ./empire)' > /usr/bin/empire"
@@ -378,20 +379,19 @@ bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nN
 
 clear && echo "Installing FUZZBUNCH"
 cd /opt/
-apt-get -y -qq install wine winbind winetricks xdotool
-dpkg --add-architecture i386 && apt-get update && apt-get -y -qq install wine32
-sudo -u ${RUID} WINEPREFIX="/home/${RUID}/.wine-fuzzbunch" WINEARCH=win32 wine wineboot
-cd /home/${RUID}/.wine-fuzzbunch/drive_c/
-git clone https://github.com/mdiazcl/fuzzbunch-debian.git
-echo "export WINEPREFIX=/home/${RUID}/.wine-fuzzbunch" >> /home/${RUID}/.bashrc
-sudo -u ${RUID} export WINEPREFIX=/home/${RUID}/.wine-fuzzbunch
-sudo -u ${RUID} bash -c "echo -e 'Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\\Environment]\n\"Path\"=\"c:\\\\\windows;c:\\\\\windows\\\\\system;C:\\\\\Python26;C:\\\\\\\fuzzbunch-debian\\\\\windows\\\\\\\fuzzbunch\"' > /home/${RUID}/.wine-fuzzbunch/drive_c/system.reg"
-sudo -u ${RUID} wine regedit.exe /s system.reg
-sudo -u ${RUID} winetricks python26
+apt-get -y install wine winbind winetricks xdotool
+dpkg --add-architecture i386 && apt-get update && apt-get -y install wine32
+sudo -u ${RUID} -E bash -c 'WINEARCH=win32 wine wineboot'
+cd $HOME/.wine/drive_c/
+sudo -u ${RUID} -E bash -c "git clone https://github.com/mdiazcl/fuzzbunch-debian.git"
+bash -c "echo -e 'Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\\Environment]\n\"Path\"=\"c:\\\\\windows;c:\\\\\windows\\\\\system;C:\\\\\Python26;C:\\\\\\\fuzzbunch-debian\\\\\windows\\\\\\\fuzzbunch\"' > $HOME/.wine/drive_c/system.reg"
+sudo -u ${RUID} -E bash -c "wine regedit.exe /s system.reg"
+sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\python-2.6.msi"
+sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\pywin32-219.win32-py2.6.exe"
 mkdir /opt/fuzzbunch
 cd /opt/fuzzbunch
 wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O logo.svg
-bash -c "echo -e '#\!/bin/bash\n(cd \$HOME/.wine-fuzzbunch/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py)' > /usr/bin/fuzzbunch"
+bash -c "echo -e '#\!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py)' > /usr/bin/fuzzbunch"
 chmod +x /usr/bin/fuzzbunch
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;' > /usr/share/applications/fuzzbunch.desktop"
 
