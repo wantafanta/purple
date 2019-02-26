@@ -371,6 +371,7 @@ clear && echo "Installing BeEF"
 apt-get install -y ruby ruby-dev
 cd /opt/beef/
 ./install
+./update-geoipdb
 sed -i 's/passwd: "beef"/passwd: "admin"/g' /opt/beef/config.yaml
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/beef && ./beef)' > /usr/bin/beef"
 chmod +x /usr/bin/beef
