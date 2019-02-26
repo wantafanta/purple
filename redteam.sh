@@ -132,7 +132,6 @@ pip3 install -r requirements.txt
 
 clear && echo "Installing Empire"
 cd /opt/empire/setup/
-#python -m pip install pip==18.1
 python -m pip install -r requirements.txt
 ./install.sh
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/empire && sudo ./empire)' > /usr/bin/empire"
