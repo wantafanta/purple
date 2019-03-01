@@ -1,7 +1,7 @@
 #!/bin/bash
 
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.0.5/BloodHound-linux-x64.zip'
-URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.13.1/bettercap_linux_amd64_2.13.1.zip'
+URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.18/bettercap_linux_amd64_2.18.zip'
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
@@ -32,14 +32,15 @@ clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
 wget 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
 git clone https://github.com/scipag/vulscan /usr/share/nmap/scripts/
-wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -O '/usr/share/nmap/scripts/vulscan/osvdb.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -O '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -O '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -O '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -O '/usr/share/nmap/scripts/vulscan/xforce.csv'
+mkdir '/usr/share/nmap/scripts/vulscan/'
+wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -o '/usr/share/nmap/scripts/vulscan/cve.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -o '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -o '/usr/share/nmap/scripts/vulscan/openvas.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -o '/usr/share/nmap/scripts/vulscan/osvdb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -o '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -o '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -o '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -o '/usr/share/nmap/scripts/vulscan/xforce.csv'
 nmap --script-updatedb
 
 clear && echo "Installing File Cracks"
@@ -93,6 +94,7 @@ git clone https://github.com/m8r0wn/enumdb
 git clone https://github.com/m8r0wn/pymeta
 
 #-- PRIVILEGE ESCALATION
+git clone https://github.com/PowerShellMafia/powersploit
 git clone https://github.com/GDSSecurity/windows-exploit-suggester
 git clone https://github.com/mzet-/linux-exploit-suggester
 git clone https://github.com/diego-treitos/linux-smart-enumeration
