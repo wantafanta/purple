@@ -99,6 +99,11 @@ git clone https://github.com/GDSSecurity/windows-exploit-suggester
 git clone https://github.com/mzet-/linux-exploit-suggester
 git clone https://github.com/diego-treitos/linux-smart-enumeration
 
+#-- DESKTOP LINKS
+bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to LOLBAS\nType=Link\nURL=https://lolbas-project.github.io/#\nIcon=text-html' > /home/${RUID}/LOLBAS.desktop"
+bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to GTFOBins\nType=Link\nURL=https://gtfobins.github.io/\nIcon=text-html' > /home/${RUID}/GTFOBins.desktop"
+chown -R ${RUID}:${RUID} /home/${RUID}/*.desktop
+
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
 
