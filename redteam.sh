@@ -9,6 +9,9 @@ URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1
 URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
 URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
 URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
+URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
+URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
+URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
 
 clear
 RUID=$(who | awk 'FNR == 1 {print $1}')
@@ -92,6 +95,7 @@ git clone https://github.com/dirkjanm/privexchange #httpattack.py must be config
 git clone https://github.com/m8r0wn/nullinux
 git clone https://github.com/m8r0wn/enumdb
 git clone https://github.com/m8r0wn/pymeta
+git clone https://github.com/trustedsec/unicorn
 
 #-- PRIVILEGE ESCALATION
 git clone https://github.com/PowerShellMafia/powersploit
@@ -124,6 +128,24 @@ clear && echo "Installing searchsploit"
 git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb
 sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
 ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
+
+clear && echo "Installing Shellter (Community Edition)"
+cd /opt/
+wget $URL_SHELLTER
+unzip shellter.zip
+rm shellter.zip
+cd /opt/shellter/
+wget $URL_SHELLTER_README
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/shellter && wine shellter.exe)' > /usr/bin/shellter"
+chmod +x /usr/bin/shellter
+
+clear && echo "Installing Merlin"
+apt-get install -y p7zip-full
+mkdir /opt/merlin/
+cd /opt/merlin/
+wget $URL_MERLIN
+7z x merlinServer*.7z -p'merlin'
+rm merlinServer-Linux-x64*.7z
 
 clear && echo "Updating Windows Exploit Suggester"
 cd /opt/windows-exploit-suggester/
@@ -425,7 +447,7 @@ python3 -m pip install -r requirements.txt
 
 clear && echo "Installing theHarvester"
 cd /opt/theharvester/
-python -m pip install -r requirements.txt
+python3 -m pip install -r requirements.txt
 
 clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
