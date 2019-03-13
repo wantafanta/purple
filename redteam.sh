@@ -96,6 +96,7 @@ git clone https://github.com/m8r0wn/nullinux
 git clone https://github.com/m8r0wn/enumdb
 git clone https://github.com/m8r0wn/pymeta
 git clone https://github.com/trustedsec/unicorn
+git clone https://github.com/Pepelux/sippts
 
 #-- PRIVILEGE ESCALATION
 git clone https://github.com/PowerShellMafia/powersploit
@@ -286,6 +287,22 @@ clear && echo "Installing enumdb"
 cd /opt/enumdb
 chmod +x setup.sh
 ./setup.sh
+
+########## ---------- ##########
+# VoIP
+########## ---------- ##########
+
+clear && echo "Installing sippts"
+cpan -i IO:Socket:Timeout NetAddr:IP String:HexConvert Net:Pcap Net::Address::IP::Local DBI DBD::SQLite
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipscan.pl \"\$@\")' > /usr/bin/sipscan"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipexten.pl \"\$@\")' > /usr/bin/sipexten"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipcrack.pl \"\$@\")' > /usr/bin/sipcrack"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipinvite.pl \"\$@\")' > /usr/bin/sipinvite"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipsniff.pl \"\$@\")' > /usr/bin/sipsniff"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipspy.pl \"\$@\")' > /usr/bin/sipspy"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipdigestleak.pl \"\$@\")' > /usr/bin/sipdigestleak"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipreport.pl \"\$@\")' > /usr/bin/sipreport"
+chmod +x /usr/bin/sip*
 
 ########## ---------- ##########
 # Wireless
