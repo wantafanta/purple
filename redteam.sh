@@ -1,6 +1,6 @@
 #!/bin/bash
 
-URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.0.5/BloodHound-linux-x64.zip'
+URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
 URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.18/bettercap_linux_amd64_2.18.zip'
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
@@ -45,9 +45,6 @@ wget 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -o '/u
 wget 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -o '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
 wget 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -o '/usr/share/nmap/scripts/vulscan/xforce.csv'
 nmap --script-updatedb
-
-clear && echo "Installing File Cracks"
-apt-get install -y fcrackzip
 
 clear && echo "Installing snaps"
 snap install powershell --classic
@@ -97,6 +94,7 @@ git clone https://github.com/m8r0wn/enumdb
 git clone https://github.com/m8r0wn/pymeta
 git clone https://github.com/trustedsec/unicorn
 git clone https://github.com/Pepelux/sippts
+git clone https://github.com/21y4d/nmapautomator
 
 #-- PRIVILEGE ESCALATION
 git clone https://github.com/PowerShellMafia/powersploit
@@ -105,9 +103,27 @@ git clone https://github.com/mzet-/linux-exploit-suggester
 git clone https://github.com/diego-treitos/linux-smart-enumeration
 
 #-- DESKTOP LINKS
-bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to LOLBAS\nType=Link\nURL=https://lolbas-project.github.io/#\nIcon=text-html' > /home/${RUID}/LOLBAS.desktop"
-bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to GTFOBins\nType=Link\nURL=https://gtfobins.github.io/\nIcon=text-html' > /home/${RUID}/GTFOBins.desktop"
-chown -R ${RUID}:${RUID} /home/${RUID}/*.desktop
+bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to LOLBAS\nType=Link\nURL=https://lolbas-project.github.io/#\nIcon=text-html' > /home/${RUID}/Desktop/LOLBAS.desktop"
+bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to GTFOBins\nType=Link\nURL=https://gtfobins.github.io/\nIcon=text-html' > /home/${RUID}/Desktop/GTFOBins.desktop"
+chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
+
+#-- BASH ALIASES
+bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias theharvester=\"/opt/theharvester/theHarvester.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias dnscan=\"/opt/dnscan/dnscan.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias nmapautomator=\"sudo /opt/nmapautomator/nmapAutomator.sh\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias pret=\"/opt/pret/pret.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias seth=\"/opt/seth/seth.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias spoofcheck=\"/opt/spoofcheck/spoofcheck.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${RUID}/.bash_aliases"
+#. ~/.bashrc
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -147,10 +163,17 @@ cd /opt/merlin/
 wget $URL_MERLIN
 7z x merlinServer*.7z -p'merlin'
 rm merlinServer-Linux-x64*.7z
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64 \"\$@\")' > /usr/bin/merlin"
+chmod +x /usr/bin/merlin
+#cert generation
+#openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt
+#openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:<PASSWORD>
 
 clear && echo "Updating Windows Exploit Suggester"
 cd /opt/windows-exploit-suggester/
 python windows-exploit-suggester.py --update
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/windows-exploit-suggester && ./windows-exploit-suggester.py \"\$@\")' > /usr/bin/windows-exploit-suggester"
+chmod +x /usr/bin/windows-exploit-suggester
 
 clear && echo "Installing DNScan"
 cd /opt/dnscan/
@@ -221,10 +244,13 @@ clear && echo "Installing SimplyEmail" #must be done before JackIt
 cd /opt/simplyemail/
 python -m pip install -r setup/req*.txt
 ./setup/setup.sh
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/simplyemail && ./SimplyEmail.py \"\$@\")' > /usr/bin/simplyemail"
+chmod +x /usr/bin/simplyemail
 
 clear && echo "Installing JackIt" #must be after SimplyEmail
 cd /opt/jackit/
 python -m pip install -e .
+python setup.py install
 
 clear && echo "Installing spoofcheck"
 cd /opt/spoofcheck/
@@ -287,6 +313,9 @@ clear && echo "Installing enumdb"
 cd /opt/enumdb
 chmod +x setup.sh
 ./setup.sh
+
+clear && echo "Installing File Cracks"
+apt-get install -y fcrackzip
 
 ########## ---------- ##########
 # VoIP
@@ -385,6 +414,10 @@ rm DirBuster-Lists.tar.bz2
 ########## ---------- ##########
 # Network
 ########## ---------- ##########
+
+clear && echo "Installing nmapAutomator"
+cd /opt/nmapautomator/
+chmod +x nmapAutomator.sh
 
 clear && echo "Installing Seth"
 cd /opt/seth/
