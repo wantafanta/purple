@@ -3,15 +3,18 @@
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
 URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.19/bettercap_linux_amd64_2.19.zip'
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
-URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
 URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
-URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
+URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
+URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
+URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
+URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
+
 URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
+URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
 URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
 URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
 URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
-URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
 
 clear
 RUID=$(who | awk 'FNR == 1 {print $1}')
@@ -127,6 +130,9 @@ bash -c "echo -e 'alias spoofcheck=\"/opt/spoofcheck/spoofcheck.py\"' >> /home/$
 bash -c "echo -e 'alias theharvester=\"/opt/theharvester/theHarvester.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${RUID}/.bash_aliases"
+
+#pipenv
+bash -c "echo -e 'alias mitm6=\"cd /opt/mitm6/ && sudo pipenv run mitm6\"' >> /home/${RUID}/.bash_aliases"
 #. ~/.bashrc
 
 clear && echo "Installing Metasploit"
@@ -154,8 +160,29 @@ unzip shellter.zip
 rm shellter.zip
 cd /opt/shellter/
 wget $URL_SHELLTER_README
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/shellter && wine shellter.exe)' > /usr/bin/shellter"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/shellter && wine shellter.exe \"\$@\")' > /usr/bin/shellter"
 chmod +x /usr/bin/shellter
+
+clear && echo "Installing NtdsAudit"
+cd /opt/
+mkdir ntdsaudit
+cd /opt/ntdsaudit/
+wget $URL_NTDSAUDIT
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/ntdsaudit && wine NtdsAudit.exe \"\$@\")' > /usr/bin/ntdsaudit"
+chmod +x /usr/bin/ntdsaudit
+
+clear && echo "Installing NTDSDumpEx"
+cd /opt/
+wget $URL_NTDSDUMPEX
+unzip NTDSDumpEx.zip -d ntdsdumpex
+rm NTDSDumpEx.zip
+cd /opt/ntdsdumpex/
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/ntdsdumpex && wine NTDSDumpEx.exe \"\$@\")' > /usr/bin/ntdsdumpex"
+chmod +x /usr/bin/ntdsdumpex
+#on Domain Controller, run cmd as administrator
+#activate instance ntds
+#ifm
+#create full c:\x
 
 clear && echo "Installing Merlin"
 apt-get install -y p7zip-full
@@ -188,7 +215,7 @@ clear && echo "Installing Empire"
 cd /opt/empire/setup/
 python -m pip install -r requirements.txt
 ./install.sh
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/empire && sudo ./empire)' > /usr/bin/empire"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")' > /usr/bin/empire"
 chmod +x /usr/bin/empire
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;' > /usr/share/applications/empire.desktop"
 
@@ -292,7 +319,7 @@ wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-1
 cd Server
 python3.7 -m pip install -r requirements.txt
 python3.7 -m pip install markupsafe
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo python3.7 st.py)' > /usr/bin/silenttrinity"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo python3.7 st.py \"\$@\")' > /usr/bin/silenttrinity"
 chmod +x /usr/bin/silenttrinity
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;' > /usr/share/applications/silenttrinity.desktop"
 
@@ -362,7 +389,7 @@ read -p "Press Enter to continue." </dev/tty
 cd /opt/fluxion/
 ./fluxion.sh -i
 wget 'https://raw.githubusercontent.com/FluxionNetwork/fluxion/master/logos/logo.jpg' -O logo.jpg
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh)' > /usr/bin/fluxion"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")' > /usr/bin/fluxion"
 chmod +x /usr/bin/fluxion
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logo.jpg\nCategories=Application;' > /usr/share/applications/fluxion.desktop"
 
@@ -453,7 +480,7 @@ cd /opt/beef/
 ./install
 ./update-geoipdb
 sed -i 's/passwd: "beef"/passwd: "admin"/g' /opt/beef/config.yaml
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/beef && ./beef)' > /usr/bin/beef"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/beef && ./beef \"\$@\")' > /usr/bin/beef"
 chmod +x /usr/bin/beef
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BeEF\nExec=gnome-terminal --window -- beef\nIcon=/opt/beef/extensions/admin_ui/media/images/beef.png\nCategories=Application;' > /usr/share/applications/beef.desktop"
 
@@ -471,7 +498,7 @@ sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\p
 mkdir /opt/fuzzbunch
 cd /opt/fuzzbunch
 wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O logo.svg
-bash -c "echo -e '#\!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py)' > /usr/bin/fuzzbunch"
+bash -c "echo -e '#\!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py \"\$@\")' > /usr/bin/fuzzbunch"
 chmod +x /usr/bin/fuzzbunch
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;' > /usr/share/applications/fuzzbunch.desktop"
 
