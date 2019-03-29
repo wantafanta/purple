@@ -26,6 +26,10 @@ apt-get update && apt-get upgrade -y
 clear && echo "Installing apt packages"
 apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4
 
+clear && echo "Installing pip modules"
+sudo -H pip install pipenv && sudo -H pip3 install pipenv
+python -m pip install service_identity rdpy
+
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
 chown -R ${RUID}:${RUID} ~/.tmux.conf
@@ -58,10 +62,6 @@ snap connect remmina:cups-control :cups-control
 snap connect remmina:mount-observe :mount-observe
 snap connect remmina:password-manager-service :password-manager-service
 snap install john-the-ripper
-
-clear && echo "Installing pips"
-python -m pip install --user pipenv
-python -m pip install service_identity rdpy
 
 clear && echo "Cloning repositories"
 cd /opt/
@@ -115,8 +115,6 @@ chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
 bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias deathstar=\"/opt/deathstar/DeathStar.py\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias dnscan=\"/opt/dnscan/dnscan.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${RUID}/.bash_aliases"
@@ -127,12 +125,8 @@ bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias seth=\"/opt/seth/seth.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias spoofcheck=\"/opt/spoofcheck/spoofcheck.py\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias theharvester=\"/opt/theharvester/theHarvester.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${RUID}/.bash_aliases"
-
-#pipenv
-bash -c "echo -e 'alias mitm6=\"cd /opt/mitm6/ && sudo pipenv run mitm6\"' >> /home/${RUID}/.bash_aliases"
 #. ~/.bashrc
 
 clear && echo "Installing Metasploit"
@@ -205,11 +199,15 @@ chmod +x /usr/bin/windows-exploit-suggester
 
 clear && echo "Installing DNScan"
 cd /opt/dnscan/
-python -m pip install -r requirements.txt
+pipenv install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/dnscan/ && pipenv run python dnscan.py \"\$@\")' > /usr/bin/dnscan"
+chmod +x /usr/bin/dnscan
 
 clear && echo "Installing DeathStar"
 cd /opt/deathstar/
-pip3 install -r requirements.txt
+pipenv install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")' > /usr/bin/deathstar"
+chmod +x /usr/bin/deathstar
 
 clear && echo "Installing Empire"
 cd /opt/empire/setup/
@@ -221,22 +219,25 @@ bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nN
 
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
-python -m pip install -r requirements.txt
-python setup.py install
+pipenv install
+pipenv run python setup.py install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\")' > /usr/bin/mitm6"
+chmod +x /usr/bin/mitm6
 
 clear && echo "Installing Impacket"
 cd /opt/impacket/
 python -m pip install -r requirements.txt
 python -m pip install .
 
-clear && echo "Installing CrackMapExec" #must install after empire
+clear && echo "Installing CrackMapExec"
 apt-get install -y libssl-dev libffi-dev python-dev build-essential
 cd /opt/crackmapexec/
-python -m pip install -r requirements.txt
-python -m pip install .
-/root/.local/bin/pipenv install
-/root/.local/bin/pipenv shell
-python setup.py install
+pipenv install
+pipenv run python setup.py install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && sudo pipenv run cme \"\$@\")' > /usr/bin/cme"
+chmod +x /usr/bin/cme
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && sudo pipenv run cmedb \"\$@\")' > /usr/bin/cmedb"
+chmod +x /usr/bin/cmedb
 
 clear && echo "Installing BloodHound"
 cd /opt/
@@ -520,14 +521,16 @@ apt-get install -y snmp
 ########## ---------- ##########
 
 clear && echo "Installing Cr3d0v3r"
-cd /opt/cr3dov3r
-python3 -m pip install -r requirements.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/cr3dov3r && python3 Cr3d0v3r.py \"\$@\")' > /usr/bin/credover"
+cd /opt/cr3dov3r/
+pipenv install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")' > /usr/bin/credover"
 chmod +x /usr/bin/credover
 
 clear && echo "Installing theHarvester"
 cd /opt/theharvester/
-python3 -m pip install -r requirements.txt
+pipenv install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")' > /usr/bin/theharvester"
+chmod +x /usr/bin/theharvester
 
 clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
@@ -535,7 +538,7 @@ python -m pip install -r requirements.txt
 python -m pip install thready
 
 clear && echo "Installing pymeta"
-cd /opt/pymeta
+cd /opt/pymeta/
 chmod +x setup.sh
 ./setup.sh
 chmod +x pymeta.py
@@ -595,7 +598,7 @@ apt autoremove -y
 cat /dev/null > ~/.bash_history && history -c
 
 # fix vmware display
-sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /etc/systemd/system/multi-user.target.wants/open-vm-tools.service
+sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
 
 cd /opt/
 clear
