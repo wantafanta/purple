@@ -41,8 +41,7 @@ ufw disable
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
 wget 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
-git clone https://github.com/scipag/vulscan /usr/share/nmap/scripts/
-mkdir '/usr/share/nmap/scripts/vulscan/'
+git clone https://github.com/scipag/vulscan /usr/share/nmap/scripts/vulscan
 wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -o '/usr/share/nmap/scripts/vulscan/cve.csv'
 wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -o '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
 wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -o '/usr/share/nmap/scripts/vulscan/openvas.csv'
