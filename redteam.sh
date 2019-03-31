@@ -1,7 +1,7 @@
 #!/bin/bash
 
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
-URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.19/bettercap_linux_amd64_2.19.zip'
+URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.22/bettercap_linux_amd64_2.22.zip'
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
 URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
