@@ -73,7 +73,7 @@ git clone https://github.com/EmpireProject/empire --branch dev
 git clone https://github.com/fox-it/mitm6
 git clone https://github.com/BloodHoundAD/bloodhound
 git clone https://github.com/SpiderLabs/responder
-git clone https://github.com/CoreSecurity/impacket
+git clone https://github.com/SecureAuthCorp/impacket
 git clone https://github.com/susmithHCK/torghost
 git clone https://github.com/insecurityofthings/jackit
 git clone https://github.com/lightos/credmap
@@ -119,12 +119,9 @@ bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias nmapautomator=\"sudo /opt/nmapautomator/nmapAutomator.sh\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias pret=\"/opt/pret/pret.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias seth=\"/opt/seth/seth.py\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias spoofcheck=\"/opt/spoofcheck/spoofcheck.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${RUID}/.bash_aliases"
 #. ~/.bashrc
@@ -199,13 +196,13 @@ chmod +x /usr/bin/windows-exploit-suggester
 
 clear && echo "Installing DNScan"
 cd /opt/dnscan/
-pipenv install
+pipenv install --three
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/dnscan/ && pipenv run python dnscan.py \"\$@\")' > /usr/bin/dnscan"
 chmod +x /usr/bin/dnscan
 
 clear && echo "Installing DeathStar"
 cd /opt/deathstar/
-pipenv install
+pipenv install --three
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")' > /usr/bin/deathstar"
 chmod +x /usr/bin/deathstar
 
@@ -219,24 +216,26 @@ bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nN
 
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
-pipenv install
+pipenv install --three
 pipenv run python setup.py install
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\")' > /usr/bin/mitm6"
 chmod +x /usr/bin/mitm6
 
 clear && echo "Installing Impacket"
 cd /opt/impacket/
-python -m pip install -r requirements.txt
-python -m pip install .
+pipenv install --two
+pipenv run python setup.py install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/impacket/ && sudo pipenv shell)' > /usr/bin/impacket"
+chmod +x /usr/bin/impacket
 
 clear && echo "Installing CrackMapExec"
 apt-get install -y libssl-dev libffi-dev python-dev build-essential
 cd /opt/crackmapexec/
-pipenv install
+pipenv install --two
 pipenv run python setup.py install
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && sudo pipenv run cme \"\$@\")' > /usr/bin/cme"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cme \"\$@\")' > /usr/bin/cme"
 chmod +x /usr/bin/cme
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && sudo pipenv run cmedb \"\$@\")' > /usr/bin/cmedb"
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cmedb \"\$@\")' > /usr/bin/cmedb"
 chmod +x /usr/bin/cmedb
 
 clear && echo "Installing BloodHound"
@@ -269,21 +268,25 @@ cd /opt/torghost/
 bash install.sh
 systemctl disable tor.service
 
-clear && echo "Installing SimplyEmail" #must be done before JackIt
+clear && echo "Installing SimplyEmail"
+sudo apt install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
 cd /opt/simplyemail/
-python -m pip install -r setup/req*.txt
-./setup/setup.sh
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/simplyemail && ./SimplyEmail.py \"\$@\")' > /usr/bin/simplyemail"
+pipenv install --two -r setup/req*.txt
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/simplyemail && pipenv run python2.7 SimplyEmail.py \"\$@\")' > /usr/bin/simplyemail"
 chmod +x /usr/bin/simplyemail
 
-clear && echo "Installing JackIt" #must be after SimplyEmail
+clear && echo "Installing JackIt"
 cd /opt/jackit/
-python -m pip install -e .
-python setup.py install
+pipenv install --two
+pipenv run python setup.py install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/jackit/ && sudo pipenv run jackit \"\$@\")' > /usr/bin/jackit"
+chmod +x /usr/bin/jackit
 
 clear && echo "Installing spoofcheck"
 cd /opt/spoofcheck/
-python -m pip install -r requirements.txt
+pipenv install --two
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/spoofcheck/ && sudo pipenv run python spoofcheck.py \"\$@\")' > /usr/bin/spoofcheck"
+chmod +x /usr/bin/spoofcheck
 
 clear && echo "Installing Camradar (docker)"
 docker pull ullaakut/cameradar
@@ -318,9 +321,8 @@ apt-get install -y python3.7 python3.7-dev
 cd /opt/silenttrinity
 wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O logo.png
 cd Server
-python3.7 -m pip install -r requirements.txt
-python3.7 -m pip install markupsafe
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo python3.7 st.py \"\$@\")' > /usr/bin/silenttrinity"
+pipenv install --three
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run python3.7 st.py \"\$@\")' > /usr/bin/silenttrinity"
 chmod +x /usr/bin/silenttrinity
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;' > /usr/share/applications/silenttrinity.desktop"
 
@@ -450,8 +452,10 @@ chmod +x nmapAutomator.sh
 
 clear && echo "Installing Seth"
 cd /opt/seth/
-python -m pip install -r req*.txt
+pipenv install --two
 apt-get install -y dsniff
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/seth/ && sudo pipenv run ./seth.sh \"\$@\")' > /usr/bin/seth"
+chmod +x /usr/bin/seth
 
 clear && echo "Installing Wireshark"
 apt-get install -y wireshark
@@ -504,7 +508,9 @@ chmod +x /usr/bin/fuzzbunch
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;' > /usr/share/applications/fuzzbunch.desktop"
 
 clear && echo "Installing PRET"
-python -m pip install colorama pysnmp
+pipenv install --two colorama pysnmp
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/pret/ && pipenv run python pret.py \"\$@\")' > /usr/bin/pret"
+chmod +x /usr/bin/pret
 
 clear && echo "Installing snmpwalk"
 apt-get install -y snmp
@@ -522,20 +528,21 @@ apt-get install -y snmp
 
 clear && echo "Installing Cr3d0v3r"
 cd /opt/cr3dov3r/
-pipenv install
+pipenv install --three
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")' > /usr/bin/credover"
 chmod +x /usr/bin/credover
 
 clear && echo "Installing theHarvester"
 cd /opt/theharvester/
-pipenv install
+pipenv install --three
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")' > /usr/bin/theharvester"
 chmod +x /usr/bin/theharvester
 
 clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
-python -m pip install -r requirements.txt
-python -m pip install thready
+pipenv install --two
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/linkedint && pipenv run python LinkedInt.py \"\$@\")' > /usr/bin/linkedint"
+chmod +x /usr/bin/linkedint
 
 clear && echo "Installing pymeta"
 cd /opt/pymeta/
