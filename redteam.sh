@@ -46,14 +46,14 @@ clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
 wget 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
 git clone https://github.com/scipag/vulscan /usr/share/nmap/scripts/vulscan
-wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -o '/usr/share/nmap/scripts/vulscan/cve.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -o '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -o '/usr/share/nmap/scripts/vulscan/openvas.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -o '/usr/share/nmap/scripts/vulscan/osvdb.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -o '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -o '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -o '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
-wget 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -o '/usr/share/nmap/scripts/vulscan/xforce.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -O '/usr/share/nmap/scripts/vulscan/osvdb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -O '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -O '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -O '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
+wget 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -O '/usr/share/nmap/scripts/vulscan/xforce.csv'
 nmap --script-updatedb
 
 clear && echo "Installing snaps"
@@ -163,19 +163,6 @@ clear && echo "Installing Don't Kill My Cat (DKMC)"
 cd /opt/dkmc/
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")' > /usr/bin/dkmc"
 chmod +x /usr/bin/dkmc
-
-clear && echo "Installing EvilClippy"
-cd /opt/
-mkdir /opt/evilclippy
-cd /opt/evilclippy
-wget $URL_EVILCLIPPY
-wget $URL_EVILCLIPPY_MCDF
-wget $URL_EVILCLIPPY_README
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")' > /usr/bin/evilclippy"
-chmod +x /usr/bin/evilclippy
-mkdir /usr/share/wine/mono
-wget $URL_MONO -o '/usr/share/wine/mono/wine-mono.msi'
-wine msiexec /i /usr/share/wine/mono/wine-mono.msi
 
 clear && echo "Installing NtdsAudit"
 cd /opt/
@@ -529,11 +516,12 @@ bash -c "echo -e '#\!/bin/bash\n(cd /opt/beef && ./beef \"\$@\")' > /usr/bin/bee
 chmod +x /usr/bin/beef
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BeEF\nExec=gnome-terminal --window -- beef\nIcon=/opt/beef/extensions/admin_ui/media/images/beef.png\nCategories=Application;' > /usr/share/applications/beef.desktop"
 
-clear && echo "Installing FUZZBUNCH"
-cd /opt/
+clear && echo "Installing wine"
 apt-get -y install wine winbind winetricks xdotool
 dpkg --add-architecture i386 && apt-get update && apt-get -y install wine32
 sudo -u ${RUID} -E bash -c 'WINEARCH=win32 wine wineboot'
+
+clear && echo "Installing FUZZBUNCH"
 cd $HOME/.wine/drive_c/
 sudo -u ${RUID} -E bash -c "git clone https://github.com/mdiazcl/fuzzbunch-debian.git"
 bash -c "echo -e 'Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\\Environment]\n\"Path\"=\"c:\\\\\windows;c:\\\\\windows\\\\\system;C:\\\\\Python26;C:\\\\\\\fuzzbunch-debian\\\\\windows\\\\\\\fuzzbunch\"' > $HOME/.wine/drive_c/system.reg"
@@ -541,11 +529,23 @@ sudo -u ${RUID} -E bash -c "wine regedit.exe /s system.reg"
 sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\python-2.6.msi"
 sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\pywin32-219.win32-py2.6.exe"
 mkdir /opt/fuzzbunch
-cd /opt/fuzzbunch
+cd /opt/fuzzbunch/
 wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O logo.svg
 bash -c "echo -e '#\!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py \"\$@\")' > /usr/bin/fuzzbunch"
 chmod +x /usr/bin/fuzzbunch
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;' > /usr/share/applications/fuzzbunch.desktop"
+
+clear && echo "Installing EvilClippy"
+mkdir /opt/evilclippy
+cd /opt/evilclippy/
+wget $URL_EVILCLIPPY
+wget $URL_EVILCLIPPY_MCDF
+wget $URL_EVILCLIPPY_README
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")' > /usr/bin/evilclippy"
+chmod +x /usr/bin/evilclippy
+mkdir /usr/share/wine/mono
+wget $URL_MONO -o '/usr/share/wine/mono/wine-mono.msi'
+sudo -u ${RUID} -E bash -c "wine msiexec /i /usr/share/wine/mono/wine-mono.msi"
 
 clear && echo "Installing PRET"
 pipenv install --two colorama pysnmp
