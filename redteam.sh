@@ -2,12 +2,16 @@
 
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
 URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.22/bettercap_linux_amd64_2.22.zip'
+URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/EvilClippy.exe'
+URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/OpenMcdf.dll'
+URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
 URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
 URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
 URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
 URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
+URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.0/wine-mono-4.8.0.msi'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 
 URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
@@ -97,6 +101,8 @@ git clone https://github.com/m8r0wn/pymeta
 git clone https://github.com/trustedsec/unicorn
 git clone https://github.com/Pepelux/sippts
 git clone https://github.com/21y4d/nmapautomator
+git clone https://github.com/lanjelot/patator
+git clone https://github.com/Mr-Un1k0d3r/dkmc
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -152,6 +158,24 @@ cd /opt/shellter/
 wget $URL_SHELLTER_README
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/shellter && wine shellter.exe \"\$@\")' > /usr/bin/shellter"
 chmod +x /usr/bin/shellter
+
+clear && echo "Installing Don't Kill My Cat (DKMC)"
+cd /opt/dkmc/
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")' > /usr/bin/dkmc"
+chmod +x /usr/bin/dkmc
+
+clear && echo "Installing EvilClippy"
+cd /opt/
+mkdir /opt/evilclippy
+cd /opt/evilclippy
+wget $URL_EVILCLIPPY
+wget $URL_EVILCLIPPY_MCDF
+wget $URL_EVILCLIPPY_README
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")' > /usr/bin/evilclippy"
+chmod +x /usr/bin/evilclippy
+mkdir /usr/share/wine/mono
+wget $URL_MONO -o '/usr/share/wine/mono/wine-mono.msi'
+wine msiexec /i /usr/share/wine/mono/wine-mono.msi
 
 clear && echo "Installing NtdsAudit"
 cd /opt/
@@ -328,6 +352,7 @@ bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nN
 ########## ---------- ##########
 # Generic
 ########## ---------- ##########
+
 clear && echo "Installing DBeaver"
 cd /opt/
 wget $URL_DBEAVER
@@ -335,17 +360,33 @@ apt-get install ./dbeaver*.deb
 rm dbeaver*.deb
 
 clear && echo "Installing nullinux"
-cd /opt/nullinux
+cd /opt/nullinux/
 chmod +x setup.sh
 ./setup.sh
 
 clear && echo "Installing enumdb"
-cd /opt/enumdb
+cd /opt/enumdb/
 chmod +x setup.sh
 ./setup.sh
 
 clear && echo "Installing File Cracks"
 apt-get install -y fcrackzip
+
+########## ---------- ##########
+# Brute-force
+########## ---------- ##########
+
+clear && echo "Installing patator"
+cd /opt/patator/
+apt install -y libcurl4-openssl-dev python3-dev libssl-dev # pycurl
+apt install -y ldap-utils # ldapsearch
+apt install -y libmysqlclient-dev # mysqlclient-python
+apt install -y ike-scan unzip default-jdk
+apt install -y libsqlite3-dev libsqlcipher-dev # pysqlcipher
+pipenv install --two -r requirements.txt
+pipenv run python setup.py install
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \"\$@\")' > /usr/bin/patator"
+chmod +x /usr/bin/patator
 
 ########## ---------- ##########
 # VoIP
