@@ -68,10 +68,11 @@ snap install john-the-ripper
 
 clear && echo "Cloning repositories"
 cd /opt/
-git clone --recursive https://github.com/byt3bl33d3r/crackmapexec
 git clone https://github.com/rbsec/dnscan
+git clone --recursive https://github.com/byt3bl33d3r/crackmapexec
 git clone https://github.com/byt3bl33d3r/deathstar
 git clone https://github.com/byt3bl33d3r/silenttrinity
+git clone https://github.com/byt3bl33d3r/sprayingtoolkit
 git clone https://github.com/EmpireProject/empire --branch dev
 git clone https://github.com/fox-it/mitm6
 git clone https://github.com/BloodHoundAD/bloodhound
@@ -328,13 +329,25 @@ chmod +x ruler-linux64
 
 clear && echo "Installing SilentTrinity"
 apt-get install -y python3.7 python3.7-dev
-cd /opt/silenttrinity
+cd /opt/silenttrinity/
 wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O logo.png
 cd Server
 pipenv install --three
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run python3.7 st.py \"\$@\")' > /usr/bin/silenttrinity"
 chmod +x /usr/bin/silenttrinity
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;' > /usr/share/applications/silenttrinity.desktop"
+
+clear && echo "Installing SprayingToolkit"
+cd /opt/sprayingtoolkit/
+pipenv install --three -r requirements.txt
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 aerosol.py \"\$@\")' > /usr/bin/aerosol"
+chmod +x /usr/bin/aerosol
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 atomizer.py \"\$@\")' > /usr/bin/atomizer"
+chmod +x /usr/bin/atomizer
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 spindrift.py \"\$@\")' > /usr/bin/spindrift"
+chmod +x /usr/bin/spindrift
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 vaporizer.py \"\$@\")' > /usr/bin/vaporizer"
+chmod +x /usr/bin/vaporizer
 
 ########## ---------- ##########
 # Generic
