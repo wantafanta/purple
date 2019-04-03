@@ -512,12 +512,12 @@ wget $URL_BETTERCAP
 unzip bettercap_linux_amd64_*.zip
 rm bettercap*.zip
 wget 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O logo.png
-bash -c "echo -e '#\!/bin/bash\nprintf \"\\\n\\\n\"\nnmcli d\nprintf \"\\\n\\\n\"\nread -p \"Enter the device name: \" int\nclear && sudo /opt/bettercap/bettercap -iface \$int' > /usr/bin/bettercap"
+./bettercap -eval "caplets.update; ui.update; q"
+sed -i 's/^set api.rest.username.*/set api.rest.username admin/g' /usr/local/share/bettercap/caplets/http-ui.cap
+sed -i 's/^set api.rest.password.*/set api.rest.password bettercap/g' /usr/local/share/bettercap/caplets/http-ui.cap
+bash -c "echo -e '#\!/bin/bash\n(sudo /opt/bettercap/bettercap \"\$@\")' > /usr/bin/bettercap"
 chmod +x /usr/bin/bettercap
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=bettercap\nExec=gnome-terminal --window -- bettercap\nIcon=/opt/bettercap/logo.png\nCategories=Application;' > /usr/share/applications/bettercap.desktop"
-git clone https://github.com/bettercap/caplets
-cd /opt/bettercap/caplets/
-make install
+bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=bettercap\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && nmcli d && printf \"\\\n\\\n\" && read -p \"Enter the device name: \" int && clear && sudo /opt/bettercap/bettercap -iface \$int -caplet http-ui'\''\nIcon=/opt/bettercap/logo.png\nCategories=Application;' > /usr/share/applications/bettercap.desktop"
 
 clear && echo "Installing BeEF"
 apt-get install -y ruby ruby-dev
@@ -652,8 +652,11 @@ rm -r /opt/bully
 #Sets the favourite bar
 sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'fuzzbunch.desktop', 'silenttrinity.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
+sudo systemctl disable apache2.service
+sudo systemctl stop apache2.service
 sudo systemctl disable lighttpd.service
 sudo systemctl stop lighttpd.service
+
 apt autoremove -y
 cat /dev/null > ~/.bash_history && history -c
 
@@ -669,6 +672,7 @@ echo 'View Docker images via "sudo docker images"'
 #echo 'Run "cme" to setup initial CrackMapExec database'
 echo 'Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
 echo 'BeEF username and password have been set ( u:admin p:beef )'
+echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
 echo 'Download Burp Suite CA Certificate from http://burp/cert'
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
