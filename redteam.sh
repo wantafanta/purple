@@ -72,7 +72,7 @@ git clone https://github.com/rbsec/dnscan
 git clone --recursive https://github.com/byt3bl33d3r/crackmapexec
 git clone https://github.com/byt3bl33d3r/deathstar
 git clone https://github.com/byt3bl33d3r/silenttrinity
-git clone https://github.com/byt3bl33d3r/sprayingtoolkit
+#git clone https://github.com/byt3bl33d3r/sprayingtoolkit
 git clone https://github.com/EmpireProject/empire --branch dev
 git clone https://github.com/fox-it/mitm6
 git clone https://github.com/BloodHoundAD/bloodhound
@@ -337,17 +337,17 @@ bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run
 chmod +x /usr/bin/silenttrinity
 bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;' > /usr/share/applications/silenttrinity.desktop"
 
-clear && echo "Installing SprayingToolkit"
-cd /opt/sprayingtoolkit/
-pipenv install --three -r requirements.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 aerosol.py \"\$@\")' > /usr/bin/aerosol"
-chmod +x /usr/bin/aerosol
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 atomizer.py \"\$@\")' > /usr/bin/atomizer"
-chmod +x /usr/bin/atomizer
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 spindrift.py \"\$@\")' > /usr/bin/spindrift"
-chmod +x /usr/bin/spindrift
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 vaporizer.py \"\$@\")' > /usr/bin/vaporizer"
-chmod +x /usr/bin/vaporizer
+#clear && echo "Installing SprayingToolkit"
+#cd /opt/sprayingtoolkit/
+#pipenv install --three -r requirements.txt
+#bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 aerosol.py \"\$@\")' > /usr/bin/aerosol"
+#chmod +x /usr/bin/aerosol
+#bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 atomizer.py \"\$@\")' > /usr/bin/atomizer"
+#chmod +x /usr/bin/atomizer
+#bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 spindrift.py \"\$@\")' > /usr/bin/spindrift"
+#chmod +x /usr/bin/spindrift
+#bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 vaporizer.py \"\$@\")' > /usr/bin/vaporizer"
+#chmod +x /usr/bin/vaporizer
 
 ########## ---------- ##########
 # Generic
