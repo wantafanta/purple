@@ -2,6 +2,7 @@
 
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
 URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.22/bettercap_linux_amd64_2.22.zip'
+URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.0.1/dirble-x86_64-linux.zip'
 URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/EvilClippy.exe'
 URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/OpenMcdf.dll'
 URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
@@ -121,6 +122,7 @@ chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
 bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${RUID}/.bash_aliases"
@@ -481,6 +483,13 @@ wget $URL_DIRBUSTER_LISTS
 tar xvf DirBuster-Lists.tar.bz2
 mv DirBuster-Lists dirbuster-lists
 rm DirBuster-Lists.tar.bz2
+
+clear && echo "Installing dirble"
+#https://github.com/nccgroup/dirble/releases
+cd /opt/
+wget $URL_DIRBLE
+unzip dirble*.zip
+rm dirble*.zip
 
 ########## ---------- ##########
 # Network
