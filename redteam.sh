@@ -106,6 +106,8 @@ git clone https://github.com/21y4d/nmapautomator
 git clone https://github.com/lanjelot/patator
 git clone https://github.com/Mr-Un1k0d3r/dkmc
 git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack #https://github.com/GhostPack
+git clone https://github.com/davidtavarez/pwndb
+git clone https://github.com/s0md3v/xsstrike
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -493,6 +495,12 @@ wget $URL_DIRBLE
 unzip dirble*.zip
 rm dirble*.zip
 
+clear && echo "Installing XSStrike"
+cd /opt/xsstrike/
+pipenv install --three -r requirements.txt
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/xsstrike && pipenv run python xsstrike.py \"\$@\")' > /usr/bin/xsstrike"
+chmod +x /usr/bin/xsstrike
+
 ########## ---------- ##########
 # Network
 ########## ---------- ##########
@@ -595,6 +603,12 @@ cd /opt/cr3dov3r/
 pipenv install --three
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")' > /usr/bin/credover"
 chmod +x /usr/bin/credover
+
+clear && echo "Installing pwndb"
+cd /opt/pwndb/
+pipenv install --three -r requirements.txt
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/pwndb && pipenv run python pwndb.py \"\$@\")' > /usr/bin/pwndb"
+chmod +x /usr/bin/pwndb
 
 clear && echo "Installing theHarvester"
 cd /opt/theharvester/
