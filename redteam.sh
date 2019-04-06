@@ -105,6 +105,7 @@ git clone https://github.com/Pepelux/sippts
 git clone https://github.com/21y4d/nmapautomator
 git clone https://github.com/lanjelot/patator
 git clone https://github.com/Mr-Un1k0d3r/dkmc
+git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack #https://github.com/GhostPack
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
