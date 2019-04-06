@@ -127,6 +127,7 @@ bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias nmapautomator=\"sudo /opt/nmapautomator/nmapAutomator.sh\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias nse=\"ls /usr/share/nmap/scripts/ | grep \"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
