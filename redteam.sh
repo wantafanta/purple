@@ -284,6 +284,8 @@ clear && echo "Installing Torghost"
 cd /opt/torghost/
 bash install.sh
 systemctl disable tor.service
+#firefox http://about:config
+#set network.dns.blockDotOnion;false
 
 clear && echo "Installing SimplyEmail"
 sudo apt install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
@@ -699,6 +701,7 @@ echo 'Open Empire and run `preobfuscate` to obfuscate all modules (this will tak
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
 echo 'Download Burp Suite CA Certificate from http://burp/cert'
+echo 'To resolve .onion addresses (via torghost) in firefox open http://about:config/ and set `network.dns.blockDotOnion` to `false`'
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
 read -p "Press Enter to reboot." </dev/tty
