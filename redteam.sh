@@ -643,7 +643,7 @@ chmod +x pymeta.py
 clear && echo "Installing evilginx"
 mkdir /opt/evilginx
 cd /opt/evilginx/
-wget URL_EVILGINX
+wget $URL_EVILGINX
 unzip *.zip
 rm *.zip
 bash install.sh
