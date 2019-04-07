@@ -125,6 +125,8 @@ chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
 bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias credmap=\"/opt/credmap/credmap.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias creap=\"sudo /opt/creap/crEAP.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
@@ -201,9 +203,8 @@ wget $URL_MERLIN
 rm merlinServer-Linux-x64*.7z
 bash -c "echo -e '#\!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64 \"\$@\")' > /usr/bin/merlin"
 chmod +x /usr/bin/merlin
-#cert generation
-#openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt
-#openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:<PASSWORD>
+bash -c "echo -e '#\!/bin/bash\n(openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt -passout pass:merlin && openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:merlin \"\$@\")' > /usr/bin/merlin-cert"
+chmod +x /usr/bin/merlin-cert
 
 clear && echo "Updating Windows Exploit Suggester"
 cd /opt/windows-exploit-suggester/
@@ -655,6 +656,9 @@ cd /opt/
 git clone 'https://github.com/s0lst1c3/eaphammer'
 cd /opt/eaphammer/
 ./kali-setup
+pipenv install --three -r pip.req
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/eaphammer/ && sudo pipenv run python eaphammer \"\$@\")' > /usr/bin/eaphammer"
+chmod +x /usr/bin/eaphammer
 
 clear && echo "Installing wifite"
 apt install -y wifite tshark
