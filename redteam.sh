@@ -205,6 +205,9 @@ bash -c "echo -e '#\!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64
 chmod +x /usr/bin/merlin
 bash -c "echo -e '#\!/bin/bash\n(openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt -passout pass:merlin && openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:merlin \"\$@\")' > /usr/bin/merlin-cert"
 chmod +x /usr/bin/merlin-cert
+wget 'https://camo.githubusercontent.com/c39b27165e5a911744220274b00b1bfcb2742408/68747470733a2f2f692e696d6775722e636f6d2f34694b7576756a2e6a7067' -O logo.jpeg
+bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Merlin\nExec=gnome-terminal --window -- merlin\nIcon=/opt/merlin/logo.jpeg\nCategories=Application;' > /usr/share/applications/merlin.desktop"
+
 
 clear && echo "Updating Windows Exploit Suggester"
 cd /opt/windows-exploit-suggester/
@@ -681,7 +684,7 @@ rm -r /opt/hcxtools
 rm -r /opt/bully
 
 #Sets the favourite bar
-sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'fuzzbunch.desktop', 'silenttrinity.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 sudo systemctl disable apache2.service
 sudo systemctl stop apache2.service
