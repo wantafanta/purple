@@ -1,5 +1,3 @@
-Scipts to setup environments for Red/Blue teams.
-
 Only tested on Ubuntu 18.10 in VMWare Workstation.
 
 `
