@@ -86,7 +86,7 @@ All tools where possible run in a virtual environment using pipenv.
 * TMUX
 * Torghost
 * unicorn
-* Usernaer
+* Usernamer
 * wifite
 * Windows Exploit Suggester
 * Wireshark
