@@ -4,7 +4,7 @@ Only tested on Ubuntu 18.10 in VMWare Workstation.
 sudo bash redteam.sh
 `
 
-Press enter a few times, choose yes and click next, next etc
+Press enter a few times, choose yes, next ctrl+c etc
 
 All tools where possible run in a virtual environment using pipenv.
  
