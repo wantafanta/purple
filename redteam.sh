@@ -109,6 +109,7 @@ git clone https://github.com/Mr-Un1k0d3r/dkmc
 git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack #https://github.com/GhostPack
 git clone https://github.com/davidtavarez/pwndb
 git clone https://github.com/s0md3v/xsstrike
+git clone https://github.com/Ekultek/whatwaf
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -482,6 +483,12 @@ bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher' >>
 
 clear && echo "Installing sqlmap"
 apt-get install -y sqlmap
+
+clear && echo "Installing Whatwaf"
+cd /opt/whatwaf/
+pipenv install --three -r requirements.txt
+bash -c "echo -e '#\!/bin/bash\n(cd /opt/whatwaf && pipenv run python whatwaf.py \"\$@\")' > /usr/bin/whatwaf"
+chmod +x /usr/bin/whatwaf
 
 clear && echo "Installing nikto"
 apt-get install -y nikto
