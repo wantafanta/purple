@@ -15,6 +15,8 @@ URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTD
 URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
 URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.0/wine-mono-4.8.0.msi'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
+URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.9/recursebuster_elf'
+URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
 
 URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
 URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
@@ -137,6 +139,7 @@ bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /
 bash -c "echo -e 'alias nmapautomator=\"sudo /opt/nmapautomator/nmapAutomator.sh\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias nse=\"ls /usr/share/nmap/scripts/ | grep \"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias recursebuster=\"/opt/recursebuster/recursebuster_elf\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
@@ -509,6 +512,14 @@ cd /opt/
 wget $URL_DIRBLE
 unzip dirble*.zip
 rm dirble*.zip
+
+clear && echo "Installing recursebuster"
+cd /opt/
+mkdir recursebuster
+cd /opt/recursebuster/
+wget $URL_RECURSEBUSTER
+wget $URL_RECURSEBUSTER_README
+chmod +x recursebuster_elf
 
 clear && echo "Installing XSStrike"
 cd /opt/xsstrike/
