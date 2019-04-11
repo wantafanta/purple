@@ -115,6 +115,8 @@ git clone https://github.com/Ekultek/whatwaf
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
+bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
+chmod +x update.sh
 
 #-- PRIVILEGE ESCALATION
 git clone https://github.com/PowerShellMafia/powersploit
@@ -152,7 +154,7 @@ curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/t
 rm msfinstall
 cd /opt/metasploit-framework/
 wget 'https://raw.githubusercontent.com/rapid7/metasploit-framework/master/lib/msf/core/web_services/public/favicon.ico' -O logo.ico
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Metasploit Framework\nExec=gnome-terminal --window -- sudo msfconsole\nIcon=/opt/metasploit-framework/logo.ico\nCategories=Application;' > /usr/share/applications/metasploit-framework.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Metasploit Framework\nExec=gnome-terminal --window -- sudo msfconsole\nIcon=/opt/metasploit-framework/logo.ico\nCategories=Application;" > /usr/share/applications/metasploit-framework.desktop'
 cp /opt/metasploit-framework/embedded/framework/config/database.yml.example /opt/metasploit-framework/embedded/framework/config/database.yml
 sed -i 's/^  password:.*/  password: msf/g' /opt/metasploit-framework/embedded/framework/config/database.yml
 sudo -u postgres bash -c "psql -c \"CREATE USER metasploit_framework_development WITH PASSWORD 'msf';\""
@@ -171,12 +173,12 @@ unzip shellter.zip
 rm shellter.zip
 cd /opt/shellter/
 wget $URL_SHELLTER_README
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/shellter && wine shellter.exe \"\$@\")' > /usr/bin/shellter"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/shellter && wine shellter.exe \"\$@\")" > /usr/bin/shellter'
 chmod +x /usr/bin/shellter
 
 clear && echo "Installing Don't Kill My Cat (DKMC)"
 cd /opt/dkmc/
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")' > /usr/bin/dkmc"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")" > /usr/bin/dkmc'
 chmod +x /usr/bin/dkmc
 
 clear && echo "Installing NtdsAudit"
@@ -184,7 +186,7 @@ cd /opt/
 mkdir ntdsaudit
 cd /opt/ntdsaudit/
 wget $URL_NTDSAUDIT
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/ntdsaudit && wine NtdsAudit.exe \"\$@\")' > /usr/bin/ntdsaudit"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntdsaudit && wine NtdsAudit.exe \"\$@\")" > /usr/bin/ntdsaudit'
 chmod +x /usr/bin/ntdsaudit
 
 clear && echo "Installing NTDSDumpEx"
@@ -193,7 +195,7 @@ wget $URL_NTDSDUMPEX
 unzip NTDSDumpEx.zip -d ntdsdumpex
 rm NTDSDumpEx.zip
 cd /opt/ntdsdumpex/
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/ntdsdumpex && wine NTDSDumpEx.exe \"\$@\")' > /usr/bin/ntdsdumpex"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntdsdumpex && wine NTDSDumpEx.exe \"\$@\")" > /usr/bin/ntdsdumpex'
 chmod +x /usr/bin/ntdsdumpex
 #on Domain Controller, run cmd as administrator
 #activate instance ntds
@@ -207,45 +209,45 @@ cd /opt/merlin/
 wget $URL_MERLIN
 7z x merlinServer*.7z -p'merlin'
 rm merlinServer-Linux-x64*.7z
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64 \"\$@\")' > /usr/bin/merlin"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64 \"\$@\")" > /usr/bin/merlin'
 chmod +x /usr/bin/merlin
-bash -c "echo -e '#\!/bin/bash\n(openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt -passout pass:merlin && openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:merlin \"\$@\")' > /usr/bin/merlin-cert"
+bash -c 'echo -e "#!/bin/bash\n(openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt -passout pass:merlin && openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:merlin \"\$@\")" > /usr/bin/merlin-cert'
 chmod +x /usr/bin/merlin-cert
 wget 'https://camo.githubusercontent.com/c39b27165e5a911744220274b00b1bfcb2742408/68747470733a2f2f692e696d6775722e636f6d2f34694b7576756a2e6a7067' -O logo.jpeg
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Merlin\nExec=gnome-terminal --window -- merlin\nIcon=/opt/merlin/logo.jpeg\nCategories=Application;' > /usr/share/applications/merlin.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Merlin\nExec=gnome-terminal --window -- merlin\nIcon=/opt/merlin/logo.jpeg\nCategories=Application;" > /usr/share/applications/merlin.desktop'
 
 
 clear && echo "Updating Windows Exploit Suggester"
 cd /opt/windows-exploit-suggester/
 python windows-exploit-suggester.py --update
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/windows-exploit-suggester && ./windows-exploit-suggester.py \"\$@\")' > /usr/bin/windows-exploit-suggester"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/windows-exploit-suggester && ./windows-exploit-suggester.py \"\$@\")" > /usr/bin/windows-exploit-suggester'
 chmod +x /usr/bin/windows-exploit-suggester
 
 clear && echo "Installing DNScan"
 cd /opt/dnscan/
 pipenv install --three
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/dnscan/ && pipenv run python dnscan.py \"\$@\")' > /usr/bin/dnscan"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnscan/ && pipenv run python dnscan.py \"\$@\")" > /usr/bin/dnscan'
 chmod +x /usr/bin/dnscan
 
 clear && echo "Installing DeathStar"
 cd /opt/deathstar/
 pipenv install --three
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")' > /usr/bin/deathstar"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")" > /usr/bin/deathstar'
 chmod +x /usr/bin/deathstar
 
 clear && echo "Installing Empire"
 cd /opt/empire/setup/
 python -m pip install -r requirements.txt
 ./install.sh
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")' > /usr/bin/empire"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 chmod +x /usr/bin/empire
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;' > /usr/share/applications/empire.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
 
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
 pipenv install --three
 pipenv run python setup.py install
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\")' > /usr/bin/mitm6"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\")" > /usr/bin/mitm6'
 chmod +x /usr/bin/mitm6
 
 clear && echo "Installing Impacket"
@@ -263,9 +265,9 @@ apt-get install -y libssl-dev libffi-dev python-dev build-essential
 cd /opt/crackmapexec/
 pipenv install --two
 pipenv run python setup.py install
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cme \"\$@\")' > /usr/bin/cme"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cme \"\$@\")" > /usr/bin/cme'
 chmod +x /usr/bin/cme
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cmedb \"\$@\")' > /usr/bin/cmedb"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cmedb \"\$@\")" > /usr/bin/cmedb'
 chmod +x /usr/bin/cmedb
 
 clear && echo "Installing BloodHound"
@@ -275,7 +277,7 @@ unzip BloodHound-linux-x64.zip
 rm BloodHound*.zip
 mv BloodHound-linux-x64/ bloodhound-bin/
 touch /usr/share/applications/bloodhound.desktop
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BloodHound\nExec=\"/opt/bloodhound-bin/BloodHound\"\nIcon=/opt/bloodhound/src/img/icon.ico\nCategories=Application;' > /usr/share/applications/bloodhound.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BloodHound\nExec=\"/opt/bloodhound-bin/BloodHound\"\nIcon=/opt/bloodhound/src/img/icon.ico\nCategories=Application;" > /usr/share/applications/bloodhound.desktop'
 
 clear && echo "Installing Neo4j (BloodHound Database)"
 cd /opt/
@@ -304,20 +306,20 @@ clear && echo "Installing SimplyEmail"
 sudo apt install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
 cd /opt/simplyemail/
 pipenv install --two -r setup/req*.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/simplyemail && pipenv run python2.7 SimplyEmail.py \"\$@\")' > /usr/bin/simplyemail"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/simplyemail && pipenv run python2.7 SimplyEmail.py \"\$@\")" > /usr/bin/simplyemail'
 chmod +x /usr/bin/simplyemail
 
 clear && echo "Installing JackIt"
 cd /opt/jackit/
 pipenv install --two
 pipenv run python setup.py install
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/jackit/ && sudo pipenv run jackit \"\$@\")' > /usr/bin/jackit"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/jackit/ && sudo pipenv run jackit \"\$@\")" > /usr/bin/jackit'
 chmod +x /usr/bin/jackit
 
 clear && echo "Installing spoofcheck"
 cd /opt/spoofcheck/
 pipenv install --two
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/spoofcheck/ && sudo pipenv run python spoofcheck.py \"\$@\")' > /usr/bin/spoofcheck"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/spoofcheck/ && sudo pipenv run python spoofcheck.py \"\$@\")" > /usr/bin/spoofcheck'
 chmod +x /usr/bin/spoofcheck
 
 clear && echo "Installing Camradar (docker)"
@@ -354,20 +356,20 @@ cd /opt/silenttrinity/
 wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O logo.png
 cd Server
 pipenv install --three
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run python3.7 st.py \"\$@\")' > /usr/bin/silenttrinity"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run python3.7 st.py \"\$@\")" > /usr/bin/silenttrinity'
 chmod +x /usr/bin/silenttrinity
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;' > /usr/share/applications/silenttrinity.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;" > /usr/share/applications/silenttrinity.desktop'
 
 clear && echo "Installing SprayingToolkit"
 cd /opt/sprayingtoolkit/
 pipenv install --three -r requirements.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 aerosol.py \"\$@\")' > /usr/bin/aerosol"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 aerosol.py \"\$@\")" > /usr/bin/aerosol'
 chmod +x /usr/bin/aerosol
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 atomizer.py \"\$@\")' > /usr/bin/atomizer"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 atomizer.py \"\$@\")" > /usr/bin/atomizer'
 chmod +x /usr/bin/atomizer
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 spindrift.py \"\$@\")' > /usr/bin/spindrift"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 spindrift.py \"\$@\")" > /usr/bin/spindrift'
 chmod +x /usr/bin/spindrift
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 vaporizer.py \"\$@\")' > /usr/bin/vaporizer"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 vaporizer.py \"\$@\")" > /usr/bin/vaporizer'
 chmod +x /usr/bin/vaporizer
 
 ########## ---------- ##########
@@ -406,7 +408,7 @@ apt install -y ike-scan unzip default-jdk
 apt install -y libsqlite3-dev libsqlcipher-dev # pysqlcipher
 pipenv install --two -r requirements.txt
 pipenv run python setup.py install
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \"\$@\")' > /usr/bin/patator"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \"\$@\")" > /usr/bin/patator'
 chmod +x /usr/bin/patator
 
 ########## ---------- ##########
@@ -415,14 +417,14 @@ chmod +x /usr/bin/patator
 
 clear && echo "Installing sippts"
 cpan -i IO:Socket:Timeout NetAddr:IP String:HexConvert Net:Pcap Net::Address::IP::Local DBI DBD::SQLite
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipscan.pl \"\$@\")' > /usr/bin/sipscan"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipexten.pl \"\$@\")' > /usr/bin/sipexten"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipcrack.pl \"\$@\")' > /usr/bin/sipcrack"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipinvite.pl \"\$@\")' > /usr/bin/sipinvite"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipsniff.pl \"\$@\")' > /usr/bin/sipsniff"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipspy.pl \"\$@\")' > /usr/bin/sipspy"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipdigestleak.pl \"\$@\")' > /usr/bin/sipdigestleak"
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/sippts/ && perl sipreport.pl \"\$@\")' > /usr/bin/sipreport"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipscan.pl \"\$@\")" > /usr/bin/sipscan'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipexten.pl \"\$@\")" > /usr/bin/sipexten'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipcrack.pl \"\$@\")" > /usr/bin/sipcrack'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipinvite.pl \"\$@\")" > /usr/bin/sipinvite'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipsniff.pl \"\$@\")" > /usr/bin/sipsniff'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipspy.pl \"\$@\")" > /usr/bin/sipspy'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipdigestleak.pl \"\$@\")" > /usr/bin/sipdigestleak'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipreport.pl \"\$@\")" > /usr/bin/sipreport'
 chmod +x /usr/bin/sip*
 
 ########## ---------- ##########
@@ -453,9 +455,9 @@ read -p "Press Enter to continue." </dev/tty
 cd /opt/fluxion/
 ./fluxion.sh -i
 wget 'https://raw.githubusercontent.com/FluxionNetwork/fluxion/master/logos/logo.jpg' -O logo.jpg
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")' > /usr/bin/fluxion"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")" > /usr/bin/fluxion'
 chmod +x /usr/bin/fluxion
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logo.jpg\nCategories=Application;' > /usr/share/applications/fluxion.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
 
 clear && echo "Installing hashcat"
 cd /opt/
@@ -493,7 +495,7 @@ apt-get install -y sqlmap
 clear && echo "Installing Whatwaf"
 cd /opt/whatwaf/
 pipenv install --three -r requirements.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/whatwaf && pipenv run python whatwaf.py \"\$@\")' > /usr/bin/whatwaf"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/whatwaf && pipenv run python whatwaf.py \"\$@\")" > /usr/bin/whatwaf'
 chmod +x /usr/bin/whatwaf
 
 clear && echo "Installing nikto"
@@ -527,7 +529,7 @@ chmod +x recursebuster_elf
 clear && echo "Installing XSStrike"
 cd /opt/xsstrike/
 pipenv install --three -r requirements.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/xsstrike && pipenv run python xsstrike.py \"\$@\")' > /usr/bin/xsstrike"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/xsstrike && pipenv run python xsstrike.py \"\$@\")" > /usr/bin/xsstrike'
 chmod +x /usr/bin/xsstrike
 
 ########## ---------- ##########
@@ -542,7 +544,7 @@ clear && echo "Installing Seth"
 cd /opt/seth/
 pipenv install --two
 apt-get install -y dsniff
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/seth/ && sudo pipenv run ./seth.sh \"\$@\")' > /usr/bin/seth"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/seth/ && sudo pipenv run ./seth.sh \"\$@\")" > /usr/bin/seth'
 chmod +x /usr/bin/seth
 
 clear && echo "Installing Wireshark"
@@ -563,9 +565,9 @@ wget 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O logo
 ./bettercap -eval "caplets.update; ui.update; q"
 sed -i 's/^set api.rest.username.*/set api.rest.username admin/g' /usr/local/share/bettercap/caplets/http-ui.cap
 sed -i 's/^set api.rest.password.*/set api.rest.password bettercap/g' /usr/local/share/bettercap/caplets/http-ui.cap
-bash -c "echo -e '#\!/bin/bash\n(sudo /opt/bettercap/bettercap \"\$@\")' > /usr/bin/bettercap"
+bash -c 'echo -e "#!/bin/bash\n(sudo /opt/bettercap/bettercap \"\$@\")" > /usr/bin/bettercap'
 chmod +x /usr/bin/bettercap
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=bettercap\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && nmcli d && printf \"\\\n\\\n\" && read -p \"Enter the device name: \" int && clear && sudo /opt/bettercap/bettercap -iface \$int -caplet http-ui'\''\nIcon=/opt/bettercap/logo.png\nCategories=Application;' > /usr/share/applications/bettercap.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=bettercap\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && nmcli d && printf \"\\\n\\\n\" && read -p \"Enter the device name: \" int && clear && sudo /opt/bettercap/bettercap -iface \$int -caplet http-ui'\''\nIcon=/opt/bettercap/logo.png\nCategories=Application;" > /usr/share/applications/bettercap.desktop'
 
 clear && echo "Installing BeEF"
 apt-get install -y ruby ruby-dev
@@ -573,9 +575,9 @@ cd /opt/beef/
 ./install
 ./update-geoipdb
 sed -i 's/passwd: "beef"/passwd: "admin"/g' /opt/beef/config.yaml
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/beef && ./beef \"\$@\")' > /usr/bin/beef"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/beef && ./beef \"\$@\")" > /usr/bin/beef'
 chmod +x /usr/bin/beef
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BeEF\nExec=gnome-terminal --window -- beef\nIcon=/opt/beef/extensions/admin_ui/media/images/beef.png\nCategories=Application;' > /usr/share/applications/beef.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BeEF\nExec=gnome-terminal --window -- beef\nIcon=/opt/beef/extensions/admin_ui/media/images/beef.png\nCategories=Application;" > /usr/share/applications/beef.desktop'
 
 clear && echo "Installing wine"
 apt-get -y install wine winbind winetricks xdotool
@@ -592,9 +594,9 @@ sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\p
 mkdir /opt/fuzzbunch
 cd /opt/fuzzbunch/
 wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O logo.svg
-bash -c "echo -e '#\!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py \"\$@\")' > /usr/bin/fuzzbunch"
+bash -c 'echo -e "#!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py \"\$@\")" > /usr/bin/fuzzbunch'
 chmod +x /usr/bin/fuzzbunch
-bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;' > /usr/share/applications/fuzzbunch.desktop"
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;" > /usr/share/applications/fuzzbunch.desktop'
 
 clear && echo "Installing EvilClippy"
 mkdir /opt/evilclippy
@@ -602,7 +604,7 @@ cd /opt/evilclippy/
 wget $URL_EVILCLIPPY
 wget $URL_EVILCLIPPY_MCDF
 wget $URL_EVILCLIPPY_README
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")' > /usr/bin/evilclippy"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")" > /usr/bin/evilclippy'
 chmod +x /usr/bin/evilclippy
 mkdir /usr/share/wine/mono
 wget $URL_MONO -o '/usr/share/wine/mono/wine-mono.msi'
@@ -610,7 +612,7 @@ sudo -u ${RUID} -E bash -c "wine msiexec /i /usr/share/wine/mono/wine-mono.msi"
 
 clear && echo "Installing PRET"
 pipenv install --two colorama pysnmp
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/pret/ && pipenv run python pret.py \"\$@\")' > /usr/bin/pret"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/pret/ && pipenv run python pret.py \"\$@\")" > /usr/bin/pret'
 chmod +x /usr/bin/pret
 
 clear && echo "Installing snmpwalk"
@@ -618,9 +620,8 @@ apt-get install -y snmp
 
 #clear && echo "Installing Nessus"
 #https://www.tenable.com/downloads/nessus
-
 #apt-get install ./Nessus-8.2.2-ubuntu1110_amd64.deb
-#bash -c "echo -e '#\!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;' > /usr/share/applications/nessus.desktop"
+#bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;" > /usr/share/applications/nessus.desktop'
 #sudo /etc/init.d/nessusd start
 
 ########## ---------- ##########
@@ -630,25 +631,25 @@ apt-get install -y snmp
 clear && echo "Installing Cr3d0v3r"
 cd /opt/cr3dov3r/
 pipenv install --three
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")' > /usr/bin/credover"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")" > /usr/bin/credover'
 chmod +x /usr/bin/credover
 
 clear && echo "Installing pwndb"
 cd /opt/pwndb/
 pipenv install --three -r requirements.txt
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/pwndb && pipenv run python pwndb.py \"\$@\")' > /usr/bin/pwndb"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/pwndb && pipenv run python pwndb.py \"\$@\")" > /usr/bin/pwndb'
 chmod +x /usr/bin/pwndb
 
 clear && echo "Installing theHarvester"
 cd /opt/theharvester/
 pipenv install --three
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")' > /usr/bin/theharvester"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")" > /usr/bin/theharvester'
 chmod +x /usr/bin/theharvester
 
 clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
 pipenv install --two
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/linkedint && pipenv run python LinkedInt.py \"\$@\")' > /usr/bin/linkedint"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/linkedint && pipenv run python LinkedInt.py \"\$@\")" > /usr/bin/linkedint'
 chmod +x /usr/bin/linkedint
 
 clear && echo "Installing pymeta"
@@ -696,7 +697,7 @@ git clone 'https://github.com/s0lst1c3/eaphammer'
 cd /opt/eaphammer/
 ./kali-setup
 pipenv install --three -r pip.req
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/eaphammer/ && sudo pipenv run python eaphammer \"\$@\")' > /usr/bin/eaphammer"
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/eaphammer/ && sudo pipenv run python eaphammer \"\$@\")" > /usr/bin/eaphammer'
 chmod +x /usr/bin/eaphammer
 
 clear && echo "Installing wifite"
