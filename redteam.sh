@@ -10,6 +10,7 @@ URL_EVILGINX='https://github.com/kgretzky/evilginx2/releases/download/2.3.0/evil
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
 URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
+URL_IMPACKET='https://github.com/SecureAuthCorp/impacket/releases/download/impacket_0_9_19/impacket-0.9.19.tar.gz'
 URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
 URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
 URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
@@ -81,7 +82,6 @@ git clone https://github.com/EmpireProject/empire --branch dev
 git clone https://github.com/fox-it/mitm6
 git clone https://github.com/BloodHoundAD/bloodhound
 git clone https://github.com/SpiderLabs/responder
-git clone https://github.com/SecureAuthCorp/impacket
 git clone https://github.com/susmithHCK/torghost
 git clone https://github.com/insecurityofthings/jackit
 git clone https://github.com/lightos/credmap
@@ -249,11 +249,14 @@ bash -c "echo -e '#\!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\"
 chmod +x /usr/bin/mitm6
 
 clear && echo "Installing Impacket"
+cd /opt/
+wget $URL_IMPACKET
+tar xvf impacket*.tar.gz
+rm impacket-*.tar.gz
+mv impacket-*/ impacket/
 cd /opt/impacket/
-pipenv install --two
-pipenv run python setup.py install
-bash -c "echo -e '#\!/bin/bash\n(cd /opt/impacket/ && sudo pipenv shell)' > /usr/bin/impacket"
-chmod +x /usr/bin/impacket
+pip install -r requirements.txt
+pip install .
 
 clear && echo "Installing CrackMapExec"
 apt-get install -y libssl-dev libffi-dev python-dev build-essential
