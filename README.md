@@ -70,6 +70,7 @@ All tools where possible run in a virtual environment using pipenv.
 * pymeta
 * pwndb
 * Mailsniper
+* recursebuster
 * Remmina
 * Responder
 * Ruler
@@ -87,6 +88,7 @@ All tools where possible run in a virtual environment using pipenv.
 * Torghost
 * unicorn
 * Usernamer
+* WhatWaf
 * wifite
 * Windows Exploit Suggester
 * Wireshark
