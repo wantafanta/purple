@@ -34,6 +34,7 @@ All tools where possible run in a virtual environment using pipenv.
 * evilginx2
 * Evil-SSDP
 * File Cracks
+* fireprox
 * Fluxion
   * Aircrack
   * coWPAtty
@@ -46,6 +47,7 @@ All tools where possible run in a virtual environment using pipenv.
 * Gufw Firewall
 * hashcat
   * hashcat-utils
+* Hash-Buster
 * Impacket
 * Jackit
 * john-the-ripper
@@ -55,6 +57,7 @@ All tools where possible run in a virtual environment using pipenv.
 * Merlin
 * Metasploit Framework
 * mitm6
+* Nessus
 * nikto
 * nmap
   * zenmap
@@ -70,6 +73,7 @@ All tools where possible run in a virtual environment using pipenv.
 * pymeta
 * pwndb
 * Mailsniper
+* okadminfinder3
 * recursebuster
 * Remmina
 * Responder
@@ -83,6 +87,7 @@ All tools where possible run in a virtual environment using pipenv.
 * snmpwalk
 * Spoofcheck
 * Sqlmap
+* Spraying Toolkit
 * theHarvester
 * TMUX
 * Torghost
