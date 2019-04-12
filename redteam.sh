@@ -112,6 +112,9 @@ git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack 
 git clone https://github.com/davidtavarez/pwndb
 git clone https://github.com/s0md3v/xsstrike
 git clone https://github.com/Ekultek/whatwaf
+git clone https://github.com/mIcHyAmRaNe/okadminfinder3
+git clone https://github.com/ustayready/fireprox
+git clone https://github.com/s0md3v/hash-buster
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -301,6 +304,12 @@ bash install.sh
 systemctl disable tor.service
 #firefox http://about:config
 #set network.dns.blockDotOnion;false
+
+clear && echo "Installing fireprox"
+cd /opt/fireprox/
+pipenv install --three -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/fireprox && pipenv run python fire.py \"\$@\")" > /usr/bin/fireprox'
+chmod +x /usr/bin/fireprox
 
 clear && echo "Installing SimplyEmail"
 sudo apt install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
@@ -526,6 +535,12 @@ wget $URL_RECURSEBUSTER
 wget $URL_RECURSEBUSTER_README
 chmod +x recursebuster_elf
 
+clear && echo "Installing okadminfinder3"
+cd /opt/okadminfinder3/
+pipenv install --three -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/okadminfinder3 && pipenv run python okadminfinder.py \"\$@\")" > /usr/bin/okadminfinder3'
+chmod +x /usr/bin/okadminfinder3
+
 clear && echo "Installing XSStrike"
 cd /opt/xsstrike/
 pipenv install --three -r requirements.txt
@@ -619,10 +634,19 @@ clear && echo "Installing snmpwalk"
 apt-get install -y snmp
 
 #clear && echo "Installing Nessus"
-#https://www.tenable.com/downloads/nessus
-#apt-get install ./Nessus-8.2.2-ubuntu1110_amd64.deb
-#bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;" > /usr/share/applications/nessus.desktop'
-#sudo /etc/init.d/nessusd start
+while [ ! -f Nessus*.deb ]
+do
+  clear
+  printf "Nessus installation file not found.\n\nDownload Nessus package from: https://www.tenable.com/downloads/nessus ( \`ubuntu & amd64\` )\n\n"
+  read -p "Save it to the same location as this script, then press Enter to continue." </dev/tty
+done
+if [ -f Nessus*.deb ]
+then
+  clear && echo "Installing Nessus"
+  apt-get install ./Nessus-*.deb
+  bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;" > /usr/share/applications/nessus.desktop'
+  sudo /etc/init.d/nessusd start
+fi
 
 ########## ---------- ##########
 # OSINT
@@ -634,17 +658,9 @@ pipenv install --three
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")" > /usr/bin/credover'
 chmod +x /usr/bin/credover
 
-clear && echo "Installing pwndb"
-cd /opt/pwndb/
-pipenv install --three -r requirements.txt
-bash -c 'echo -e "#!/bin/bash\n(cd /opt/pwndb && pipenv run python pwndb.py \"\$@\")" > /usr/bin/pwndb'
-chmod +x /usr/bin/pwndb
-
-clear && echo "Installing theHarvester"
-cd /opt/theharvester/
-pipenv install --three
-bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")" > /usr/bin/theharvester'
-chmod +x /usr/bin/theharvester
+clear && echo "Installing Hash-Buster"
+cd /opt/hash-buster/
+sudo make install
 
 clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
@@ -652,11 +668,23 @@ pipenv install --two
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/linkedint && pipenv run python LinkedInt.py \"\$@\")" > /usr/bin/linkedint'
 chmod +x /usr/bin/linkedint
 
+clear && echo "Installing pwndb"
+cd /opt/pwndb/
+pipenv install --three -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/pwndb && pipenv run python pwndb.py \"\$@\")" > /usr/bin/pwndb'
+chmod +x /usr/bin/pwndb
+
 clear && echo "Installing pymeta"
 cd /opt/pymeta/
 chmod +x setup.sh
 ./setup.sh
 chmod +x pymeta.py
+
+clear && echo "Installing theHarvester"
+cd /opt/theharvester/
+pipenv install --three
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")" > /usr/bin/theharvester'
+chmod +x /usr/bin/theharvester
 
 ########## ---------- ##########
 # Phishing
@@ -720,8 +748,12 @@ rm -r /opt/hcxdumptool
 rm -r /opt/hcxtools
 rm -r /opt/bully
 
+########## ---------- ##########
+# End
+########## ---------- ##########
+
 #Sets the favourite bar
-sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 sudo systemctl disable apache2.service
 sudo systemctl stop apache2.service
