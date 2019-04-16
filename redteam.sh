@@ -482,6 +482,10 @@ wget $URL_HASHCAT_UTILS
 rm hashcat-utils-*.7z
 mv hashcat-utils-*/ hashcat-utils/
 
+clear && echo "Installing NTLMv1 Multitool"
+cd /opt/
+git clone https://github.com/evilmog/ntlmv1-multi
+
 ########## ---------- ##########
 # Web
 ########## ---------- ##########
@@ -545,6 +549,15 @@ cd /opt/xsstrike/
 pipenv install --three -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/xsstrike && pipenv run python xsstrike.py \"\$@\")" > /usr/bin/xsstrike'
 chmod +x /usr/bin/xsstrike
+
+########## ---------- ##########
+# Webshell
+########## ---------- ##########
+
+#cd /opt
+#php
+#https://github.com/mIcHyAmRaNe/wso-webshell
+#https://github.com/flozz/p0wny-shell
 
 ########## ---------- ##########
 # Network
