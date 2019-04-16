@@ -392,8 +392,10 @@ rm dbeaver*.deb
 
 clear && echo "Installing nullinux"
 cd /opt/nullinux/
-chmod +x setup.sh
-./setup.sh
+apt-get install -y smbclient
+pipenv install --three -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/nullinux && pipenv run python nullinux.py \"\$@\")" > /usr/bin/nullinux'
+chmod +x /usr/bin/nullinux
 
 clear && echo "Installing enumdb"
 cd /opt/enumdb/
