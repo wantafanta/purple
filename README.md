@@ -54,6 +54,7 @@ All tools where possible run in a virtual environment using pipenv.
 * Kismet
 * LinkedInt
 * Linux Exploit Suggester
+* Mailsniper
 * Merlin
 * Metasploit Framework
 * mitm6
@@ -67,13 +68,13 @@ All tools where possible run in a virtual environment using pipenv.
 * nullinux
 * NTDSAudit
 * NTDSDumpEx
+* NTLMv1 Mutlitool
+* okadminfinder3
 * Patator
 * Powershell
 * PRET
 * pymeta
 * pwndb
-* Mailsniper
-* okadminfinder3
 * recursebuster
 * Remmina
 * Responder
