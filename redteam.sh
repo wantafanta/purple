@@ -1,8 +1,8 @@
 #!/bin/bash
 
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
-URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.22/bettercap_linux_amd64_2.22.zip'
-URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.0.1/dirble-x86_64-linux.zip'
+URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.23/bettercap_linux_amd64_2.23.zip'
+URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.3.0/dirble-x86_64-linux.zip'
 URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/EvilClippy.exe'
 URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/OpenMcdf.dll'
 URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
@@ -13,7 +13,7 @@ URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1
 URL_IMPACKET='https://github.com/SecureAuthCorp/impacket/releases/download/impacket_0_9_19/impacket-0.9.19.tar.gz'
 URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
 URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
-URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.6.4/merlinServer-Linux-x64-v0.6.4.BETA.7z'
+URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.7.0/merlinServer-Linux-x64-v0.7.0.BETA.7z'
 URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.0/wine-mono-4.8.0.msi'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.9/recursebuster_elf'
