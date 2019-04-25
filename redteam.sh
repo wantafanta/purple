@@ -18,6 +18,7 @@ URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.0/wine-mono-4.8.0.msi'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.9/recursebuster_elf'
 URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
+URL_TERMSHARK='https://github.com/gcla/termshark/releases/download/v1.0.0/termshark_1.0.0_linux_x64.tar.gz'
 
 URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
 URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
@@ -147,6 +148,7 @@ bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash
 bash -c "echo -e 'alias recursebuster=\"/opt/recursebuster/recursebuster_elf\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias termshark=\"/opt/termshark/termshark\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${RUID}/.bash_aliases"
 #. ~/.bashrc
@@ -581,6 +583,13 @@ apt-get install -y wireshark
 chmod +x /usr/bin/dumpcap
 #to change user permission with gui: sudo dpkg-reconfigure wireshark-common
 usermod -a -G wireshark ${RUID}
+
+clear && echo "Installing termshark"
+cd /opt/
+wget $URL_TERMSHARK
+tar xvf termshark*.tar.gz
+rm termshark*.tar.gz
+mv termshark_*/ termshark/
 
 clear && echo "Installing bettercap"
 apt-get install -y libnetfilter-queue-dev
