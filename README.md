@@ -89,6 +89,7 @@ All tools where possible run in a virtual environment using pipenv.
 * Spoofcheck
 * Sqlmap
 * Spraying Toolkit
+* Termshark
 * theHarvester
 * TMUX
 * Torghost
