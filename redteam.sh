@@ -787,7 +787,6 @@ sudo systemctl disable lighttpd.service
 sudo systemctl stop lighttpd.service
 
 apt autoremove -y
-cat /dev/null > ~/.bash_history && history -c
 
 # fix vmware display
 sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
@@ -807,5 +806,12 @@ echo 'To resolve .onion addresses (via torghost) in firefox open `about:config` 
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
 read -p "Press Enter to reboot." </dev/tty
+
+# Clear terminal history
+cat /dev/null > ~/.bash_history && history -c
+
+# Set permissions in /opt/
 chown -R ${RUID}:${RUID} /opt/
+
+# Reboot
 reboot now
