@@ -305,6 +305,7 @@ bash install.sh
 systemctl disable tor.service
 #firefox http://about:config
 #set network.dns.blockDotOnion;false
+apt install -y chrome-gnome-shell #firefox gnome extensions pre-reqs
 
 clear && echo "Installing fireprox"
 cd /opt/fireprox/
@@ -657,11 +658,12 @@ clear && echo "Installing snmpwalk"
 apt-get install -y snmp
 
 #clear && echo "Installing Nessus"
+cd /opt/
 while [ ! -f Nessus*.deb ]
 do
   clear
   printf "Nessus installation file not found.\n\nDownload Nessus package from: https://www.tenable.com/downloads/nessus ( \`ubuntu & amd64\` )\n\n"
-  read -p "Save it to the same location as this script, then press Enter to continue." </dev/tty
+  read -p "Save it to /opt/Nessus-####.deb, then press Enter to continue." </dev/tty
 done
 if [ -f Nessus*.deb ]
 then
@@ -670,6 +672,7 @@ then
   bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Update\nExec=gnome-terminal --window -- sudo /opt/nessus/sbin/nessuscli update --all" > /usr/share/applications/nessus.desktop'
   sudo /etc/init.d/nessusd start
 fi
+rm Nessus*.deb
 
 ########## ---------- ##########
 # OSINT
@@ -799,8 +802,8 @@ echo 'View Docker images via "sudo docker images"'
 echo 'Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
-echo 'Download Burp Suite CA Certificate from http://burp/cert'
-echo 'To resolve .onion addresses (via torghost) in firefox open http://about:config/ and set `network.dns.blockDotOnion` to `false`'
+echo 'Download Burp Suite CA Certificate from http://burp/cert/'
+echo 'To resolve .onion addresses (via torghost) in firefox open `about:config` and set `network.dns.blockDotOnion` to `false`'
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
 read -p "Press Enter to reboot." </dev/tty
