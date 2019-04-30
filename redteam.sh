@@ -795,14 +795,16 @@ cd /opt/
 clear
 echo "Done."
 printf "\nAll modules stored in /opt/\n"
-echo 'View Docker images via "sudo docker images"'
+#echo 'View Docker images via "sudo docker images"'
 #echo 'Run "msfconsole" to setup initial msf database'
 #echo 'Run "cme" to setup initial CrackMapExec database'
-echo 'Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
-echo 'BeEF username and password have been set ( u:admin p:beef )'
-echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
+echo 'Now: Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
+printf "--\nNotes:"
 echo 'Download Burp Suite CA Certificate from http://burp/cert/'
 echo 'To resolve .onion addresses (via torghost) in firefox open `about:config` and set `network.dns.blockDotOnion` to `false`'
+printf "--\nCreds:"
+echo 'BeEF username and password have been set ( u:admin p:beef )'
+echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
 read -p "Press Enter to reboot." </dev/tty
