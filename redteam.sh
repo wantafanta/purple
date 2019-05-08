@@ -202,10 +202,8 @@ rm NTDSDumpEx.zip
 cd /opt/ntdsdumpex/
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntdsdumpex && wine NTDSDumpEx.exe \"\$@\")" > /usr/bin/ntdsdumpex'
 chmod +x /usr/bin/ntdsdumpex
-#on Domain Controller, run cmd as administrator
-#activate instance ntds
-#ifm
-#create full c:\x
+# on Domain Controller, run cmd as administrator
+# ntdsutil "activate instance ntds" ifm "create full c:\x" quit quit
 
 clear && echo "Installing Merlin"
 apt-get install -y p7zip-full
