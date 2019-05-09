@@ -241,12 +241,17 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathSta
 chmod +x /usr/bin/deathstar
 
 clear && echo "Installing Empire"
+printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter `y` twice.\n\n"
+read -p "Press Enter to continue." </dev/tty
 cd /opt/empire/setup/
 python -m pip install -r requirements.txt
 ./install.sh
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 chmod +x /usr/bin/empire
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
+bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
+empire -r /opt/empire/setup/obf.rc
+rm obf.rc
 
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
@@ -806,7 +811,7 @@ printf "\nAll modules stored in /opt/\n"
 #echo 'View Docker images via "sudo docker images"'
 #echo 'Run "msfconsole" to setup initial msf database'
 #echo 'Run "cme" to setup initial CrackMapExec database'
-echo 'Now: Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
+#echo 'Now: Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
 printf "--\nNotes:"
 echo 'Download Burp Suite CA Certificate from http://burp/cert/'
 echo 'To resolve .onion addresses (via torghost) in firefox open `about:config` and set `network.dns.blockDotOnion` to `false`'
