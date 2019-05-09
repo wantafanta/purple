@@ -137,7 +137,6 @@ chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
 bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias credmap=\"/opt/credmap/credmap.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias creap=\"sudo /opt/creap/crEAP.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
@@ -346,6 +345,8 @@ docker pull ullaakut/cameradar
 clear && echo "Installing credmap"
 cd /opt/credmap/
 chmod +x credmap.py
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/credmap/ && python credmap.py \"\$@\")" > /usr/bin/credmap'
+chmod +x /usr/bin/credmap
 
 clear && echo "Installing Google Chrome (Stable)"
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
