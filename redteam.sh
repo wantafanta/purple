@@ -1,7 +1,7 @@
 #!/bin/bash
 
+URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.24/bettercap_linux_amd64_2.24.zip'
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
-URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.23/bettercap_linux_amd64_2.23.zip'
 URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.3.0/dirble-x86_64-linux.zip'
 URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/EvilClippy.exe'
 URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/OpenMcdf.dll'
@@ -14,7 +14,7 @@ URL_IMPACKET='https://github.com/SecureAuthCorp/impacket/releases/download/impac
 URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
 URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
 URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.7.0/merlinServer-Linux-x64-v0.7.0.BETA.7z'
-URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.0/wine-mono-4.8.0.msi'
+URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
 URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.9/recursebuster_elf'
 URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
@@ -92,6 +92,7 @@ git clone https://github.com/FluxionNetwork/fluxion
 git clone https://gitlab.com/initstring/evil-ssdp
 git clone https://github.com/actuated/msf-exploit-loop
 git clone https://github.com/dafthack/mailsniper
+git clone --recursive https://github.com/mdsecresearch/lyncsniper
 git clone https://github.com/beefproject/beef
 git clone https://github.com/RUB-NDS/pret
 git clone https://github.com/laramies/theharvester

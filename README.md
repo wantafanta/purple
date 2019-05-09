@@ -16,7 +16,7 @@ All tools where possible run in a virtual environment using pipenv.
   * neo4j
   * Aclpwn
 * Burp Suite Community Edition
-* Crackpmapexec
+* CrackMapExec
 * crEAP
 * Credmap
 * Cr3d0v3r
