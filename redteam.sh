@@ -11,6 +11,7 @@ URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/go
 URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
 URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
 URL_IMPACKET='https://github.com/SecureAuthCorp/impacket/releases/download/impacket_0_9_19/impacket-0.9.19.tar.gz'
+URL_KERBRUTE='https://github.com/ropnop/kerbrute/releases/download/v1.0.1/kerbrute_linux_amd64'
 URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
 URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
 URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.7.0/merlinServer-Linux-x64-v0.7.0.BETA.7z'
@@ -143,6 +144,7 @@ bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias evilginx=\"sudo evilginx\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias kerbrute=\"/opt/kerbrute/kerbrute_linux_amd64\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias nmapautomator=\"sudo /opt/nmapautomator/nmapAutomator.sh\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias nse=\"ls /usr/share/nmap/scripts/ | grep \"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash_aliases"
@@ -422,6 +424,13 @@ pipenv install --two -r requirements.txt
 pipenv run python setup.py install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \"\$@\")" > /usr/bin/patator'
 chmod +x /usr/bin/patator
+
+clear && echo "Installing kerbrute"
+cd /opt/
+mkdir kerbrute
+cd /opt/kerbrute
+wget $URL_KERBRUTE
+chmod +x kerbrute_linux_amd64
 
 ########## ---------- ##########
 # VoIP

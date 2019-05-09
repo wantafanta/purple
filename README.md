@@ -51,9 +51,11 @@ All tools where possible run in a virtual environment using pipenv.
 * Impacket
 * Jackit
 * john-the-ripper
+* kerbrute
 * Kismet
 * LinkedInt
 * Linux Exploit Suggester
+* LyncSniper
 * Mailsniper
 * Merlin
 * Metasploit Framework
