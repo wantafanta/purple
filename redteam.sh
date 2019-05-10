@@ -151,6 +151,7 @@ bash -c "echo -e 'alias recursebuster=\"/opt/recursebuster/recursebuster_elf\"' 
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias termshark=\"/opt/termshark/termshark\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias torghost=\"sudo torghost\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${RUID}/.bash_aliases"
 #. ~/.bashrc
