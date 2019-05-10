@@ -2,9 +2,9 @@
 
 URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.24/bettercap_linux_amd64_2.24.zip'
 URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
-URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.3.0/dirble-x86_64-linux.zip'
-URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/EvilClippy.exe'
-URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.1/OpenMcdf.dll'
+URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.3.1/dirble-x86_64-linux.zip'
+URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.2/EvilClippy.exe'
+URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.2/OpenMcdf.dll'
 URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
 URL_EVILGINX='https://github.com/kgretzky/evilginx2/releases/download/2.3.0/evilginx_linux_x86_2.3.0.zip'
 URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
