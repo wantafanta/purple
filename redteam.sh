@@ -17,7 +17,7 @@ URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTD
 URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.7.0/merlinServer-Linux-x64-v0.7.0.BETA.7z'
 URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
 URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
-URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.9/recursebuster_elf'
+URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.11/recursebuster_elf'
 URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
 URL_TERMSHARK='https://github.com/gcla/termshark/releases/download/v1.0.0/termshark_1.0.0_linux_x64.tar.gz'
 
