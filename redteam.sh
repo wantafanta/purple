@@ -241,7 +241,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathSta
 chmod +x /usr/bin/deathstar
 
 clear && echo "Installing Empire"
-printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter `y` twice.\n\n"
+printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
 read -p "Press Enter to continue." </dev/tty
 cd /opt/empire/setup/
 python -m pip install -r requirements.txt
@@ -298,8 +298,6 @@ echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.
 apt-get update
 apt-get install -y neo4j
 systemctl enable neo4j.service
-
-# login in to http://localhost:7474/ neo4j:neo4j, change password
 
 clear && echo "Installing Aclpwn" #Active Directory ACL exploitation with BloodHound
 #https://github.com/fox-it/aclpwn.py
@@ -793,14 +791,16 @@ rm -r /opt/bully
 # End
 ########## ---------- ##########
 
-#Sets the favourite bar
+# Reset the Dock favourites
 sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
+# Services fixes
 sudo systemctl disable apache2.service
 sudo systemctl stop apache2.service
 sudo systemctl disable lighttpd.service
 sudo systemctl stop lighttpd.service
 
+# Cleanup apt
 apt autoremove -y
 
 # fix vmware display
@@ -813,13 +813,13 @@ printf "\nAll modules stored in /opt/\n"
 #echo 'View Docker images via "sudo docker images"'
 #echo 'Run "msfconsole" to setup initial msf database'
 #echo 'Run "cme" to setup initial CrackMapExec database'
-#echo 'Now: Open Empire and run `preobfuscate` to obfuscate all modules (this will take a long time)'
 printf "--\nNotes:"
 echo 'Download Burp Suite CA Certificate from http://burp/cert/'
-echo 'To resolve .onion addresses (via torghost) in firefox open `about:config` and set `network.dns.blockDotOnion` to `false`'
+echo 'To resolve .onion addresses (via torghost) in firefox open \`about:config\` and set \`network.dns.blockDotOnion\` to \`false\`'
 printf "--\nCreds:"
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
+# Set neo4j database password to \`bloodhound\`
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
 printf "BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).\n\n"
 read -p "Press Enter to reboot." </dev/tty
