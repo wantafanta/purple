@@ -1,33 +1,5 @@
 #!/bin/bash
 
-URL_BETTERCAP='https://github.com/bettercap/bettercap/releases/download/v2.24/bettercap_linux_amd64_2.24.zip'
-URL_BLOODHOUND='https://github.com/BloodHoundAD/BloodHound/releases/download/2.1.0/BloodHound-linux-x64.zip'
-URL_DIRBLE='https://github.com/nccgroup/dirble/releases/download/v1.3.1/dirble-x86_64-linux.zip'
-URL_EVILCLIPPY='https://github.com/outflanknl/EvilClippy/releases/download/v1.2/EvilClippy.exe'
-URL_EVILCLIPPY_MCDF='https://github.com/outflanknl/EvilClippy/releases/download/v1.2/OpenMcdf.dll'
-URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
-URL_EVILGINX='https://github.com/kgretzky/evilginx2/releases/download/2.3.0/evilginx_linux_x86_2.3.0.zip'
-URL_GOWITNESS='https://github.com/sensepost/gowitness/releases/download/1.0.8/gowitness-linux-amd64'
-URL_HASHCAT='https://github.com/hashcat/hashcat/releases/download/v5.1.0/hashcat-5.1.0.7z'
-URL_HASHCAT_UTILS='https://github.com/hashcat/hashcat-utils/releases/download/v1.9/hashcat-utils-1.9.7z'
-URL_IMPACKET='https://github.com/SecureAuthCorp/impacket/releases/download/impacket_0_9_19/impacket-0.9.19.tar.gz'
-URL_KERBRUTE='https://github.com/ropnop/kerbrute/releases/download/v1.0.1/kerbrute_linux_amd64'
-URL_NTDSAUDIT='https://github.com/Dionach/NtdsAudit/releases/download/v2.0.6/NtdsAudit.exe'
-URL_NTDSDUMPEX='https://github.com/zcgonvh/NTDSDumpEx/releases/download/v0.3/NTDSDumpEx.zip'
-URL_MERLIN='https://github.com/Ne0nd0g/merlin/releases/download/v0.7.0/merlinServer-Linux-x64-v0.7.0.BETA.7z'
-URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
-URL_RULER='https://github.com/sensepost/ruler/releases/download/2.2.0/ruler-linux64'
-URL_RECURSEBUSTER='https://github.com/C-Sto/recursebuster/releases/download/v1.6.11/recursebuster_elf'
-URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
-URL_TERMSHARK='https://github.com/gcla/termshark/releases/download/v1.0.0/termshark_1.0.0_linux_x64.tar.gz'
-
-URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
-URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
-URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
-URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
-URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
-
-clear
 RUID=$(who | awk 'FNR == 1 {print $1}')
 RUSER_UID=$(id -u ${RUID})
 chown -R ${RUID}:${RUID} /opt/
@@ -35,11 +7,46 @@ chown -R ${RUID}:${RUID} /opt/
 clear && echo "Updating OS"
 apt-get update && apt-get upgrade -y
 clear && echo "Installing apt packages"
-apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4
+apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4 jq
 
 clear && echo "Installing pip modules"
 sudo -H pip install pipenv && sudo -H pip3 install pipenv
 python -m pip install service_identity rdpy
+
+url_latest() {
+  local json=$(curl -s $1)
+  local url=$(echo "$json" | jq -r '.assets[].browser_download_url | select(contains("'$2'"))')
+  echo $url
+}
+
+# grab all the latest release urls
+URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'linux_amd64')
+URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
+URL_DIRBLE=$(url_latest 'https://api.github.com/repos/nccgroup/dirble/releases/latest' 'x86_64-linux')
+URL_EVILCLIPPY=$(url_latest 'https://api.github.com/repos/outflanknl/EvilClippy/releases/latest' 'EvilClippy.exe')
+URL_EVILCLIPPY_MCDF=$(url_latest 'https://api.github.com/repos/outflanknl/EvilClippy/releases/latest' 'OpenMcdf.dll')
+URL_EVILGINX=$(url_latest 'https://api.github.com/repos/kgretzky/evilginx2/releases/latest' 'linux_x86')
+URL_GOWITNESS=$(url_latest 'https://api.github.com/repos/sensepost/gowitness/releases/latest' 'linux-amd64')
+URL_HASHCAT=$(url_latest 'https://api.github.com/repos/hashcat/hashcat/releases/latest' 'hashcat')
+URL_HASHCAT_UTILS=$(url_latest 'https://api.github.com/repos/hashcat/hashcat-utils/releases/latest' 'hashcat-utils')
+URL_IMPACKET=$(url_latest 'https://api.github.com/repos/SecureAuthCorp/impacket/releases/latest' 'impacket')
+URL_KERBRUTE=$(url_latest 'https://api.github.com/repos/ropnop/kerbrute/releases/latest' 'linux_amd64')
+URL_NTDSAUDIT=$(url_latest 'https://api.github.com/repos/Dionach/NtdsAudit/releases/latest' 'NtdsAudit.exe')
+URL_NTDSDUMPEX=$(url_latest 'https://api.github.com/repos/zcgonvh/NTDSDumpEx/releases/latest' 'NTDSDumpEx.zip')
+URL_MERLIN=$(url_latest 'https://api.github.com/repos/Ne0nd0g/merlin/releases/latest' 'merlinServer-Linux-x64')
+URL_RULER=$(url_latest 'https://api.github.com/repos/sensepost/ruler/releases/latest' 'linux64')
+URL_RECURSEBUSTER=$(url_latest 'https://api.github.com/repos/C-Sto/recursebuster/releases/latest' 'recursebuster_elf')
+URL_TERMSHARK=$(url_latest 'https://api.github.com/repos/gcla/termshark/releases/latest' 'linux_x64')
+
+URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
+URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
+URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
+
+URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
+URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
+URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
+URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
+URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -75,49 +82,49 @@ snap install john-the-ripper
 
 clear && echo "Cloning repositories"
 cd /opt/
-git clone https://github.com/rbsec/dnscan
+git clone https://github.com/21y4d/nmapautomator
+git clone https://github.com/actuated/msf-exploit-loop
+git clone https://github.com/beefproject/beef
+git clone https://github.com/BishopFox/spoofcheck
+git clone https://github.com/BloodHoundAD/bloodhound
 git clone --recursive https://github.com/byt3bl33d3r/crackmapexec
 git clone https://github.com/byt3bl33d3r/deathstar
 git clone https://github.com/byt3bl33d3r/silenttrinity
 git clone https://github.com/byt3bl33d3r/sprayingtoolkit
+git clone https://github.com/D4Vinci/cr3dov3r
+git clone https://github.com/dafthack/mailsniper
+git clone --depth 1 https://github.com/danielmiessler/seclists
+git clone https://github.com/davidtavarez/pwndb
+git clone https://github.com/dirkjanm/privexchange #httpattack.py must be configured
+git clone https://github.com/Ekultek/whatwaf
 git clone https://github.com/EmpireProject/empire --branch dev
+git clone https://github.com/FluxionNetwork/fluxion
 git clone https://github.com/fox-it/mitm6
-git clone https://github.com/BloodHoundAD/bloodhound
+git clone https://github.com/insecurityofthings/jackit
+git clone https://github.com/jseidl/usernamer
+git clone https://github.com/lanjelot/patator
+git clone https://github.com/laramies/theharvester
+git clone https://github.com/lightos/credmap
+git clone https://github.com/m8r0wn/enumdb
+git clone https://github.com/m8r0wn/nullinux
+git clone https://github.com/m8r0wn/pymeta
+git clone --recursive https://github.com/mdsecresearch/lyncsniper
+git clone https://github.com/mIcHyAmRaNe/okadminfinder3
+git clone https://github.com/Mr-Un1k0d3r/dkmc
+git clone https://github.com/Pepelux/sippts
+git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack #https://github.com/GhostPack
+git clone https://github.com/rbsec/dnscan
+git clone https://github.com/RUB-NDS/pret
+git clone https://github.com/s0md3v/hash-buster
+git clone https://github.com/s0md3v/xsstrike
+git clone https://github.com/SimplySecurity/simplyemail
 git clone https://github.com/SpiderLabs/responder
 git clone https://github.com/susmithHCK/torghost
-git clone https://github.com/insecurityofthings/jackit
-git clone https://github.com/lightos/credmap
-git clone https://github.com/jseidl/usernamer
-git clone https://github.com/BishopFox/spoofcheck
-git clone https://github.com/FluxionNetwork/fluxion
-git clone https://gitlab.com/initstring/evil-ssdp
-git clone https://github.com/actuated/msf-exploit-loop
-git clone https://github.com/dafthack/mailsniper
-git clone --recursive https://github.com/mdsecresearch/lyncsniper
-git clone https://github.com/beefproject/beef
-git clone https://github.com/RUB-NDS/pret
-git clone https://github.com/laramies/theharvester
-git clone --depth 1 https://github.com/danielmiessler/seclists
-git clone https://github.com/D4Vinci/cr3dov3r
-git clone https://github.com/vysec/linkedint
-git clone https://github.com/SimplySecurity/simplyemail
 git clone https://github.com/SySS-Research/seth
-git clone https://github.com/dirkjanm/privexchange #httpattack.py must be configured
-git clone https://github.com/m8r0wn/nullinux
-git clone https://github.com/m8r0wn/enumdb
-git clone https://github.com/m8r0wn/pymeta
 git clone https://github.com/trustedsec/unicorn
-git clone https://github.com/Pepelux/sippts
-git clone https://github.com/21y4d/nmapautomator
-git clone https://github.com/lanjelot/patator
-git clone https://github.com/Mr-Un1k0d3r/dkmc
-git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack #https://github.com/GhostPack
-git clone https://github.com/davidtavarez/pwndb
-git clone https://github.com/s0md3v/xsstrike
-git clone https://github.com/Ekultek/whatwaf
-git clone https://github.com/mIcHyAmRaNe/okadminfinder3
 git clone https://github.com/ustayready/fireprox
-git clone https://github.com/s0md3v/hash-buster
+git clone https://github.com/vysec/linkedint
+git clone https://gitlab.com/initstring/evil-ssdp
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -567,6 +574,13 @@ cd /opt/xsstrike/
 pipenv install --three -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/xsstrike && pipenv run python xsstrike.py \"\$@\")" > /usr/bin/xsstrike'
 chmod +x /usr/bin/xsstrike
+URL_GECKODRIVER=$(url_latest 'https://api.github.com/repos/mozilla/geckodriver/releases/latest' 'linux64')
+curl -s -L "$URL_GECKODRIVER" | tar -xz
+chmod +x geckodriver
+sudo mv geckodriver '/usr/local/bin'
+
+clear && echo "Installing WPScan"
+sudo gem install wpscan
 
 ########## ---------- ##########
 # Webshell
