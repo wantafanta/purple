@@ -1,52 +1,30 @@
 #!/bin/bash
 
-RUID=$(who | awk 'FNR == 1 {print $1}')
-RUSER_UID=$(id -u ${RUID})
-chown -R ${RUID}:${RUID} /opt/
+# static urls (that may need to be updated)
+URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
+URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 
-clear && echo "Updating OS"
-apt-get update && apt-get upgrade -y
-clear && echo "Installing apt packages"
-apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4 jq
-
-clear && echo "Installing pip modules"
-sudo -H pip install pipenv && sudo -H pip3 install pipenv
-python -m pip install service_identity rdpy
-
+# function to scrape latest release from github api
 url_latest() {
   local json=$(curl -s $1)
   local url=$(echo "$json" | jq -r '.assets[].browser_download_url | select(contains("'$2'"))')
   echo $url
 }
 
-# grab all the latest release urls
-URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'linux_amd64')
-URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
-URL_DIRBLE=$(url_latest 'https://api.github.com/repos/nccgroup/dirble/releases/latest' 'x86_64-linux')
-URL_EVILCLIPPY=$(url_latest 'https://api.github.com/repos/outflanknl/EvilClippy/releases/latest' 'EvilClippy.exe')
-URL_EVILCLIPPY_MCDF=$(url_latest 'https://api.github.com/repos/outflanknl/EvilClippy/releases/latest' 'OpenMcdf.dll')
-URL_EVILGINX=$(url_latest 'https://api.github.com/repos/kgretzky/evilginx2/releases/latest' 'linux_x86')
-URL_GOWITNESS=$(url_latest 'https://api.github.com/repos/sensepost/gowitness/releases/latest' 'linux-amd64')
-URL_HASHCAT=$(url_latest 'https://api.github.com/repos/hashcat/hashcat/releases/latest' 'hashcat')
-URL_HASHCAT_UTILS=$(url_latest 'https://api.github.com/repos/hashcat/hashcat-utils/releases/latest' 'hashcat-utils')
-URL_IMPACKET=$(url_latest 'https://api.github.com/repos/SecureAuthCorp/impacket/releases/latest' 'impacket')
-URL_KERBRUTE=$(url_latest 'https://api.github.com/repos/ropnop/kerbrute/releases/latest' 'linux_amd64')
-URL_NTDSAUDIT=$(url_latest 'https://api.github.com/repos/Dionach/NtdsAudit/releases/latest' 'NtdsAudit.exe')
-URL_NTDSDUMPEX=$(url_latest 'https://api.github.com/repos/zcgonvh/NTDSDumpEx/releases/latest' 'NTDSDumpEx.zip')
-URL_MERLIN=$(url_latest 'https://api.github.com/repos/Ne0nd0g/merlin/releases/latest' 'merlinServer-Linux-x64')
-URL_RULER=$(url_latest 'https://api.github.com/repos/sensepost/ruler/releases/latest' 'linux64')
-URL_RECURSEBUSTER=$(url_latest 'https://api.github.com/repos/C-Sto/recursebuster/releases/latest' 'recursebuster_elf')
-URL_TERMSHARK=$(url_latest 'https://api.github.com/repos/gcla/termshark/releases/latest' 'linux_x64')
+# get user ids
+RUID=$(who | awk 'FNR == 1 {print $1}')
+RUSER_UID=$(id -u ${RUID})
 
-URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
-URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
-URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
+# prepare os
+clear && echo "Updating OS"
+apt-get update && apt-get upgrade -y
 
-URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
-URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
-URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
-URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
-URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
+clear && echo "Installing apt packages"
+apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4 jq
+
+clear && echo "Installing pip modules"
+sudo -H pip install pipenv && sudo -H pip3 install pipenv
+python -m pip install service_identity rdpy
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -143,7 +121,6 @@ bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to GTFOBins\nType=L
 chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
-bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias creap=\"sudo /opt/creap/crEAP.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
@@ -182,6 +159,8 @@ sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.search
 ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 
 clear && echo "Installing Shellter (Community Edition)"
+URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
+URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
 cd /opt/
 wget $URL_SHELLTER
 unzip shellter.zip
@@ -197,14 +176,15 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")" > /usr
 chmod +x /usr/bin/dkmc
 
 clear && echo "Installing NtdsAudit"
-cd /opt/
-mkdir ntdsaudit
+URL_NTDSAUDIT=$(url_latest 'https://api.github.com/repos/Dionach/NtdsAudit/releases/latest' 'NtdsAudit.exe')
+mkdir /opt/ntdsaudit
 cd /opt/ntdsaudit/
 wget $URL_NTDSAUDIT
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntdsaudit && wine NtdsAudit.exe \"\$@\")" > /usr/bin/ntdsaudit'
 chmod +x /usr/bin/ntdsaudit
 
 clear && echo "Installing NTDSDumpEx"
+URL_NTDSDUMPEX=$(url_latest 'https://api.github.com/repos/zcgonvh/NTDSDumpEx/releases/latest' 'NTDSDumpEx.zip')
 cd /opt/
 wget $URL_NTDSDUMPEX
 unzip NTDSDumpEx.zip -d ntdsdumpex
@@ -216,6 +196,7 @@ chmod +x /usr/bin/ntdsdumpex
 # ntdsutil "activate instance ntds" ifm "create full c:\x" quit quit
 
 clear && echo "Installing Merlin"
+URL_MERLIN=$(url_latest 'https://api.github.com/repos/Ne0nd0g/merlin/releases/latest' 'merlinServer-Linux-x64')
 apt-get install -y p7zip-full
 mkdir /opt/merlin/
 cd /opt/merlin/
@@ -268,6 +249,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\")
 chmod +x /usr/bin/mitm6
 
 clear && echo "Installing Impacket"
+URL_IMPACKET=$(url_latest 'https://api.github.com/repos/SecureAuthCorp/impacket/releases/latest' 'impacket')
 cd /opt/
 wget $URL_IMPACKET
 tar xvf impacket*.tar.gz
@@ -288,6 +270,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cmedb \"\$@\
 chmod +x /usr/bin/cmedb
 
 clear && echo "Installing BloodHound"
+URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
 cd /opt/
 wget $URL_BLOODHOUND
 unzip BloodHound-linux-x64.zip
@@ -361,14 +344,14 @@ apt-get update
 apt-get -y install google-chrome-stable
 
 clear && echo "Installing gowitness"
-cd /opt/
-mkdir gowitness
+URL_GOWITNESS=$(url_latest 'https://api.github.com/repos/sensepost/gowitness/releases/latest' 'linux-amd64')
+mkdir /opt/gowitness
 cd /opt/gowitness
 wget $URL_GOWITNESS
 chmod +x gowitness-linux-amd64
 
 clear && echo "Installing ruler"
-cd /opt/
+URL_RULER=$(url_latest 'https://api.github.com/repos/sensepost/ruler/releases/latest' 'linux64')
 mkdir /opt/ruler
 cd /opt/ruler
 wget $URL_RULER
@@ -401,6 +384,7 @@ chmod +x /usr/bin/vaporizer
 ########## ---------- ##########
 
 clear && echo "Installing DBeaver"
+URL_DBEAVER='https://dbeaver.io/files/dbeaver-ce_latest_amd64.deb'
 cd /opt/
 wget $URL_DBEAVER
 apt-get install ./dbeaver*.deb
@@ -438,8 +422,8 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \
 chmod +x /usr/bin/patator
 
 clear && echo "Installing kerbrute"
-cd /opt/
-mkdir kerbrute
+URL_KERBRUTE=$(url_latest 'https://api.github.com/repos/ropnop/kerbrute/releases/latest' 'linux_amd64')
+mkdir /opt/kerbrute
 cd /opt/kerbrute
 wget $URL_KERBRUTE
 chmod +x kerbrute_linux_amd64
@@ -471,6 +455,7 @@ clear && echo "Updating OUI Database"
 airodump-ng-oui-update
 
 clear && echo "Installing coWPAtty"
+URL_COWPATTY='http://www.willhackforsushi.com/code/cowpatty/4.6/cowpatty-4.6.tgz'
 apt-get install -y libpcap-dev
 cd /opt/
 wget $URL_COWPATTY
@@ -493,14 +478,28 @@ chmod +x /usr/bin/fluxion
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
 
 clear && echo "Installing hashcat"
+URL_HASHCAT=$(url_latest 'https://api.github.com/repos/hashcat/hashcat/releases/latest' 'hashcat')
 cd /opt/
 wget $URL_HASHCAT
 7zr x hashcat-*.7z
 rm hashcat-*.7z
 mv hashcat-*/ hashcat/
 ln -sf /opt/hashcat/hashcat64.bin /usr/local/bin/hashcat
+# allows hashcat to work using cpu
+# https://software.intel.com/en-us/articles/opencl-drivers#latest_CPU_runtime
+cd /opt/
+wget $URL_OPENCL
+tar xvzf l_opencl_*.tgz
+rm -r l_opencl_*.tgz
+cd l_opencl_*
+sudo apt install -y lsb-core
+echo -e "ACCEPT_EULA=accept\nCONTINUE_WITH_OPTIONAL_ERROR=yes\nPSET_INSTALL_DIR=/opt/intel\nCONTINUE_WITH_INSTALLDIR_OVERWRITE=yes\nPSET_MODE=install\nINTEL_SW_IMPROVEMENT_PROGRAM_CONSENT=no\nCOMPONENTS=;intel-openclrt__x86_64;intel-openclrt-pset" > settings.cfg
+sudo bash install.sh --silent settings.cfg
+cd /opt/
+rm -r l_opencl_*
 
 clear && echo "Installing hashcat-utils"
+URL_HASHCAT_UTILS=$(url_latest 'https://api.github.com/repos/hashcat/hashcat-utils/releases/latest' 'hashcat-utils')
 cd /opt/
 wget $URL_HASHCAT_UTILS
 7zr x hashcat-utils-*.7z
@@ -542,6 +541,7 @@ nikto -update
 clear && echo "Installing Gobuster"
 apt-get install -y gobuster
 #dirbuster directory lists
+URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
 cd /opt/
 wget $URL_DIRBUSTER_LISTS
 tar xvf DirBuster-Lists.tar.bz2
@@ -549,15 +549,16 @@ mv DirBuster-Lists dirbuster-lists
 rm DirBuster-Lists.tar.bz2
 
 clear && echo "Installing dirble"
-#https://github.com/nccgroup/dirble/releases
+URL_DIRBLE=$(url_latest 'https://api.github.com/repos/nccgroup/dirble/releases/latest' 'x86_64-linux')
 cd /opt/
 wget $URL_DIRBLE
 unzip dirble*.zip
 rm dirble*.zip
 
 clear && echo "Installing recursebuster"
-cd /opt/
-mkdir recursebuster
+URL_RECURSEBUSTER=$(url_latest 'https://api.github.com/repos/C-Sto/recursebuster/releases/latest' 'recursebuster_elf')
+URL_RECURSEBUSTER_README='https://raw.githubusercontent.com/C-Sto/recursebuster/master/README.md'
+mkdir /opt/recursebuster
 cd /opt/recursebuster/
 wget $URL_RECURSEBUSTER
 wget $URL_RECURSEBUSTER_README
@@ -613,6 +614,7 @@ chmod +x /usr/bin/dumpcap
 usermod -a -G wireshark ${RUID}
 
 clear && echo "Installing termshark"
+URL_TERMSHARK=$(url_latest 'https://api.github.com/repos/gcla/termshark/releases/latest' 'linux_x64')
 cd /opt/
 wget $URL_TERMSHARK
 tar xvf termshark*.tar.gz
@@ -620,6 +622,7 @@ rm termshark*.tar.gz
 mv termshark_*/ termshark/
 
 clear && echo "Installing bettercap"
+URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'linux_amd64')
 apt-get install -y libnetfilter-queue-dev
 cd /opt/
 mkdir /opt/bettercap
@@ -665,6 +668,9 @@ chmod +x /usr/bin/fuzzbunch
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;" > /usr/share/applications/fuzzbunch.desktop'
 
 clear && echo "Installing EvilClippy"
+URL_EVILCLIPPY=$(url_latest 'https://api.github.com/repos/outflanknl/EvilClippy/releases/latest' 'EvilClippy.exe')
+URL_EVILCLIPPY_MCDF=$(url_latest 'https://api.github.com/repos/outflanknl/EvilClippy/releases/latest' 'OpenMcdf.dll')
+URL_EVILCLIPPY_README='https://raw.githubusercontent.com/outflanknl/EvilClippy/master/README.md'
 mkdir /opt/evilclippy
 cd /opt/evilclippy/
 wget $URL_EVILCLIPPY
@@ -744,6 +750,7 @@ chmod +x /usr/bin/theharvester
 ########## ---------- ##########
 
 clear && echo "Installing evilginx"
+URL_EVILGINX=$(url_latest 'https://api.github.com/repos/kgretzky/evilginx2/releases/latest' 'linux_x86')
 mkdir /opt/evilginx
 cd /opt/evilginx/
 wget $URL_EVILGINX
@@ -827,10 +834,10 @@ printf "\nAll modules stored in /opt/\n"
 #echo 'View Docker images via "sudo docker images"'
 #echo 'Run "msfconsole" to setup initial msf database'
 #echo 'Run "cme" to setup initial CrackMapExec database'
-printf "--\nNotes:"
+printf " \nNotes:"
 echo 'Download Burp Suite CA Certificate from http://burp/cert/'
 echo 'To resolve .onion addresses (via torghost) in firefox open \`about:config\` and set \`network.dns.blockDotOnion\` to \`false\`'
-printf "--\nCreds:"
+printf " \nCreds:"
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
 # Set neo4j database password to \`bloodhound\`
