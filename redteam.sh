@@ -583,6 +583,7 @@ sudo mv geckodriver '/usr/local/bin'
 
 clear && echo "Installing WPScan"
 sudo gem install wpscan
+wpscan --update
 
 ########## ---------- ##########
 # Webshell
