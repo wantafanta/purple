@@ -21,6 +21,7 @@ apt-get update && apt-get upgrade -y
 
 clear && echo "Installing apt packages"
 apt-get install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc curl python-pip python3-pip python-qt4 libcanberra-gtk-module libgconf-2-4 jq
+apt-get install -y ruby-dev #ruby for beef & wpscan
 
 clear && echo "Installing pip modules"
 sudo -H pip install pipenv && sudo -H pip3 install pipenv
@@ -218,13 +219,13 @@ chmod +x /usr/bin/windows-exploit-suggester
 
 clear && echo "Installing DNScan"
 cd /opt/dnscan/
-pipenv install --three
+pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnscan/ && pipenv run python dnscan.py \"\$@\")" > /usr/bin/dnscan'
 chmod +x /usr/bin/dnscan
 
 clear && echo "Installing DeathStar"
 cd /opt/deathstar/
-pipenv install --three
+pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")" > /usr/bin/deathstar'
 chmod +x /usr/bin/deathstar
 
@@ -243,7 +244,7 @@ rm obf.rc
 
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
-pipenv install --three
+pipenv --three install
 pipenv run python setup.py install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/mitm6/ && sudo pipenv run mitm6 \"\$@\")" > /usr/bin/mitm6'
 chmod +x /usr/bin/mitm6
@@ -262,7 +263,7 @@ pip install .
 clear && echo "Installing CrackMapExec"
 apt-get install -y libssl-dev libffi-dev python-dev build-essential
 cd /opt/crackmapexec/
-pipenv install --two
+pipenv --two install
 pipenv run python setup.py install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cme \"\$@\")" > /usr/bin/cme'
 chmod +x /usr/bin/cme
@@ -303,27 +304,27 @@ apt install -y chrome-gnome-shell #firefox gnome extensions pre-reqs
 
 clear && echo "Installing fireprox"
 cd /opt/fireprox/
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/fireprox && pipenv run python fire.py \"\$@\")" > /usr/bin/fireprox'
 chmod +x /usr/bin/fireprox
 
 clear && echo "Installing SimplyEmail"
 sudo apt install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
 cd /opt/simplyemail/
-pipenv install --two -r setup/req*.txt
+pipenv --two install -r setup/req*.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/simplyemail && pipenv run python2.7 SimplyEmail.py \"\$@\")" > /usr/bin/simplyemail'
 chmod +x /usr/bin/simplyemail
 
 clear && echo "Installing JackIt"
 cd /opt/jackit/
-pipenv install --two
+pipenv --two install
 pipenv run python setup.py install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/jackit/ && sudo pipenv run jackit \"\$@\")" > /usr/bin/jackit'
 chmod +x /usr/bin/jackit
 
 clear && echo "Installing spoofcheck"
 cd /opt/spoofcheck/
-pipenv install --two
+pipenv --two install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/spoofcheck/ && sudo pipenv run python spoofcheck.py \"\$@\")" > /usr/bin/spoofcheck'
 chmod +x /usr/bin/spoofcheck
 
@@ -362,14 +363,14 @@ apt-get install -y python3.7 python3.7-dev
 cd /opt/silenttrinity/
 wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O logo.png
 cd Server
-pipenv install --three
+pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run python3.7 st.py \"\$@\")" > /usr/bin/silenttrinity'
 chmod +x /usr/bin/silenttrinity
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;" > /usr/share/applications/silenttrinity.desktop'
 
 clear && echo "Installing SprayingToolkit"
 cd /opt/sprayingtoolkit/
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 aerosol.py \"\$@\")" > /usr/bin/aerosol'
 chmod +x /usr/bin/aerosol
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && sudo pipenv run python3.7 atomizer.py \"\$@\")" > /usr/bin/atomizer'
@@ -393,7 +394,7 @@ rm dbeaver*.deb
 clear && echo "Installing nullinux"
 cd /opt/nullinux/
 apt-get install -y smbclient
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/nullinux && pipenv run python nullinux.py \"\$@\")" > /usr/bin/nullinux'
 chmod +x /usr/bin/nullinux
 
@@ -416,7 +417,7 @@ apt install -y ldap-utils # ldapsearch
 apt install -y libmysqlclient-dev # mysqlclient-python
 apt install -y ike-scan unzip default-jdk
 apt install -y libsqlite3-dev libsqlcipher-dev # pysqlcipher
-pipenv install --two -r requirements.txt
+pipenv --two install -r requirements.txt
 pipenv run python setup.py install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \"\$@\")" > /usr/bin/patator'
 chmod +x /usr/bin/patator
@@ -530,7 +531,7 @@ apt-get install -y sqlmap
 
 clear && echo "Installing Whatwaf"
 cd /opt/whatwaf/
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/whatwaf && pipenv run python whatwaf.py \"\$@\")" > /usr/bin/whatwaf'
 chmod +x /usr/bin/whatwaf
 
@@ -566,13 +567,13 @@ chmod +x recursebuster_elf
 
 clear && echo "Installing okadminfinder3"
 cd /opt/okadminfinder3/
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/okadminfinder3 && pipenv run python okadminfinder.py \"\$@\")" > /usr/bin/okadminfinder3'
 chmod +x /usr/bin/okadminfinder3
 
 clear && echo "Installing XSStrike"
 cd /opt/xsstrike/
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/xsstrike && pipenv run python xsstrike.py \"\$@\")" > /usr/bin/xsstrike'
 chmod +x /usr/bin/xsstrike
 URL_GECKODRIVER=$(url_latest 'https://api.github.com/repos/mozilla/geckodriver/releases/latest' 'linux64')
@@ -602,7 +603,7 @@ chmod +x nmapAutomator.sh
 
 clear && echo "Installing Seth"
 cd /opt/seth/
-pipenv install --two
+pipenv --two install
 apt-get install -y dsniff
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/seth/ && sudo pipenv run ./seth.sh \"\$@\")" > /usr/bin/seth'
 chmod +x /usr/bin/seth
@@ -683,7 +684,8 @@ wget $URL_MONO -o '/usr/share/wine/mono/wine-mono.msi'
 sudo -u ${RUID} -E bash -c "wine msiexec /i /usr/share/wine/mono/wine-mono.msi"
 
 clear && echo "Installing PRET"
-pipenv install --two colorama pysnmp
+cd /opt/pret/
+pipenv --two install colorama pysnmp
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/pret/ && pipenv run python pret.py \"\$@\")" > /usr/bin/pret'
 chmod +x /usr/bin/pret
 
@@ -713,7 +715,7 @@ rm Nessus*.deb
 
 clear && echo "Installing Cr3d0v3r"
 cd /opt/cr3dov3r/
-pipenv install --three
+pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/cr3dov3r && pipenv run python Cr3d0v3r.py \"\$@\")" > /usr/bin/credover'
 chmod +x /usr/bin/credover
 
@@ -723,13 +725,13 @@ sudo make install
 
 clear && echo "Installing LinkedInt"
 cd /opt/linkedint/
-pipenv install --two
+pipenv --two install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/linkedint && pipenv run python LinkedInt.py \"\$@\")" > /usr/bin/linkedint'
 chmod +x /usr/bin/linkedint
 
 clear && echo "Installing pwndb"
 cd /opt/pwndb/
-pipenv install --three -r requirements.txt
+pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/pwndb && pipenv run python pwndb.py \"\$@\")" > /usr/bin/pwndb'
 chmod +x /usr/bin/pwndb
 
@@ -741,7 +743,7 @@ chmod +x pymeta.py
 
 clear && echo "Installing theHarvester"
 cd /opt/theharvester/
-pipenv install --three
+pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")" > /usr/bin/theharvester'
 chmod +x /usr/bin/theharvester
 
@@ -784,7 +786,7 @@ cd /opt/
 git clone 'https://github.com/s0lst1c3/eaphammer'
 cd /opt/eaphammer/
 ./kali-setup
-pipenv install --three -r pip.req
+pipenv --three install -r pip.req
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/eaphammer/ && sudo pipenv run python eaphammer \"\$@\")" > /usr/bin/eaphammer'
 chmod +x /usr/bin/eaphammer
 
