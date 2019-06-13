@@ -1,5 +1,17 @@
 #!/bin/bash
 
+# check ubuntu
+DIST=`grep "^ID=" /etc/os-release | cut -d\= -f2`
+if [ ! $DIST == "ubuntu" ]; then
+  echo "this ent ubuntu?" 1>&2
+  exit 1
+fi
+# check sudo
+if [[ $EUID -ne 0 ]]; then
+  echo "must run with sudo" 1>&2
+  exit 1
+fi
+
 # static urls (that may need to be updated)
 URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
@@ -12,8 +24,8 @@ url_latest() {
 }
 
 # get user ids
-RUID=$(who | awk 'FNR == 1 {print $1}')
-RUSER_UID=$(id -u ${RUID})
+RUID=$(who | awk 'FNR == 1 {print $1}') # real username
+RUSER_UID=$(id -u ${RUID}) # real user id
 
 # prepare os
 clear && echo "Updating OS"
@@ -35,10 +47,13 @@ clear && echo "Installing Firewall"
 apt install -y gufw
 ufw disable
 
+clear && echo "Installing FileZilla"
+apt install -y filezilla
+
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
 wget 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
-git clone https://github.com/scipag/vulscan /usr/share/nmap/scripts/vulscan
+git clone --depth 1 'https://github.com/scipag/vulscan' /usr/share/nmap/scripts/vulscan
 wget 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
 wget 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
 wget 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
@@ -61,49 +76,50 @@ snap install john-the-ripper
 
 clear && echo "Cloning repositories"
 cd /opt/
-git clone https://github.com/21y4d/nmapautomator
-git clone https://github.com/actuated/msf-exploit-loop
-git clone https://github.com/beefproject/beef
-git clone https://github.com/BishopFox/spoofcheck
-git clone https://github.com/BloodHoundAD/bloodhound
-git clone --recursive https://github.com/byt3bl33d3r/crackmapexec
-git clone https://github.com/byt3bl33d3r/deathstar
-git clone https://github.com/byt3bl33d3r/silenttrinity
-git clone https://github.com/byt3bl33d3r/sprayingtoolkit
-git clone https://github.com/D4Vinci/cr3dov3r
-git clone https://github.com/dafthack/mailsniper
-git clone --depth 1 https://github.com/danielmiessler/seclists
-git clone https://github.com/davidtavarez/pwndb
-git clone https://github.com/dirkjanm/privexchange #httpattack.py must be configured
-git clone https://github.com/Ekultek/whatwaf
-git clone https://github.com/EmpireProject/empire --branch dev
-git clone https://github.com/FluxionNetwork/fluxion
-git clone https://github.com/fox-it/mitm6
-git clone https://github.com/insecurityofthings/jackit
-git clone https://github.com/jseidl/usernamer
-git clone https://github.com/lanjelot/patator
-git clone https://github.com/laramies/theharvester
-git clone https://github.com/lightos/credmap
-git clone https://github.com/m8r0wn/enumdb
-git clone https://github.com/m8r0wn/nullinux
-git clone https://github.com/m8r0wn/pymeta
-git clone --recursive https://github.com/mdsecresearch/lyncsniper
-git clone https://github.com/mIcHyAmRaNe/okadminfinder3
-git clone https://github.com/Mr-Un1k0d3r/dkmc
-git clone https://github.com/Pepelux/sippts
-git clone https://github.com/r3motecontrol/Ghostpack-CompiledBinaries ghostpack #https://github.com/GhostPack
-git clone https://github.com/rbsec/dnscan
-git clone https://github.com/RUB-NDS/pret
-git clone https://github.com/s0md3v/hash-buster
-git clone https://github.com/s0md3v/xsstrike
-git clone https://github.com/SimplySecurity/simplyemail
-git clone https://github.com/SpiderLabs/responder
-git clone https://github.com/susmithHCK/torghost
-git clone https://github.com/SySS-Research/seth
-git clone https://github.com/trustedsec/unicorn
-git clone https://github.com/ustayready/fireprox
-git clone https://github.com/vysec/linkedint
-git clone https://gitlab.com/initstring/evil-ssdp
+git clone --depth 1 'https://github.com/21y4d/nmapautomator'
+git clone --depth 1 'https://github.com/actuated/msf-exploit-loop'
+git clone --depth 1 'https://github.com/beefproject/beef'
+git clone --depth 1 'https://github.com/BishopFox/spoofcheck'
+git clone --depth 1 'https://github.com/BloodHoundAD/bloodhound'
+git clone --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec'
+git clone --depth 1 'https://github.com/byt3bl33d3r/deathstar'
+git clone --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
+git clone --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
+git clone --depth 1 'https://github.com/D4Vinci/cr3dov3r'
+git clone --depth 1 'https://github.com/dafthack/mailsniper'
+git clone --depth 1 'https://github.com/danielmiessler/seclists'
+git clone --depth 1 'https://github.com/davidtavarez/pwndb'
+git clone --depth 1 'https://github.com/dirkjanm/privexchange' #httpattack.py must be configured
+git clone --depth 1 'https://github.com/drwetter/testssl.sh.git'
+git clone --depth 1 'https://github.com/Ekultek/whatwaf'
+git clone --depth 1 'https://github.com/EmpireProject/empire' --branch dev
+git clone --depth 1 'https://github.com/FluxionNetwork/fluxion'
+git clone --depth 1 'https://github.com/fox-it/mitm6'
+git clone --depth 1 'https://github.com/insecurityofthings/jackit'
+git clone --depth 1 'https://github.com/jseidl/usernamer'
+git clone --depth 1 'https://github.com/lanjelot/patator'
+git clone --depth 1 'https://github.com/laramies/theharvester'
+git clone --depth 1 'https://github.com/lightos/credmap'
+git clone --depth 1 'https://github.com/m8r0wn/enumdb'
+git clone --depth 1 'https://github.com/m8r0wn/nullinux'
+git clone --depth 1 'https://github.com/m8r0wn/pymeta'
+git clone --depth 1 --recursive 'https://github.com/mdsecresearch/lyncsniper'
+git clone --depth 1 'https://github.com/mIcHyAmRaNe/okadminfinder3'
+git clone --depth 1 'https://github.com/Mr-Un1k0d3r/dkmc'
+git clone --depth 1 'https://github.com/Pepelux/sippts'
+git clone --depth 1 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries' ghostpack #https://github.com/GhostPack
+git clone --depth 1 'https://github.com/rbsec/dnscan'
+git clone --depth 1 'https://github.com/RUB-NDS/pret'
+git clone --depth 1 'https://github.com/s0md3v/hash-buster'
+git clone --depth 1 'https://github.com/s0md3v/xsstrike'
+git clone --depth 1 'https://github.com/SimplySecurity/simplyemail'
+git clone --depth 1 'https://github.com/SpiderLabs/responder'
+git clone --depth 1 'https://github.com/susmithHCK/torghost'
+git clone --depth 1 'https://github.com/SySS-Research/seth'
+git clone --depth 1 'https://github.com/trustedsec/unicorn'
+git clone --depth 1 'https://github.com/ustayready/fireprox'
+git clone --depth 1 'https://github.com/vysec/linkedint'
+git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
@@ -111,10 +127,10 @@ bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
 chmod +x update.sh
 
 #-- PRIVILEGE ESCALATION
-git clone https://github.com/PowerShellMafia/powersploit
-git clone https://github.com/GDSSecurity/windows-exploit-suggester
-git clone https://github.com/mzet-/linux-exploit-suggester
-git clone https://github.com/diego-treitos/linux-smart-enumeration
+git clone --depth 1 'https://github.com/PowerShellMafia/powersploit'
+git clone --depth 1 'https://github.com/GDSSecurity/windows-exploit-suggester'
+git clone --depth 1 'https://github.com/mzet-/linux-exploit-suggester'
+git clone --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration'
 
 #-- DESKTOP LINKS
 bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to LOLBAS\nType=Link\nURL=https://lolbas-project.github.io/#\nIcon=text-html' > /home/${RUID}/Desktop/LOLBAS.desktop"
@@ -135,6 +151,7 @@ bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash
 bash -c "echo -e 'alias recursebuster=\"/opt/recursebuster/recursebuster_elf\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
+bash -c "echo -e 'alias testssl.sh=\"/opt/testssl.sh/testssl.sh\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias termshark=\"/opt/termshark/termshark\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias torghost=\"sudo torghost\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
@@ -155,7 +172,7 @@ sudo -u postgres bash -c "psql -c \"CREATE DATABASE metasploit_framework_develop
 sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE metasploit_framework_development TO metasploit_framework_development;\""
 
 clear && echo "Installing searchsploit"
-git clone --depth 1 https://github.com/offensive-security/exploitdb.git /opt/exploitdb
+git clone --depth 1 'https://github.com/offensive-security/exploitdb.git' /opt/exploitdb
 sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
 ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 
@@ -509,7 +526,7 @@ mv hashcat-utils-*/ hashcat-utils/
 
 clear && echo "Installing NTLMv1 Multitool"
 cd /opt/
-git clone https://github.com/evilmog/ntlmv1-multi
+git clone --depth 1 'https://github.com/evilmog/ntlmv1-multi'
 
 ########## ---------- ##########
 # Web
@@ -657,7 +674,7 @@ sudo -u ${RUID} -E bash -c 'WINEARCH=win32 wine wineboot'
 
 clear && echo "Installing FUZZBUNCH"
 cd $HOME/.wine/drive_c/
-sudo -u ${RUID} -E bash -c "git clone https://github.com/mdiazcl/fuzzbunch-debian.git"
+sudo -u ${RUID} -E bash -c "git clone --depth 1 https://github.com/mdiazcl/fuzzbunch-debian.git"
 bash -c "echo -e 'Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\\Environment]\n\"Path\"=\"c:\\\\\windows;c:\\\\\windows\\\\\system;C:\\\\\Python26;C:\\\\\\\fuzzbunch-debian\\\\\windows\\\\\\\fuzzbunch\"' > $HOME/.wine/drive_c/system.reg"
 sudo -u ${RUID} -E bash -c "wine regedit.exe /s system.reg"
 sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\python-2.6.msi"
@@ -784,7 +801,7 @@ python setup.py install
 
 clear && echo "Installing eaphammer"
 cd /opt/
-git clone 'https://github.com/s0lst1c3/eaphammer'
+git clone --depth 1 'https://github.com/s0lst1c3/eaphammer'
 cd /opt/eaphammer/
 ./kali-setup
 pipenv --three install -r pip.req
@@ -794,9 +811,9 @@ chmod +x /usr/bin/eaphammer
 clear && echo "Installing wifite"
 apt install -y wifite tshark
 cd /opt/
-git clone https://github.com/ZerBea/hcxdumptool
-git clone https://github.com/ZerBea/hcxtools
-git clone https://github.com/aanarchyy/bully
+git clone --depth 1 'https://github.com/ZerBea/hcxdumptool'
+git clone --depth 1 'https://github.com/ZerBea/hcxtools'
+git clone --depth 1 'https://github.com/aanarchyy/bully'
 cd /opt/hcxdumptool
 make
 make install
@@ -810,6 +827,21 @@ cd /opt/
 rm -r /opt/hcxdumptool
 rm -r /opt/hcxtools
 rm -r /opt/bully
+
+########## ---------- ##########
+# Misc
+########## ---------- ##########
+
+clear && echo "Installing proxmark3"
+cd /opt/
+git clone --depth 1 'https://github.com/Proxmark/proxmark3'
+cd /opt/proxmark3/
+sudo apt install -y 7zip build-essential libreadline5 libreadline-dev libusb-0.1-4 libusb-dev libqt4-dev perl pkg-config wget libncurses5-dev gcc-arm-none-eabi libstdc++-arm-none-eabi-newlib libpcsclite-dev pcscd
+sudo cp -rf driver/77-mm-usb-device-blacklist.rules /etc/udev/rules.d/77-mm-usb-device-blacklist.rules
+sudo udevadm control --reload-rules
+sudo adduser ${RUID} dialout
+make clean && make all
+#cd /opt/proxmark3/client/ && ./proxmark3 /dev/ttyACM0
 
 ########## ---------- ##########
 # End
