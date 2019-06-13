@@ -66,6 +66,7 @@ nmap --script-updatedb
 
 clear && echo "Installing snaps"
 snap install powershell --classic
+snap install code --classic
 snap install docker
 snap install remmina
 snap connect remmina:avahi-observe :avahi-observe
@@ -111,9 +112,10 @@ git clone --depth 1 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries
 git clone --depth 1 'https://github.com/rbsec/dnscan'
 git clone --depth 1 'https://github.com/RUB-NDS/pret'
 git clone --depth 1 'https://github.com/s0md3v/hash-buster'
+git clone --depth 1 'https://github.com/s0md3v/photon'
 git clone --depth 1 'https://github.com/s0md3v/xsstrike'
 git clone --depth 1 'https://github.com/SimplySecurity/simplyemail'
-git clone --depth 1 'https://github.com/SpiderLabs/responder'
+git clone --depth 1 'https://github.com/lgandx/responder'
 git clone --depth 1 'https://github.com/susmithHCK/torghost'
 git clone --depth 1 'https://github.com/SySS-Research/seth'
 git clone --depth 1 'https://github.com/trustedsec/unicorn'
@@ -764,6 +766,12 @@ cd /opt/theharvester/
 pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && pipenv run python theHarvester.py \"\$@\")" > /usr/bin/theharvester'
 chmod +x /usr/bin/theharvester
+
+clear && echo "Installing Photon"
+cd /opt/photon/
+pipenv --three install -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/photon && pipenv run python photon.py \"\$@\")" > /usr/bin/photon'
+chmod +x /usr/bin/photon
 
 ########## ---------- ##########
 # Phishing
