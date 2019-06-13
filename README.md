@@ -34,6 +34,7 @@ All tools where possible run in a virtual environment using pipenv.
 * evilginx2
 * Evil-SSDP
 * File Cracks
+* FileZilla
 * fireprox
 * Fluxion
   * Aircrack
@@ -73,8 +74,10 @@ All tools where possible run in a virtual environment using pipenv.
 * NTLMv1 Mutlitool
 * okadminfinder3
 * Patator
+* Photon
 * Powershell
 * PRET
+* Proxmark3
 * pymeta
 * pwndb
 * recursebuster
@@ -97,8 +100,10 @@ All tools where possible run in a virtual environment using pipenv.
 * Torghost
 * unicorn
 * Usernamer
+* Visual Studio Code
 * WhatWaf
 * wifite
 * Windows Exploit Suggester
 * Wireshark
+* WPScan
 * XSStrike
