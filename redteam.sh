@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # check ubuntu
-DIST=`grep "^ID=" /etc/os-release | cut -d\= -f2`
-if [ ! $DIST == "ubuntu" ]; then
-  echo "this ent ubuntu?" 1>&2
+DISTRIBUTION=`grep "^ID=" /etc/os-release | cut -d\= -f2`
+if [ ! $DISTRIBUTION == "ubuntu" ]; then
+  echo "Nope. Only tested on Ubuntu, sorry." 1>&2
   exit 1
 fi
 # check sudo
 if [[ $EUID -ne 0 ]]; then
-  echo "must run with sudo" 1>&2
+  echo "Nope. Please run with sudo." 1>&2
   exit 1
 fi
 
