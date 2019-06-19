@@ -1,3 +1,4 @@
+### redteam.sh
 Only tested on Ubuntu 18.10 and 19.04 in VMWare Workstation.
 
 `
@@ -117,5 +118,6 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * WPScan
 * [XSStrike](https://github.com/s0md3v/xsstrike)
 
+#### Links
 * [GTFOBins - Get The F**k Out Binaries](https://gtfobins.github.io)
 * [LOLBAS - Living Off The Land Binaries and Scripts](https://lolbas-project.github.io)
