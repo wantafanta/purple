@@ -1,4 +1,3 @@
-### redteam.sh
 Only tested on Ubuntu 18.10 and 19.04 in VMWare Workstation.
 
 `
