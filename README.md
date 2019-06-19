@@ -1,3 +1,4 @@
+### redteam.sh
 Only tested on Ubuntu 18.10 and 19.04 in VMWare Workstation.
 
 `
@@ -6,104 +7,116 @@ sudo bash redteam.sh
 
 Press enter a few times, choose yes, next ctrl+c etc.
 
-All tools where possible run in a virtual environment using pipenv.
+Grabs the latests version of all tools. Where possible run in a virtual environment using pipenv.
  
 #### Tools
-* BeEF
+* [Aquatone](https://github.com/michenriksen/aquatone)
+* [BeEF](https://github.com/beefproject/beef)
 * bettercap
   * ui
-* BloodHound
+* [BloodHound](https://github.com/BloodHoundAD/bloodhound)
   * neo4j
   * Aclpwn
 * Burp Suite Community Edition
-* CrackMapExec
+* [CrackMapExec](https://github.com/byt3bl33d3r/crackmapexec)
 * crEAP
-* Credmap
-* Cr3d0v3r
+* [Credmap](https://github.com/lightos/credmap)
+* [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
 * DBeaver
-* DeathStar
+* [DeathStar](https://github.com/byt3bl33d3r/deathstar)
 * dirble
-* DNScan
+* [DNScan](https://github.com/rbsec/dnscan)
 * Docker
   * cameradar
-* Don't Kill MY Cat (DKMC)
+* [Don't Kill MY Cat (DKMC)](https://github.com/Mr-Un1k0d3r/dkmc)
 * eaphammer
-* Empire
-* enumdb
+* [Empire](https://github.com/EmpireProject/empire)
+* [enumdb](https://github.com/m8r0wn/enumdb)
 * EvilClippy
 * evilginx2
-* Evil-SSDP
+* [Evil-SSDP](https://gitlab.com/initstring/evil-ssdp)
 * File Cracks
 * FileZilla
-* fireprox
-* Fluxion
+* [fireprox](https://github.com/ustayready/fireprox)
+* [Fluxion](https://github.com/FluxionNetwork/fluxion)
   * Aircrack
   * coWPAtty
   * Mdk3
+* [Frogger2](https://github.com/commonexploits/vlan-hopping)
 * FUZZBUNCH
-* GhostPack
+* [GhostPack](https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
 * Gobuster
 * Gowitness
   * Google Chrome
 * Gufw Firewall
 * hashcat
   * hashcat-utils
-* Hash-Buster
+* [Hash-Buster](https://github.com/s0md3v/hash-buster)
 * Impacket
-* Jackit
+* [Jackit](https://github.com/insecurityofthings/jackit)
 * john-the-ripper
 * kerbrute
 * Kismet
-* LinkedInt
-* Linux Exploit Suggester
-* LyncSniper
-* Mailsniper
+* [LinkedInt](https://github.com/vysec/linkedint)
+* [Linux Exploit Suggester](https://github.com/mzet-/linux-exploit-suggester)
+* [Linux Smart Enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
 * Merlin
 * Metasploit Framework
-* mitm6
+  * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
+* [mitm6](https://github.com/fox-it/mitm6)
+* [natlas](https://github.com/natlas/natlas/)
 * Nessus
 * nikto
 * nmap
   * zenmap
   * vulners
   * vulscan
-* nmapautomator
-* nullinux
-* NTDSAudit
-* NTDSDumpEx
+* [nmapautomator](https://github.com/21y4d/nmapautomator)
+* [nullinux](https://github.com/m8r0wn/nullinux)
+* [NTDSAudit](https://github.com/repos/Dionach/NtdsAudit)
+* [NTDSDumpEx](https://github.com/repos/zcgonvh/NTDSDumpEx)
 * NTLMv1 Mutlitool
-* okadminfinder3
-* Patator
-* Photon
+* [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
+* [Patator](https://github.com/lanjelot/patator)
+* [Photon](https://github.com/s0md3v/photon)
 * Powershell
-* PRET
+  * [LyncSniper](https://github.com/mdsecresearch/lyncsniper)
+  * [Mailsniper](https://github.com/dafthack/mailsniper)
+  * [PowerSploit](https://github.com/PowerShellMafia/powersploit)
+* [PRET](https://github.com/RUB-NDS/pret)
 * Proxmark3
-* pymeta
-* pwndb
+* [privexchange](https://github.com/dirkjanm/privexchange)
+* [pymeta](https://github.com/m8r0wn/pymeta)
+* [pwndb](https://github.com/davidtavarez/pwndb)
 * recursebuster
 * Remmina
-* Responder
+* [Responder](https://github.com/lgandx/responder)
 * Ruler
 * searchsploit
-* Seth
-* Shellter
-* SilentTrinity
-* SimplyEmail
-* sippts
+* [SecLists](https://github.com/danielmiessler/seclists)
+* [Seth](https://github.com/SySS-Research/seth)
+* [Shellter](https://www.shellterproject.com)
+* [SilentTrinity](https://github.com/byt3bl33d3r/silenttrinity)
+* [SimplyEmail](https://github.com/SimplySecurity/simplyemail)
+* [sippts](https://github.com/Pepelux/sippts)
 * snmpwalk
-* Spoofcheck
+* [Spoofcheck](https://github.com/BishopFox/spoofcheck)
 * Sqlmap
-* Spraying Toolkit
+* [Spraying Toolkit](https://github.com/byt3bl33d3r/sprayingtoolkit)
 * Termshark
-* theHarvester
+* [testssl.sh](https://github.com/drwetter/testssl.sh.git)
+* [theHarvester](https://github.com/laramies/theharvester)
 * TMUX
-* Torghost
-* unicorn
-* Usernamer
+* [Torghost](https://github.com/susmithHCK/torghost)
+* [unicorn](https://github.com/trustedsec/unicorn)
+* [Usernamer](https://github.com/jseidl/usernamer)
 * Visual Studio Code
-* WhatWaf
+* [WhatWaf](https://github.com/Ekultek/whatwaf)
 * wifite
-* Windows Exploit Suggester
+* [Windows Exploit Suggester](https://github.com/GDSSecurity/windows-exploit-suggester)
 * Wireshark
 * WPScan
-* XSStrike
+* [XSStrike](https://github.com/s0md3v/xsstrike)
+
+* [GTFOBins - Get The F**k Out Binaries](https://gtfobins.github.io)
+* [LOLBAS - Living Off The Land Binaries and Scripts](https://lolbas-project.github.io)
