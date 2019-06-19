@@ -86,6 +86,7 @@ git clone --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec'
 git clone --depth 1 'https://github.com/byt3bl33d3r/deathstar'
 git clone --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
 git clone --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
+git clone --depth 1 'https://github.com/commonexploits/vlan-hopping'
 git clone --depth 1 'https://github.com/D4Vinci/cr3dov3r'
 git clone --depth 1 'https://github.com/dafthack/mailsniper'
 git clone --depth 1 'https://github.com/danielmiessler/seclists'
@@ -218,7 +219,7 @@ chmod +x /usr/bin/ntdsdumpex
 clear && echo "Installing Merlin"
 URL_MERLIN=$(url_latest 'https://api.github.com/repos/Ne0nd0g/merlin/releases/latest' 'merlinServer-Linux-x64')
 apt-get install -y p7zip-full
-mkdir /opt/merlin/
+mkdir /opt/merlin
 cd /opt/merlin/
 wget $URL_MERLIN
 7z x merlinServer*.7z -p'merlin'
@@ -370,10 +371,17 @@ cd /opt/gowitness
 wget $URL_GOWITNESS
 chmod +x gowitness-linux-amd64
 
+clear && echo "Installing aquatone"
+URL_AQUATONE=$(url_latest 'https://api.github.com/repos/michenriksen/aquatone/releases/latest' 'linux_amd64')
+mkdir /opt/aquatone
+cd /opt/aquatone
+wget $URL_AQUATONE
+chmod +x aquatone
+
 clear && echo "Installing ruler"
 URL_RULER=$(url_latest 'https://api.github.com/repos/sensepost/ruler/releases/latest' 'linux64')
 mkdir /opt/ruler
-cd /opt/ruler
+cd /opt/ruler/
 wget $URL_RULER
 chmod +x ruler-linux64
 
@@ -535,9 +543,8 @@ git clone --depth 1 'https://github.com/evilmog/ntlmv1-multi'
 ########## ---------- ##########
 
 clear && echo "Installing Burp Suite Community Edition"
-cd /opt/
 mkdir /opt/burpsuitecommunity
-cd /opt/burpsuitecommunity
+cd /opt/burpsuitecommunity/
 curl 'https://portswigger.net/burp/releases/download?product=community&type=linux' -o install.sh && chmod +x install.sh
 ./install.sh -dir /opt/burpsuitecommunity -overwrite -q
 rm install.sh
@@ -645,7 +652,6 @@ mv termshark_*/ termshark/
 clear && echo "Installing bettercap"
 URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'linux_amd64')
 apt-get install -y libnetfilter-queue-dev
-cd /opt/
 mkdir /opt/bettercap
 cd /opt/bettercap/
 wget $URL_BETTERCAP
@@ -728,6 +734,48 @@ then
   sudo /etc/init.d/nessusd start
 fi
 rm Nessus*.deb
+
+clear && echo "Installing frogger2"
+apt-get install -y yersinia vlan arp-scan
+chmod +x /opt/vlan-hopping/frogger2.sh
+
+#clear && echo "Installing Elasticsearch 6.x (natlas Database)"
+#wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+#echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+#apt-get update
+#apt-get install -y apt-transport-https elasticsearch
+#sudo systemctl daemon-reload
+#sudo systemctl enable elasticsearch.service
+#sudo systemctl start elasticsearch.service
+
+#clear && echo "Installing natlas"
+#URL_NATLAS_AGENT=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-agent')
+#URL_NATLAS_SERVER=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-server')
+#mkdir /opt/natlas
+#cd /opt/natlas/
+#wget $URL_NATLAS_AGENT
+#wget $URL_NATLAS_SERVER
+#tar xvzf natlas-server*.tgz
+#tar xvzf natlas-agent*.tgz
+#rm -r natlas-*.tgz
+#cd /opt/natlas/natlas-server/
+#./setup-server.sh
+
+#sudo cp /opt/natlas/natlas-server/deployment/natlas-server.service /etc/systemd/system/natlas-server.service
+#sudo systemctl daemon-reload
+#sudo systemctl enable natlas-server.service
+#sudo systemctl start natlas-server.service
+
+#bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/natlas.desktop'
+
+#cd /opt/natlas/natlas-agent/
+#./setup-agent.sh
+
+#sudo cp /opt/natlas/natlas-agent/deployment/natlas-agent.service /etc/systemd/system/natlas-agent.service
+#sudo systemctl daemon-reload
+#sudo systemctl start natlas-agent
+
+#chmod -R 777 /opt/natlas/
 
 ########## ---------- ##########
 # OSINT
@@ -870,9 +918,15 @@ apt autoremove -y
 # fix vmware display
 sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
 
-cd /opt/
-clear
-echo "Done."
+# Clear terminal history
+cat /dev/null > /home/${RUID}/.bash_history && history -c
+chown -R ${RUID}:${RUID} /home/${RUID}/.bash_history
+
+# Set permissions in /opt/
+chown -R ${RUID}:${RUID} /opt/
+#chmod -R 777 /opt/natlas/
+
+clear && echo "Done."
 printf "\nAll modules stored in /opt/\n"
 #echo 'View Docker images via "sudo docker images"'
 #echo 'Run "msfconsole" to setup initial msf database'
@@ -889,10 +943,8 @@ printf "BloodHound Database username and password have been set ( u:neo4j p:bloo
 read -p "Press Enter to reboot." </dev/tty
 
 # Clear terminal history
-cat /dev/null > ~/.bash_history && history -c
-
-# Set permissions in /opt/
-chown -R ${RUID}:${RUID} /opt/
+cat /dev/null > /home/${RUID}/.bash_history && history -c
+chown -R ${RUID}:${RUID} /home/${RUID}/.bash_history
 
 # Reboot
 reboot now

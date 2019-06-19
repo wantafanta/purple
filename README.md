@@ -15,8 +15,8 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * bettercap
   * ui
 * [BloodHound](https://github.com/BloodHoundAD/bloodhound)
-  * neo4j
-  * Aclpwn
+  * [neo4j](https://debian.neo4j.org)
+  * [Aclpwn](https://github.com/fox-it/aclpwn.py)
 * Burp Suite Community Edition
 * [CrackMapExec](https://github.com/byt3bl33d3r/crackmapexec)
 * crEAP
@@ -52,7 +52,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * hashcat
   * hashcat-utils
 * [Hash-Buster](https://github.com/s0md3v/hash-buster)
-* Impacket
+* [Impacket](https://github.com/SecureAuthCorp/impacket)
 * [Jackit](https://github.com/insecurityofthings/jackit)
 * john-the-ripper
 * kerbrute
@@ -60,7 +60,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [LinkedInt](https://github.com/vysec/linkedint)
 * [Linux Exploit Suggester](https://github.com/mzet-/linux-exploit-suggester)
 * [Linux Smart Enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
-* Merlin
+* [Merlin](https://github.com/Ne0nd0g/merlin)
 * Metasploit Framework
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mitm6](https://github.com/fox-it/mitm6)
@@ -73,8 +73,8 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
   * vulscan
 * [nmapautomator](https://github.com/21y4d/nmapautomator)
 * [nullinux](https://github.com/m8r0wn/nullinux)
-* [NTDSAudit](https://github.com/repos/Dionach/NtdsAudit)
-* [NTDSDumpEx](https://github.com/repos/zcgonvh/NTDSDumpEx)
+* [NTDSAudit](https://github.com/Dionach/NtdsAudit)
+* [NTDSDumpEx](https://github.com/zcgonvh/NTDSDumpEx)
 * NTLMv1 Mutlitool
 * [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
 * [Patator](https://github.com/lanjelot/patator)
