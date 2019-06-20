@@ -141,6 +141,7 @@ bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to GTFOBins\nType=L
 chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
+bash -c "echo -e 'alias aquatone=\"/opt/aquatone/aquatone\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias creap=\"sudo /opt/creap/crEAP.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${RUID}/.bash_aliases"
@@ -358,7 +359,7 @@ chmod +x credmap.py
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/credmap/ && python credmap.py \"\$@\")" > /usr/bin/credmap'
 chmod +x /usr/bin/credmap
 
-clear && echo "Installing Google Chrome (Stable)"
+clear && echo "Installing Google Chrome (Stable)" #for gowitness
 wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
 echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
 apt-get update
@@ -371,11 +372,16 @@ cd /opt/gowitness
 wget $URL_GOWITNESS
 chmod +x gowitness-linux-amd64
 
+clear && echo "Installing Chromium Browser" #for aquatone
+apt-get -y install chromium-browser
+
 clear && echo "Installing aquatone"
 URL_AQUATONE=$(url_latest 'https://api.github.com/repos/michenriksen/aquatone/releases/latest' 'linux_amd64')
 mkdir /opt/aquatone
 cd /opt/aquatone
 wget $URL_AQUATONE
+unzip aquatone*.zip
+rm aquatone*.zip
 chmod +x aquatone
 
 clear && echo "Installing ruler"
