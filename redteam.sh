@@ -136,8 +136,8 @@ git clone --depth 1 'https://github.com/mzet-/linux-exploit-suggester'
 git clone --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration'
 
 #-- DESKTOP LINKS
-bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to LOLBAS\nType=Link\nURL=https://lolbas-project.github.io/#\nIcon=text-html' > /home/${RUID}/Desktop/LOLBAS.desktop"
-bash -c "echo -e '[Desktop Entry]\nEncoding=UTF-8\nName=Link to GTFOBins\nType=Link\nURL=https://gtfobins.github.io/\nIcon=text-html' > /home/${RUID}/Desktop/GTFOBins.desktop"
+bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > /home/${RUID}/Desktop/LOLBAS.desktop"
+bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec=firefox https://gtfobins.github.io/\nIcon=firefox\nTerminal=false' > /home/${RUID}/Desktop/GTFOBins.desktop"
 chown -R ${RUID}:${RUID} /home/${RUID}/Desktop/*.desktop
 
 #-- BASH ALIASES
@@ -658,6 +658,7 @@ mv termshark_*/ termshark/
 clear && echo "Installing bettercap"
 URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'linux_amd64')
 apt-get install -y libnetfilter-queue-dev
+apt-get install -y gpsd gpsd-clients #gps
 mkdir /opt/bettercap
 cd /opt/bettercap/
 wget $URL_BETTERCAP
@@ -736,7 +737,7 @@ if [ -f Nessus*.deb ]
 then
   clear && echo "Installing Nessus"
   apt-get install ./Nessus-*.deb
-  bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Update\nExec=gnome-terminal --window -- sudo /opt/nessus/sbin/nessuscli update --all" > /usr/share/applications/nessus.desktop'
+  bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Update\nExec=gnome-terminal --window -- bash -c '\''sudo /opt/nessus/sbin/nessuscli update --all && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/nessus.desktop'
   sudo /etc/init.d/nessusd start
 fi
 rm Nessus*.deb

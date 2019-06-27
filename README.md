@@ -11,6 +11,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
  
 #### Tools
 * [Aquatone](https://github.com/michenriksen/aquatone)
+  * Chromium
 * [BeEF](https://github.com/beefproject/beef)
 * bettercap
   * ui
