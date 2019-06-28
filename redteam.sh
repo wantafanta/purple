@@ -127,7 +127,8 @@ git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 #cd /opt and run the below to update all repositories
 #ls | xargs -I{} git -C {} pull
 bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
-chmod +x update.sh
+bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > map-shares.sh'
+chmod +x *.sh
 
 #-- PRIVILEGE ESCALATION
 git clone --depth 1 'https://github.com/PowerShellMafia/powersploit'
@@ -439,6 +440,12 @@ chmod +x setup.sh
 clear && echo "Installing File Cracks"
 apt-get install -y fcrackzip
 
+clear && echo "Installing NFS Utils"
+apt-get install -y nfs-common
+
+clear && echo "Installing GPS Utils"
+apt-get install -y gpsd gpsd-clients
+
 ########## ---------- ##########
 # Brute-force
 ########## ---------- ##########
@@ -633,6 +640,7 @@ wpscan --update
 clear && echo "Installing nmapAutomator"
 cd /opt/nmapautomator/
 chmod +x nmapAutomator.sh
+#sslscan, gobuster, nikto, joomscan, wpscan, droopescan, smbmap, smbclient, enum4linux, snmp-check, snmpwalk, dnsrecon, odat.py, 
 
 clear && echo "Installing Seth"
 cd /opt/seth/
@@ -658,7 +666,6 @@ mv termshark_*/ termshark/
 clear && echo "Installing bettercap"
 URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'linux_amd64')
 apt-get install -y libnetfilter-queue-dev
-apt-get install -y gpsd gpsd-clients #gps
 mkdir /opt/bettercap
 cd /opt/bettercap/
 wget $URL_BETTERCAP
