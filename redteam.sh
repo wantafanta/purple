@@ -37,7 +37,7 @@ apt-get install -y ruby-dev #ruby for beef & wpscan
 
 clear && echo "Installing pip modules"
 sudo -H pip install pipenv && sudo -H pip3 install pipenv
-python -m pip install service_identity rdpy
+python -m pip install service_identity rdpy droopescan
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -110,6 +110,7 @@ git clone --depth 1 'https://github.com/mIcHyAmRaNe/okadminfinder3'
 git clone --depth 1 'https://github.com/Mr-Un1k0d3r/dkmc'
 git clone --depth 1 'https://github.com/Pepelux/sippts'
 git clone --depth 1 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries' ghostpack #https://github.com/GhostPack
+git clone --depth 1 'https://github.com/rezasp/joomscan'
 git clone --depth 1 'https://github.com/rbsec/dnscan'
 git clone --depth 1 'https://github.com/RUB-NDS/pret'
 git clone --depth 1 'https://github.com/s0md3v/hash-buster'
@@ -124,8 +125,6 @@ git clone --depth 1 'https://github.com/ustayready/fireprox'
 git clone --depth 1 'https://github.com/vysec/linkedint'
 git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 
-#cd /opt and run the below to update all repositories
-#ls | xargs -I{} git -C {} pull
 bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
 bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > map-shares.sh'
 chmod +x *.sh
@@ -135,6 +134,9 @@ git clone --depth 1 'https://github.com/PowerShellMafia/powersploit'
 git clone --depth 1 'https://github.com/GDSSecurity/windows-exploit-suggester'
 git clone --depth 1 'https://github.com/mzet-/linux-exploit-suggester'
 git clone --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration'
+
+#-- SYSTEM AUDIT
+#git clone --depth 1 'https://github.com/CISOfy/lynis'
 
 #-- DESKTOP LINKS
 bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > /home/${RUID}/Desktop/LOLBAS.desktop"
@@ -156,7 +158,6 @@ bash -c "echo -e 'alias pymeta=\"/opt/pymeta/pymeta.py\"' >> /home/${RUID}/.bash
 bash -c "echo -e 'alias recursebuster=\"/opt/recursebuster/recursebuster_elf\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${RUID}/.bash_aliases"
-bash -c "echo -e 'alias testssl.sh=\"/opt/testssl.sh/testssl.sh\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias termshark=\"/opt/termshark/termshark\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias torghost=\"sudo torghost\"' >> /home/${RUID}/.bash_aliases"
 bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${RUID}/.bash_aliases"
@@ -425,6 +426,13 @@ wget $URL_DBEAVER
 apt-get install ./dbeaver*.deb
 rm dbeaver*.deb
 
+clear && echo "Installing Sqlectron"
+URL_SQLECTRON=$(url_latest 'https://api.github.com/repos/sqlectron/sqlectron-gui/releases/latest' 'amd64')
+cd /opt/
+wget $URL_SQLECTRON
+apt install ./Sqlectron*.deb
+rm Sqlectron*.deb
+
 clear && echo "Installing nullinux"
 cd /opt/nullinux/
 apt-get install -y smbclient
@@ -578,6 +586,10 @@ clear && echo "Installing nikto"
 apt-get install -y nikto
 nikto -update
 
+clear && echo "Installing testssl.sh"
+bash -c 'echo -e "#!/bin/bash\n(/opt/testssl.sh/testssl.sh \"\$@\")" > /usr/bin/testssl.sh'
+chmod +x /usr/bin/testssl.sh
+
 clear && echo "Installing Gobuster"
 apt-get install -y gobuster
 #dirbuster directory lists
@@ -623,6 +635,10 @@ sudo mv geckodriver '/usr/local/bin'
 clear && echo "Installing WPScan"
 sudo gem install wpscan
 wpscan --update
+
+clear && echo "Installing joomscan"
+bash -c 'echo -e "#!/bin/bash\n(/opt/joomscan/joomscan.pl \"\$@\")" > /usr/bin/joomscan'
+chmod +x /usr/bin/joomscan
 
 ########## ---------- ##########
 # Webshell
