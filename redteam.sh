@@ -77,7 +77,6 @@ snap install john-the-ripper
 
 clear && echo "Cloning repositories"
 cd /opt/
-git clone --depth 1 'https://github.com/21y4d/nmapautomator'
 git clone --depth 1 'https://github.com/actuated/msf-exploit-loop'
 git clone --depth 1 'https://github.com/beefproject/beef'
 git clone --depth 1 'https://github.com/BishopFox/spoofcheck'
@@ -97,6 +96,7 @@ git clone --depth 1 'https://github.com/Ekultek/whatwaf'
 git clone --depth 1 'https://github.com/EmpireProject/empire' --branch dev
 git clone --depth 1 'https://github.com/FluxionNetwork/fluxion'
 git clone --depth 1 'https://github.com/fox-it/mitm6'
+git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 git clone --depth 1 'https://github.com/insecurityofthings/jackit'
 git clone --depth 1 'https://github.com/jseidl/usernamer'
 git clone --depth 1 'https://github.com/lanjelot/patator'
@@ -123,7 +123,7 @@ git clone --depth 1 'https://github.com/SySS-Research/seth'
 git clone --depth 1 'https://github.com/trustedsec/unicorn'
 git clone --depth 1 'https://github.com/ustayready/fireprox'
 git clone --depth 1 'https://github.com/vysec/linkedint'
-git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
+git clone --depth 1 'https://github.com/wantafanta/nmapAutomator'
 
 bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
 bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > map-shares.sh'
