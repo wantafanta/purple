@@ -123,7 +123,7 @@ git clone --depth 1 'https://github.com/SySS-Research/seth'
 git clone --depth 1 'https://github.com/trustedsec/unicorn'
 git clone --depth 1 'https://github.com/ustayready/fireprox'
 git clone --depth 1 'https://github.com/vysec/linkedint'
-git clone --depth 1 'https://github.com/wantafanta/nmapAutomator'
+git clone --depth 1 'https://github.com/wantafanta/nmapautomator'
 
 bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
 bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > map-shares.sh'
