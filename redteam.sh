@@ -563,15 +563,32 @@ git clone --depth 1 'https://github.com/evilmog/ntlmv1-multi'
 # Web
 ########## ---------- ##########
 
-clear && echo "Installing Burp Suite Community Edition"
-mkdir /opt/burpsuitecommunity
-cd /opt/burpsuitecommunity/
-curl 'https://portswigger.net/burp/releases/download?product=community&type=linux' -o install.sh && chmod +x install.sh
-./install.sh -dir /opt/burpsuitecommunity -overwrite -q
-rm install.sh
-bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher' >> '/usr/share/applications/Burp Suite Community Edition-0.desktop'"
-#burpsuite pro 2 (jar)
-#sudo sed -i -e '/^assistive_technologies=/s/^/#/' /etc/java-*-openjdk/accessibility.properties
+# burp suite community or pro
+cd /opt/
+if [ ! -f burpsuite_pro_linux*.sh ] #burp professional installation script not found - ask if required
+then
+  clear
+  printf "Burp Suite Professional installation script not found.\n\nDownload \`burpsuite_pro_linux_v2_1.sh\` from: https://portswigger.net/users/youraccount \n\n"
+  read -p "Save this to /opt/*.sh if Pro is required.\n\nPress Enter to continue (or skip)." </dev/tty
+  if [ ! -f burpsuite_pro_linux*.sh ] #burp professional not required, install burp community edition
+  then
+    clear && echo "Installing Burp Suite Community Edition"
+    curl 'https://portswigger.net/burp/releases/download?product=community&type=linux' -o install.sh && chmod +x install.sh
+    ./install.sh -dir /opt/burpsuitecommunity -overwrite -q
+    rm install.sh
+    bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher' >> '/usr/share/applications/Burp Suite Community Edition-0.desktop'"
+  fi
+fi
+if [ -f burpsuite_pro_linux*.sh ] #burp professional installation script found, install burp professional
+then
+  clear && echo "Installing Burp Suite Professional Edition"
+  bash burpsuite_pro_linux*.sh -dir /opt/burpsuitepro -overwrite -q
+  rm burpsuite_pro_linux*.sh
+  bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher' >> '/usr/share/applications/Burp Suite Professional-0.desktop'"
+fi
+# download jython (burp extensions)
+cd /home/${RUID}/Documents/
+wget 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O jython-standalone-2.7.0.jar
 
 clear && echo "Installing sqlmap"
 apt-get install -y sqlmap
