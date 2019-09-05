@@ -182,6 +182,9 @@ git clone --depth 1 'https://github.com/offensive-security/exploitdb.git' /opt/e
 sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
 ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 
+clear && echo "Installing MongoDB (cve-search Database)"
+sudo apt-get install -y mongodb
+
 clear && echo "Installing Shellter (Community Edition)"
 URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
 URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
@@ -657,6 +660,15 @@ clear && echo "Installing joomscan"
 bash -c 'echo -e "#!/bin/bash\n(/opt/joomscan/joomscan.pl \"\$@\")" > /usr/bin/joomscan'
 chmod +x /usr/bin/joomscan
 
+clear && echo "Installing ODAT: Oracle Database Attacking Tool"
+URL_ODAT=$(url_latest 'https://api.github.com/repos/quentinhardy/odat/releases/latest' 'x86_64')
+cd /opt/
+wget $URL_ODAT
+tar xvf odat*.tar.gz
+rm odat*.tar.gz
+mv odat*/ odat/
+ln -sf /opt/odat/odat* /usr/local/bin/odat
+
 ########## ---------- ##########
 # Webshell
 ########## ---------- ##########
@@ -764,6 +776,9 @@ chmod +x /usr/bin/pret
 
 clear && echo "Installing snmpwalk"
 apt-get install -y snmp
+
+clear && echo "Installing nbtscan"
+apt-get install -y nbtscan
 
 #clear && echo "Installing Nessus"
 cd /opt/
@@ -945,6 +960,33 @@ sudo udevadm control --reload-rules
 sudo adduser ${RUID} dialout
 make clean && make all
 #cd /opt/proxmark3/client/ && ./proxmark3 /dev/ttyACM0
+
+clear && echo "Installing Go"
+sudo add-apt-repository ppa:longsleep/golang-backports
+sudo apt-get update
+sudo apt-get install -y golang-go
+
+# moved to end of script due to time of populating the database
+clear && echo "Installing cve-search"
+git clone --depth 1 'https://github.com/cve-search/cve-search' /opt/cve-search
+cd /opt/cve-search/
+pipenv --three install -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && sudo pipenv run python ./bin/search.py \"\$@\")" > /usr/bin/cve-search'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && sudo pipenv run python ./web/index.py \"\$@\")" > /usr/bin/cve-search-webui'
+chmod +x /usr/bin/cve-search*
+
+clear && read -r -p "Populating the cve database will take a few hours. Do you want to do this now? [y/N] " response
+response=${response,,}    # tolower
+if [[ "$response" =~ ^(yes|y)$ ]]
+then
+  clear && echo "Ok... Populating the cve-search database now..."
+  pipenv run python ./sbin/db_mgmt_json.py -p
+  pipenv run python ./sbin/db_mgmt_cpe_dictionary.py
+  pipenv run python ./sbin/db_updater.py -c
+else
+  clear && echo "Nevermind. A script has been created in /opt/ for you to run later."
+  bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\nsudo pipenv run python ./sbin/db_mgmt_json.py -p\nsudo pipenv run python ./sbin/db_mgmt_cpe_dictionary.py\nsudo pipenv run python ./sbin/db_updater.py -c" > cve-populate.sh'
+fi
 
 ########## ---------- ##########
 # End
