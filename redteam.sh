@@ -976,7 +976,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && sudo pipenv run python ./
 chmod +x /usr/bin/cve-search*
 
 clear && read -r -p "Populating the cve database will take a few hours. Do you want to do this now? [y/N] " response
-response=${response,,}    # tolower
+response=${response,,} # convert to lower case
 if [[ "$response" =~ ^(yes|y)$ ]]
 then
   clear && echo "Ok... Populating the cve-search database now..."
@@ -985,7 +985,8 @@ then
   pipenv run python ./sbin/db_updater.py -c
 else
   clear && echo "Nevermind. A script has been created in /opt/ for you to run later."
-  bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\nsudo pipenv run python ./sbin/db_mgmt_json.py -p\nsudo pipenv run python ./sbin/db_mgmt_cpe_dictionary.py\nsudo pipenv run python ./sbin/db_updater.py -c" > cve-populate.sh'
+  bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\nsudo pipenv run python ./sbin/db_mgmt_json.py -p\nsudo pipenv run python ./sbin/db_mgmt_cpe_dictionary.py\nsudo pipenv run python ./sbin/db_updater.py -c" > /opt/cve-populate.sh'
+  chmod +x /opt/*.sh
 fi
 
 ########## ---------- ##########
