@@ -43,6 +43,9 @@ clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
 chown -R ${RUID}:${RUID} ~/.tmux.conf
 
+clear && echo "Installing asciinema (terminal session recorder)" # https://github.com/asciinema/asciinema/
+sudo -H pip3 install asciinema
+
 clear && echo "Installing Firewall"
 apt install -y gufw
 ufw disable
@@ -82,7 +85,7 @@ git clone --depth 1 'https://github.com/beefproject/beef'
 git clone --depth 1 'https://github.com/BishopFox/spoofcheck'
 git clone --depth 1 'https://github.com/BloodHoundAD/bloodhound'
 git clone --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec'
-git clone --depth 1 'https://github.com/byt3bl33d3r/deathstar'
+#git clone --depth 1 'https://github.com/byt3bl33d3r/deathstar'
 git clone --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
 git clone --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
 git clone --depth 1 'https://github.com/commonexploits/vlan-hopping'
@@ -93,7 +96,7 @@ git clone --depth 1 'https://github.com/davidtavarez/pwndb'
 git clone --depth 1 'https://github.com/dirkjanm/privexchange' #httpattack.py must be configured
 git clone --depth 1 'https://github.com/drwetter/testssl.sh.git'
 git clone --depth 1 'https://github.com/Ekultek/whatwaf'
-git clone --depth 1 'https://github.com/EmpireProject/empire' --branch dev
+#git clone --depth 1 'https://github.com/EmpireProject/empire' --branch dev
 git clone --depth 1 'https://github.com/FluxionNetwork/fluxion'
 git clone --depth 1 'https://github.com/fox-it/mitm6'
 git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
@@ -249,24 +252,24 @@ pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnscan/ && pipenv run python dnscan.py \"\$@\")" > /usr/bin/dnscan'
 chmod +x /usr/bin/dnscan
 
-clear && echo "Installing DeathStar"
-cd /opt/deathstar/
-pipenv --three install
-bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")" > /usr/bin/deathstar'
-chmod +x /usr/bin/deathstar
+#clear && echo "Installing DeathStar"
+#cd /opt/deathstar/
+#pipenv --three install
+#bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")" > /usr/bin/deathstar'
+#chmod +x /usr/bin/deathstar
 
-clear && echo "Installing Empire"
-printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
-read -p "Press Enter to continue." </dev/tty
-cd /opt/empire/setup/
-python -m pip install -r requirements.txt
-./install.sh
-bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
-chmod +x /usr/bin/empire
-bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
-bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
-empire -r /opt/empire/setup/obf.rc
-rm obf.rc
+#clear && echo "Installing Empire"
+#printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
+#read -p "Press Enter to continue." </dev/tty
+#cd /opt/empire/setup/
+#python -m pip install -r requirements.txt
+#./install.sh
+#bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
+#chmod +x /usr/bin/empire
+#bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
+#bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
+#empire -r /opt/empire/setup/obf.rc
+#rm obf.rc
 
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
@@ -928,23 +931,27 @@ chmod +x /usr/bin/eaphammer
 
 clear && echo "Installing wifite"
 apt install -y wifite tshark
+
+clear && echo "Installing hcxtools" # part wifite reqs.
+cd /opt/
+git clone --depth 1 'https://github.com/ZerBea/hcxtools'
+cd /opt/hcxtools/
+make
+make install
+
+clear && echo "Installing hcxdumptool" # part wifite reqs.
 cd /opt/
 git clone --depth 1 'https://github.com/ZerBea/hcxdumptool'
-git clone --depth 1 'https://github.com/ZerBea/hcxtools'
+cd /opt/hcxdumptool/
+make
+make install
+
+clear && echo "Installing bully" # part wifite reqs.
+cd /opt/
 git clone --depth 1 'https://github.com/aanarchyy/bully'
-cd /opt/hcxdumptool
-make
-make install
-cd /opt/hcxtools
-make
-make install
 cd /opt/bully/src/
 make
 make install
-cd /opt/
-rm -r /opt/hcxdumptool
-rm -r /opt/hcxtools
-rm -r /opt/bully
 
 ########## ---------- ##########
 # Misc
@@ -975,7 +982,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && sudo pipenv run python ./
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && sudo pipenv run python ./web/index.py \"\$@\")" > /usr/bin/cve-search-webui'
 chmod +x /usr/bin/cve-search*
 
-clear && read -r -p "Populating the cve database will take a few hours. Do you want to do this now? [y/N] " response
+clear && read -r -p "Populating the cve database will take a good few hours. Do you want to do this now? [y/N] " response
 response=${response,,} # convert to lower case
 if [[ "$response" =~ ^(yes|y)$ ]]
 then
@@ -988,13 +995,14 @@ else
   bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\nsudo pipenv run python ./sbin/db_mgmt_json.py -p\nsudo pipenv run python ./sbin/db_mgmt_cpe_dictionary.py\nsudo pipenv run python ./sbin/db_updater.py -c" > /opt/cve-populate.sh'
   chmod +x /opt/*.sh
 fi
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=cve-search\nExec=firefox http://127.0.0.1:5000\nIcon=/opt/cve-search/web/static/img/favicon.ico\nCategories=Application;" > /usr/share/applications/cve-search.desktop'
 
 ########## ---------- ##########
 # End
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
 sudo systemctl disable apache2.service
