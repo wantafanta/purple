@@ -85,9 +85,9 @@ git clone --depth 1 'https://github.com/beefproject/beef'
 git clone --depth 1 'https://github.com/BishopFox/spoofcheck'
 git clone --depth 1 'https://github.com/BloodHoundAD/bloodhound'
 git clone --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec'
-#git clone --depth 1 'https://github.com/byt3bl33d3r/deathstar'
 git clone --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
 git clone --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
+git clone --depth 1 --recurse-submodules 'https://github.com/cobbr/covenant'
 git clone --depth 1 'https://github.com/commonexploits/vlan-hopping'
 git clone --depth 1 'https://github.com/D4Vinci/cr3dov3r'
 git clone --depth 1 'https://github.com/dafthack/mailsniper'
@@ -96,7 +96,6 @@ git clone --depth 1 'https://github.com/davidtavarez/pwndb'
 git clone --depth 1 'https://github.com/dirkjanm/privexchange' #httpattack.py must be configured
 git clone --depth 1 'https://github.com/drwetter/testssl.sh.git'
 git clone --depth 1 'https://github.com/Ekultek/whatwaf'
-#git clone --depth 1 'https://github.com/EmpireProject/empire' --branch dev
 git clone --depth 1 'https://github.com/FluxionNetwork/fluxion'
 git clone --depth 1 'https://github.com/fox-it/mitm6'
 git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
@@ -271,6 +270,22 @@ chmod +x /usr/bin/dnscan
 #empire -r /opt/empire/setup/obf.rc
 #rm obf.rc
 
+clear && echo "Installing Dotnet Core (Covenant)"
+cd /opt/
+wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo dpkg -i packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+sudo apt-get install -y apt-transport-https
+sudo apt-get update
+sudo apt-get install -y dotnet-sdk-2.2
+
+clear && echo "Installing Covenant"
+cd /opt/covenant/Covenant/
+dotnet build
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/covenant/Covenant/ && sudo dotnet run \"\$@\")" > /usr/bin/covenant'
+chmod +x /usr/bin/covenant
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Covenant\nExec=gnome-terminal --window -- covenant\nIcon=/opt/covenant/Covenant/wwwroot/images/favicon.svg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox https://localhost:7443" > /usr/share/applications/covenant.desktop'
+
 clear && echo "Installing mitm6"
 cd /opt/mitm6/
 pipenv --three install
@@ -403,9 +418,8 @@ clear && echo "Installing SilentTrinity"
 apt-get install -y python3.7 python3.7-dev
 cd /opt/silenttrinity/
 wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O logo.png
-cd Server
 pipenv --three install
-bash -c 'echo -e "#!/bin/bash\n(cd /opt/silenttrinity/Server && sudo pipenv run python3.7 st.py \"\$@\")" > /usr/bin/silenttrinity'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/silenttrinity/ && sudo pipenv run python3.7 st.py \"\$@\")" > /usr/bin/silenttrinity'
 chmod +x /usr/bin/silenttrinity
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;" > /usr/share/applications/silenttrinity.desktop'
 
@@ -531,6 +545,14 @@ wget 'https://raw.githubusercontent.com/FluxionNetwork/fluxion/master/logos/logo
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")" > /usr/bin/fluxion'
 chmod +x /usr/bin/fluxion
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
+
+#clear && echo "Installing BeaconGraph"
+#cd /opt/
+#git clone --depth 1 'https://github.com/daddycocoaman/beacongraph'
+#cd /opt/beacongraph/
+#pipenv --three install -r requirements.txt
+#bash -c 'echo -e "#!/bin/bash\n(cd /opt/beacongraph/ && sudo pipenv run python3.7 BeaconGraph.py \"\$@\")" > /usr/bin/beacongraph'
+#chmod +x /usr/bin/beacongraph
 
 clear && echo "Installing hashcat"
 URL_HASHCAT=$(url_latest 'https://api.github.com/repos/hashcat/hashcat/releases/latest' 'hashcat')
@@ -725,7 +747,7 @@ sed -i 's/^set api.rest.username.*/set api.rest.username admin/g' /usr/local/sha
 sed -i 's/^set api.rest.password.*/set api.rest.password bettercap/g' /usr/local/share/bettercap/caplets/http-ui.cap
 bash -c 'echo -e "#!/bin/bash\n(sudo /opt/bettercap/bettercap \"\$@\")" > /usr/bin/bettercap'
 chmod +x /usr/bin/bettercap
-bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=bettercap\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && nmcli d && printf \"\\\n\\\n\" && read -p \"Enter the device name: \" int && clear && sudo /opt/bettercap/bettercap -iface \$int -caplet http-ui'\''\nIcon=/opt/bettercap/logo.png\nCategories=Application;" > /usr/share/applications/bettercap.desktop'
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=bettercap\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && nmcli d && printf \"\\\n\\\n\" && read -p \"Enter the device name: \" int && clear && sudo /opt/bettercap/bettercap -iface \$int -caplet http-ui'\''\nIcon=/opt/bettercap/logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox http://localhost:80" > /usr/share/applications/bettercap.desktop'
 
 clear && echo "Installing BeEF"
 apt-get install -y ruby ruby-dev
@@ -735,7 +757,7 @@ cd /opt/beef/
 sed -i 's/passwd: "beef"/passwd: "admin"/g' /opt/beef/config.yaml
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/beef && ./beef \"\$@\")" > /usr/bin/beef'
 chmod +x /usr/bin/beef
-bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BeEF\nExec=gnome-terminal --window -- beef\nIcon=/opt/beef/extensions/admin_ui/media/images/beef.png\nCategories=Application;" > /usr/share/applications/beef.desktop'
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BeEF\nExec=gnome-terminal --window -- beef\nIcon=/opt/beef/extensions/admin_ui/media/images/beef.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox http://localhost:3000/ui/panel" > /usr/share/applications/beef.desktop'
 
 clear && echo "Installing wine"
 apt-get -y install wine winbind winetricks xdotool
@@ -1002,7 +1024,7 @@ bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nNa
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
 sudo systemctl disable apache2.service
