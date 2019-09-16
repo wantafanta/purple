@@ -30,7 +30,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * Docker
   * [cameradar](https://github.com/Ullaakut/cameradar)
 * [Don't Kill MY Cat (DKMC)](https://github.com/Mr-Un1k0d3r/dkmc)
-* [eaphammer]{https://github.com/s0lst1c3/eaphammer}
+* [eaphammer](https://github.com/s0lst1c3/eaphammer)
 * [enumdb](https://github.com/m8r0wn/enumdb)
 * [EvilClippy](https://github.com/outflanknl/EvilClippy)
 * [evilginx2](https://github.com/kgretzky/evilginx2)
