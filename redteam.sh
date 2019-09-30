@@ -726,6 +726,7 @@ chmod +x /usr/bin/dumpcap
 usermod -a -G wireshark ${RUID}
 
 clear && echo "Installing termshark"
+apt install -y tshark
 URL_TERMSHARK=$(url_latest 'https://api.github.com/repos/gcla/termshark/releases/latest' 'linux_x64')
 cd /opt/
 wget $URL_TERMSHARK
@@ -907,6 +908,16 @@ cd /opt/photon/
 pipenv --three install -r requirements.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/photon && pipenv run python photon.py \"\$@\")" > /usr/bin/photon'
 chmod +x /usr/bin/photon
+
+clear && echo "Installing Recon-ng"
+cd /opt/
+git clone --depth 1 'https://github.com/lanmaster53/recon-ng'
+cd /opt/recon-ng/
+pipenv --three install -r REQUIREMENTS
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && pipenv run python recon-ng \"\$@\")" > /usr/bin/recon-ng'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && pipenv run python recon-cli \"\$@\")" > /usr/bin/recon-cli'
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && pipenv run python recon-web \"\$@\")" > /usr/bin/recon-web'
+chmod +x /usr/bin/recon-*
 
 ########## ---------- ##########
 # Phishing
