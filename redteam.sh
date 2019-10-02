@@ -689,8 +689,8 @@ clear && echo "Installing ODAT: Oracle Database Attacking Tool"
 URL_ODAT=$(url_latest 'https://api.github.com/repos/quentinhardy/odat/releases/latest' 'x86_64')
 cd /opt/
 wget $URL_ODAT
-tar xvf odat*.tar.gz
-rm odat*.tar.gz
+unzip odat*.zip
+rm odat*.zip
 mv odat*/ odat/
 ln -sf /opt/odat/odat* /usr/local/bin/odat
 
