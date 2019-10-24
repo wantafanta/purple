@@ -104,6 +104,7 @@ git clone --depth 1 'https://github.com/jseidl/usernamer'
 git clone --depth 1 'https://github.com/lanjelot/patator'
 git clone --depth 1 'https://github.com/laramies/theharvester'
 git clone --depth 1 'https://github.com/lightos/credmap'
+git clone --depth 1 'https://github.com/m8r0wn/activereign'
 git clone --depth 1 'https://github.com/m8r0wn/enumdb'
 git clone --depth 1 'https://github.com/m8r0wn/nullinux'
 git clone --depth 1 'https://github.com/m8r0wn/pymeta'
@@ -313,6 +314,15 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cme \"\$@\")
 chmod +x /usr/bin/cme
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cmedb \"\$@\")" > /usr/bin/cmedb'
 chmod +x /usr/bin/cmedb
+
+clear && echo "Installing ActiveReign"
+cd /opt/activereign/
+pipenv --three install
+pipenv run python setup.py install
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/activereign/ && pipenv run activereign \"\$@\")" > /usr/bin/activereign'
+chmod +x /usr/bin/activereign
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/activereign/ && pipenv run activereign \"\$@\")" > /usr/bin/ar3'
+chmod +x /usr/bin/ar3
 
 clear && echo "Installing BloodHound"
 URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
@@ -918,6 +928,16 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && pipenv run python recon-ng 
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && pipenv run python recon-cli \"\$@\")" > /usr/bin/recon-cli'
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && pipenv run python recon-web \"\$@\")" > /usr/bin/recon-web'
 chmod +x /usr/bin/recon-*
+# module dependencies
+pipenv install olefile pypdf3 lxml # recon/domains-contacts/metacrawler
+pipenv install pyaes # recon/domains-credentials/pwnedlist/account_creds
+pipenv install pycryptodome # recon/domains-credentials/pwnedlist/domain_creds
+# install all modules
+#bash -c 'echo -e "marketplace install /\nexit" > modules.rc'
+#pipenv run python recon-ng -r modules.rc
+#rm modules.rc
+# add api keys
+#bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys add builtwith_api <key>\nkeys add censysio_id <key>\nkeys add censysio_secret <key>\nkeys add flickr_api <key>\nkeys add fullcontact_api <key>\nkeys add github_api <key>\nkeys add google_api <key>\nkeys add hashes_api <key>\nkeys add hibp_api <key>\nkeys add ipinfodb_api <key>\nkeys add ipstack_api <key>\nkeys add namechk_api <key>\nkeys add pwnedlist_api <key>\nkeys add pwnedlist_secret <key>\nkeys add shodan_api <key>\nkeys add twitter_api <key>\nkeys add twitter_secret <key>\nkeys add virustotal_api <key>\nexit" > api.rc'
 
 ########## ---------- ##########
 # Phishing
