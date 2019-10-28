@@ -75,7 +75,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [Metasploit Framework](https://github.com/rapid7/metasploit-framework)
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mitm6](https://github.com/fox-it/mitm6)
-* [natlas](https://github.com/natlas/natlas/)
+* ~~[natlas](https://github.com/natlas/natlas/)~~
 * nbtscan
 * [Nessus](https://www.tenable.com/downloads/nessus)
 * [nikto](https://github.com/sullo/nikto)
