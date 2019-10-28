@@ -53,6 +53,9 @@ ufw disable
 clear && echo "Installing FileZilla"
 apt install -y filezilla
 
+clear && echo "Installing FreeRDP"
+apt install -y freerdp2-x11
+
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
 wget 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'

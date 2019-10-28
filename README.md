@@ -1,5 +1,5 @@
 ### redteam.sh
-Only tested on Ubuntu 18.10 and 19.04 in VMWare Workstation.
+Only tested on Ubuntu 18.04 and 19.10 in VMWare Workstation.
 
 `
 sudo bash redteam.sh
@@ -10,13 +10,17 @@ Press enter a few times, choose yes, next ctrl+c etc.
 Grabs the latests version of all tools. Where possible run in a virtual environment using pipenv.
  
 #### Tools
+* [ActiveReign](https://github.com/m8r0wn/activereign)
 * [Aquatone](https://github.com/michenriksen/aquatone)
-  * Chromium
+  * [Chromium](https://www.chromium.org/Home)
+* [asciinema](https://github.com/asciinema/asciinema/)
+* ~~[BeaconGraph](https://github.com/daddycocoaman/beacongraph)~~
 * [BeEF](https://github.com/beefproject/beef)
 * [bettercap](https://github.com/bettercap/bettercap)
 * [BloodHound](https://github.com/BloodHoundAD/bloodhound)
   * [neo4j](https://debian.neo4j.org)
   * [Aclpwn](https://github.com/fox-it/aclpwn.py)
+* [Bully](https://github.com/aanarchyy/bully)
 * [Burp Suite](https://portswigger.net/burp)
   * Community Edition or Professional
 * [Covenant](https://github.com/cobbr/Covenant)
@@ -24,6 +28,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [crEAP](https://github.com/Shellntel/scripts)
 * [Credmap](https://github.com/lightos/credmap)
 * [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
+* [cve-search](https://github.com/cve-search/cve-search)
 * [DBeaver](https://github.com/dbeaver/dbeaver)
 * [dirble](https://github.com/nccgroup/dirble)
 * [DNScan](https://github.com/rbsec/dnscan)
@@ -39,43 +44,51 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * FileZilla
 * [fireprox](https://github.com/ustayready/fireprox)
 * [Fluxion](https://github.com/FluxionNetwork/fluxion)
-  * Aircrack
+  * [Aircrack-ng](https://www.aircrack-ng.org/)
   * coWPAtty
   * Mdk3
+* [FreeRDP](https://github.com/FreeRDP/FreeRDP)
 * [Frogger2](https://github.com/commonexploits/vlan-hopping)
-* FUZZBUNCH
+* [FUZZBUNCH](https://github.com/mdiazcl/fuzzbunch-debian)
 * [GhostPack](https://github.com/r3motecontrol/Ghostpack-CompiledBinaries)
+* Go
 * [Gobuster](https://github.com/OJ/gobuster)
 * [Gowitness](https://github.com/sensepost/gowitness)
-  * Google Chrome
+  * [Google Chrome](https://www.google.com/chrome/)
 * [Gufw Firewall](http://gufw.org/)
 * [hashcat](https://github.com/hashcat/hashcat)
   * [hashcat-utils](https://github.com/hashcat/hashcat-utils)
 * [Hash-Buster](https://github.com/s0md3v/hash-buster)
+* [hcxtools](https://github.com/ZerBea/hcxtools)
+* [hcxdumptool](https://github.com/ZerBea/hcxdumptool)
 * [Impacket](https://github.com/SecureAuthCorp/impacket)
 * [Jackit](https://github.com/insecurityofthings/jackit)
 * [john-the-ripper](https://snapcraft.io/john-the-ripper)
+* [JoomScan](https://github.com/rezasp/joomscan)
 * [kerbrute](https://github.com/ropnop/kerbrute)
 * [Kismet](http://manpages.ubuntu.com/manpages/disco/man1/kismet.1.html)
 * [LinkedInt](https://github.com/vysec/linkedint)
 * [Linux Exploit Suggester](https://github.com/mzet-/linux-exploit-suggester)
 * [Linux Smart Enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
+* [Lynis](https://github.com/CISOfy/lynis)
 * [Merlin](https://github.com/Ne0nd0g/merlin)
 * [Metasploit Framework](https://github.com/rapid7/metasploit-framework)
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mitm6](https://github.com/fox-it/mitm6)
 * [natlas](https://github.com/natlas/natlas/)
+* nbtscan
 * [Nessus](https://www.tenable.com/downloads/nessus)
 * [nikto](https://github.com/sullo/nikto)
 * [nmap](https://nmap.org/)
   * [zenmap](https://nmap.org/zenmap/)
   * [vulners](https://github.com/vulnersCom/nmap-vulners)
   * [vulscan](https://github.com/scipag/vulscan)
-* [nmapautomator](https://github.com/21y4d/nmapautomator)
+* [nmapautomator](https://github.com/wantafanta/nmapautomator)
 * [nullinux](https://github.com/m8r0wn/nullinux)
 * [NTDSAudit](https://github.com/Dionach/NtdsAudit)
 * [NTDSDumpEx](https://github.com/zcgonvh/NTDSDumpEx)
 * [NTLMv1 Mutlitool](https://github.com/evilmog/ntlmv1-multi)
+* [ODAT: Oracle Database Attacking Tool](https://github.com/quentinhardy/odat/)
 * [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
 * [Patator](https://github.com/lanjelot/patator)
 * [Photon](https://github.com/s0md3v/photon)
@@ -88,6 +101,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [privexchange](https://github.com/dirkjanm/privexchange)
 * [pymeta](https://github.com/m8r0wn/pymeta)
 * [pwndb](https://github.com/davidtavarez/pwndb)
+* [Recon-ng](https://github.com/lanmaster53/recon-ng)
 * [recursebuster](https://github.com/C-Sto/recursebuster)
 * [Remmina](https://snapcraft.io/remmina)
 * [Responder](https://github.com/lgandx/responder)
@@ -101,6 +115,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [sippts](https://github.com/Pepelux/sippts)
 * [snmpwalk](http://manpages.ubuntu.com/manpages/disco/man1/snmpwalk.1.html)
 * [Spoofcheck](https://github.com/BishopFox/spoofcheck)
+* [Sqlectron](https://sqlectron.github.io/)
 * [Sqlmap](http://manpages.ubuntu.com/manpages/disco/man1/sqlmap.1.html)
 * [Spraying Toolkit](https://github.com/byt3bl33d3r/sprayingtoolkit)
 * [Termshark](https://github.com/gcla/termshark)
