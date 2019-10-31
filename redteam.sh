@@ -142,7 +142,7 @@ git clone --depth 1 'https://github.com/mzet-/linux-exploit-suggester'
 git clone --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration'
 
 #-- SYSTEM AUDIT
-#git clone --depth 1 'https://github.com/CISOfy/lynis'
+git clone --depth 1 'https://github.com/CISOfy/lynis'
 
 #-- DESKTOP LINKS
 bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > /home/${RUID}/Desktop/LOLBAS.desktop"
@@ -702,6 +702,8 @@ clear && echo "Installing ODAT: Oracle Database Attacking Tool"
 URL_ODAT=$(url_latest 'https://api.github.com/repos/quentinhardy/odat/releases/latest' 'x86_64')
 cd /opt/
 wget $URL_ODAT
+tar xvf odat*.tar.gz
+rm odat*.tar.gz
 unzip odat*.zip
 rm odat*.zip
 mv odat*/ odat/
