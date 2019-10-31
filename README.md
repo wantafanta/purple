@@ -1,11 +1,11 @@
 ### redteam.sh
-Only tested on Ubuntu 18.04 and 19.10 in VMWare Workstation.
+Only tested on Ubuntu 18.10/19.04 Desktop (minimal) in VMWare Workstation.
 
 `
 sudo bash redteam.sh
 `
 
-Press enter a few times, choose yes, next ctrl+c etc.
+Press enter a few times, choose yes, next, ctrl+c etc.
 
 Grabs the latests version of all tools. Where possible run in a virtual environment using pipenv.
  

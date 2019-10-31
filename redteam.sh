@@ -13,7 +13,7 @@ if [[ $EUID -ne 0 ]]; then
 fi
 
 # static urls (that may need to be updated)
-URL_MONO='http://dl.winehq.org/wine/wine-mono/4.8.3/wine-mono-4.8.3.msi'
+URL_MONO='https://dl.winehq.org/wine/wine-mono/4.9.3/wine-mono-4.9.3.msi'
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 
 # function to scrape latest release from github api
@@ -1058,7 +1058,7 @@ bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nNa
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'Burp Suite Professional-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
 sudo systemctl disable apache2.service
@@ -1087,7 +1087,7 @@ printf "\nAll modules stored in /opt/\n"
 #echo 'Run "cme" to setup initial CrackMapExec database'
 printf " \nNotes:"
 echo 'Download Burp Suite CA Certificate from http://burp/cert/'
-echo 'To resolve .onion addresses (via torghost) in firefox open \`about:config\` and set \`network.dns.blockDotOnion\` to \`false\`'
+echo 'To resolve .onion addresses (via torghost) open http://about:config/ and set network.dns.blockDotOnion to false'
 printf " \nCreds:"
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
