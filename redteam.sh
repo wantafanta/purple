@@ -832,7 +832,9 @@ done
 if [ -f Nessus*.deb ]
 then
   clear && echo "Installing Nessus"
-  apt-get install ./Nessus-*.deb
+  #apt-get install ./Nessus-*.deb
+  dpkg -i Nessus-*.deb
+  apt-get install -f
   bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Nessus\nExec=firefox https://localhost:8834\nIcon=/opt/nessus/var/nessus/www/favicon.ico\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Update\nExec=gnome-terminal --window -- bash -c '\''sudo /opt/nessus/sbin/nessuscli update --all && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/nessus.desktop'
   sudo /etc/init.d/nessusd start
 fi
