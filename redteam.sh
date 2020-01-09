@@ -84,6 +84,8 @@ snap install john-the-ripper
 clear && echo "Cloning repositories"
 cd /opt/
 git clone --depth 1 'https://github.com/actuated/msf-exploit-loop'
+git clone --depth 1 'https://github.com/almandin/fuxploider'
+git clone --depth 1 'https://github.com/BC-SECURITY/empire'
 git clone --depth 1 'https://github.com/beefproject/beef'
 git clone --depth 1 'https://github.com/BishopFox/spoofcheck'
 git clone --depth 1 'https://github.com/BloodHoundAD/bloodhound'
@@ -96,11 +98,15 @@ git clone --depth 1 'https://github.com/D4Vinci/cr3dov3r'
 git clone --depth 1 'https://github.com/dafthack/mailsniper'
 git clone --depth 1 'https://github.com/danielmiessler/seclists'
 git clone --depth 1 'https://github.com/davidtavarez/pwndb'
+git clone --depth 1 'https://github.com/denisidoro/navi'
 git clone --depth 1 'https://github.com/dirkjanm/privexchange' #httpattack.py must be configured
 git clone --depth 1 'https://github.com/drwetter/testssl.sh.git'
 git clone --depth 1 'https://github.com/Ekultek/whatwaf'
+git clone --depth 1 'https://github.com/epinna/tplmap'
 git clone --depth 1 'https://github.com/FluxionNetwork/fluxion'
+git clone --depth 1 'https://github.com/fox-it/bloodhound.py'
 git clone --depth 1 'https://github.com/fox-it/mitm6'
+git clone --depth 1 'https://github.com/Hackndo/lsassy'
 git clone --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 git clone --depth 1 'https://github.com/insecurityofthings/jackit'
 git clone --depth 1 'https://github.com/jseidl/usernamer'
@@ -261,18 +267,17 @@ chmod +x /usr/bin/dnscan
 #bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && pipenv run python DeathStar.py \"\$@\")" > /usr/bin/deathstar'
 #chmod +x /usr/bin/deathstar
 
-#clear && echo "Installing Empire"
-#printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
-#read -p "Press Enter to continue." </dev/tty
-#cd /opt/empire/setup/
-#python -m pip install -r requirements.txt
-#./install.sh
-#bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
-#chmod +x /usr/bin/empire
-#bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
-#bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
-#empire -r /opt/empire/setup/obf.rc
-#rm obf.rc
+clear && echo "Installing Empire"
+printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
+read -p "Press Enter to continue." </dev/tty
+cd /opt/empire/
+./setup/install.sh
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
+chmod +x /usr/bin/empire
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
+bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
+empire -r /opt/empire/setup/obf.rc
+rm obf.rc
 
 clear && echo "Installing Dotnet Core (Covenant)"
 cd /opt/
@@ -318,6 +323,13 @@ chmod +x /usr/bin/cme
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && pipenv run cmedb \"\$@\")" > /usr/bin/cmedb'
 chmod +x /usr/bin/cmedb
 
+clear && echo "Installing lsassy"
+cd /opt/lsassy/
+pipenv --three install
+pipenv run python setup.py install
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/lsassy/ && pipenv run lsassy \"\$@\")" > /usr/bin/lsassy'
+chmod +x /usr/bin/lsassy
+
 clear && echo "Installing ActiveReign"
 cd /opt/activereign/
 pipenv --three install
@@ -347,13 +359,23 @@ apt-get update
 apt-get install -y neo4j
 systemctl enable neo4j.service
 
+clear && echo "Installing BloodHound Custom Queries"
+wget 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/customqueries.json' -O '/opt/bloodhound-bin/customqueries.json'
+
+clear && echo "Installing bloodhound.py"
+cd /opt/bloodhound.py/
+pipenv --three install
+pipenv run python setup.py install
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/bloodhound.py/ && pipenv run python bloodhound.py \"\$@\")" > /usr/bin/bloodhound.py'
+chmod +x /usr/bin/bloodhound.py
+
 clear && echo "Installing Aclpwn" #Active Directory ACL exploitation with BloodHound
 #https://github.com/fox-it/aclpwn.py
 python -m pip install aclpwn
 
 clear && echo "Installing Torghost"
 cd /opt/torghost/
-bash install.sh
+bash install.sh --python3
 systemctl disable tor.service
 #firefox http://about:config
 #set network.dns.blockDotOnion;false
@@ -486,6 +508,11 @@ apt-get install -y nfs-common
 
 clear && echo "Installing GPS Utils"
 apt-get install -y gpsd gpsd-clients
+
+clear && echo "Installing navi" # will be good to use with some pentest .cheat files
+apt install -y fzf
+cd /opt/navi/
+sudo make install
 
 ########## ---------- ##########
 # Brute-force
@@ -708,6 +735,18 @@ unzip odat*.zip
 rm odat*.zip
 mv odat*/ odat/
 ln -sf /opt/odat/odat* /usr/local/bin/odat
+
+clear && echo "Installing fuxploider"
+cd /opt/fuxploider/
+pipenv --three install -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/fuxploider && pipenv run python fuxploider.py \"\$@\")" > /usr/bin/fuxploider'
+chmod +x /usr/bin/fuxploider
+
+clear && echo "Installing tplmap"
+cd /opt/tplmap/
+pipenv --two install -r requirements.txt
+bash -c 'echo -e "#!/bin/bash\n(cd /opt/tplmap && pipenv run python tplmap.py \"\$@\")" > /usr/bin/tplmap'
+chmod +x /usr/bin/tplmap
 
 ########## ---------- ##########
 # Webshell
@@ -1062,7 +1101,7 @@ bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nNa
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'Burp Suite Professional-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${RUID} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'Burp Suite Professional-0.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
 sudo systemctl disable apache2.service

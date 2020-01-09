@@ -1,5 +1,5 @@
 ### redteam.sh
-Only tested on Ubuntu 18.10/19.04 Desktop (minimal) in VMWare Workstation.
+Only tested on Ubuntu 18.10/19.04/19.10 Desktop (minimal) in VMware Workstation.
 
 `
 sudo bash redteam.sh
@@ -20,6 +20,8 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [BloodHound](https://github.com/BloodHoundAD/bloodhound)
   * [neo4j](https://debian.neo4j.org)
   * [Aclpwn](https://github.com/fox-it/aclpwn.py)
+  * [BloodHound.py](https://github.com/fox-it/bloodhound.py)
+  * [BloodHound Custom Queries](https://github.com/hausec/Bloodhound-Custom-Queries/)
 * [Bully](https://github.com/aanarchyy/bully)
 * [Burp Suite](https://portswigger.net/burp)
   * Community Edition or Professional
@@ -36,6 +38,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
   * [cameradar](https://github.com/Ullaakut/cameradar)
 * [Don't Kill MY Cat (DKMC)](https://github.com/Mr-Un1k0d3r/dkmc)
 * [eaphammer](https://github.com/s0lst1c3/eaphammer)
+* [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
 * [enumdb](https://github.com/m8r0wn/enumdb)
 * [EvilClippy](https://github.com/outflanknl/EvilClippy)
 * [evilginx2](https://github.com/kgretzky/evilginx2)
@@ -47,6 +50,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
   * [Aircrack-ng](https://www.aircrack-ng.org/)
   * coWPAtty
   * Mdk3
+* [fuxploider](https://github.com/almandin/fuxploider)
 * [FreeRDP](https://github.com/FreeRDP/FreeRDP)
 * [Frogger2](https://github.com/commonexploits/vlan-hopping)
 * [FUZZBUNCH](https://github.com/mdiazcl/fuzzbunch-debian)
@@ -70,12 +74,14 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [LinkedInt](https://github.com/vysec/linkedint)
 * [Linux Exploit Suggester](https://github.com/mzet-/linux-exploit-suggester)
 * [Linux Smart Enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
+* [lsassy](https://github.com/Hackndo/lsassy)
 * [Lynis](https://github.com/CISOfy/lynis)
 * [Merlin](https://github.com/Ne0nd0g/merlin)
 * [Metasploit Framework](https://github.com/rapid7/metasploit-framework)
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mitm6](https://github.com/fox-it/mitm6)
 * ~~[natlas](https://github.com/natlas/natlas/)~~
+* [navi](https://github.com/denisidoro/navi)
 * nbtscan
 * [Nessus](https://www.tenable.com/downloads/nessus)
 * [nikto](https://github.com/sullo/nikto)
@@ -123,6 +129,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [theHarvester](https://github.com/laramies/theharvester)
 * [TMUX](http://manpages.ubuntu.com/manpages/disco/man1/tmux.1.html)
 * [Torghost](https://github.com/susmithHCK/torghost)
+* [tplmap](https://github.com/epinna/tplmap)
 * [unicorn](https://github.com/trustedsec/unicorn)
 * [Usernamer](https://github.com/jseidl/usernamer)
 * [Visual Studio Code](https://snapcraft.io/vscode)
