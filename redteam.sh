@@ -181,7 +181,7 @@ apt-get install -y postgresql
 curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && chmod 755 msfinstall && ./msfinstall
 rm msfinstall
 cd /opt/metasploit-framework/
-wget 'https://raw.githubusercontent.com/rapid7/metasploit-framework/master/lib/msf/core/web_services/public/favicon.ico' -O logo.ico
+wget 'https://raw.githubusercontent.com/rapid7/metasploit-framework/master/lib/msf/core/web_services/public/favicon.ico' -O 'logo.ico'
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Metasploit Framework\nExec=gnome-terminal --window -- sudo msfconsole\nIcon=/opt/metasploit-framework/logo.ico\nCategories=Application;" > /usr/share/applications/metasploit-framework.desktop'
 cp /opt/metasploit-framework/embedded/framework/config/database.yml.example /opt/metasploit-framework/embedded/framework/config/database.yml
 sed -i 's/^  password:.*/  password: msf/g' /opt/metasploit-framework/embedded/framework/config/database.yml
@@ -246,7 +246,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64 
 chmod +x /usr/bin/merlin
 bash -c 'echo -e "#!/bin/bash\n(openssl req -x509 -newkey rsa:2048 -keyout /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.crt -passout pass:merlin && openssl rsa -in /opt/merlin/data/x509/server.enc.key -out /opt/merlin/data/x509/server.key -passin pass:merlin \"\$@\")" > /usr/bin/merlin-cert'
 chmod +x /usr/bin/merlin-cert
-wget 'https://camo.githubusercontent.com/c39b27165e5a911744220274b00b1bfcb2742408/68747470733a2f2f692e696d6775722e636f6d2f34694b7576756a2e6a7067' -O logo.jpeg
+wget 'https://camo.githubusercontent.com/c39b27165e5a911744220274b00b1bfcb2742408/68747470733a2f2f692e696d6775722e636f6d2f34694b7576756a2e6a7067' -O 'logo.jpeg'
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Merlin\nExec=gnome-terminal --window -- merlin\nIcon=/opt/merlin/logo.jpeg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Generate Certificate\nExec=gnome-terminal --window -- merlin-cert" > /usr/share/applications/merlin.desktop'
 
 clear && echo "Updating Windows Exploit Suggester"
@@ -276,12 +276,12 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr
 chmod +x /usr/bin/empire
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
 bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
-empire -r /opt/empire/setup/obf.rc
+empire -r /opt/empire/obf.rc
 rm obf.rc
 
 clear && echo "Installing Dotnet Core (Covenant)"
 cd /opt/
-wget -q https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+wget -q 'https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb' -O 'packages-microsoft-prod.deb'
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 sudo apt-get install -y apt-transport-https
@@ -353,7 +353,7 @@ clear && echo "Installing Neo4j (BloodHound Database)"
 cd /opt/
 apt-get remove -y java-common
 apt-get install -y openjdk-8-jre-headless
-wget --no-check-certificate -O - https://debian.neo4j.org/neotechnology.gpg.key | sudo apt-key add -
+wget --no-check-certificate -O - 'https://debian.neo4j.org/neotechnology.gpg.key' | sudo apt-key add -
 echo 'deb http://debian.neo4j.org/repo stable/' > /etc/apt/sources.list.d/neo4j.list
 apt-get update
 apt-get install -y neo4j
@@ -418,7 +418,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/credmap/ && python credmap.py \"\$@\")" 
 chmod +x /usr/bin/credmap
 
 clear && echo "Installing Google Chrome (Stable)" #for gowitness
-wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+wget -q -O - 'https://dl-ssl.google.com/linux/linux_signing_key.pub' | sudo apt-key add -
 echo 'deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main' | sudo tee /etc/apt/sources.list.d/google-chrome.list
 apt-get update
 apt-get -y install google-chrome-stable
@@ -452,7 +452,7 @@ chmod +x ruler-linux64
 clear && echo "Installing SilentTrinity"
 apt-get install -y python3.7 python3.7-dev
 cd /opt/silenttrinity/
-wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O logo.png
+wget 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O 'logo.png'
 pipenv --three install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/silenttrinity/ && sudo pipenv run python3.7 st.py \"\$@\")" > /usr/bin/silenttrinity'
 chmod +x /usr/bin/silenttrinity
@@ -581,7 +581,7 @@ printf "\nPress CTRL+C once Fluxion has finished installing its own dependencies
 read -p "Press Enter to continue." </dev/tty
 cd /opt/fluxion/
 ./fluxion.sh -i
-wget 'https://raw.githubusercontent.com/FluxionNetwork/fluxion/master/logos/logo.jpg' -O logo.jpg
+wget 'https://raw.githubusercontent.com/FluxionNetwork/fluxion/master/logos/logo.jpg' -O 'logo.jpg'
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")" > /usr/bin/fluxion'
 chmod +x /usr/bin/fluxion
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
@@ -656,10 +656,19 @@ then
 fi
 # download jython (burp extensions)
 cd /home/${RUID}/Documents/
-wget 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O jython-standalone-2.7.0.jar
+wget 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O 'jython-standalone-2.7.0.jar'
 
 clear && echo "Installing sqlmap"
 apt-get install -y sqlmap
+
+clear && echo "Installing jsql-injection"
+URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/latest' '.jar')
+mkdir /opt/jsql-injection/
+wget $URL_JSQL -O '/opt/jsql-injection/jsql-injection.jar'
+wget 'https://raw.githubusercontent.com/ron190/jsql-injection/master/src/main/resources/swing/images/software/bug128.png' -O '/opt/jsql-injection/logo.png'
+bash -c 'echo -e "#!/bin/bash\n(java -jar /opt/jsql-injection/jsql-injection.jar \"\$@\")" > /usr/bin/jsql'
+chmod +x /usr/bin/jsql
+bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=jSQL Injection\nExec=gnome-terminal --window -- jsql\nIcon=/opt/jsql-injection/logo.png\nCategories=Application;" > /usr/share/applications/jsql.desktop'
 
 clear && echo "Installing Whatwaf"
 cd /opt/whatwaf/
@@ -796,7 +805,7 @@ cd /opt/bettercap/
 wget $URL_BETTERCAP
 unzip bettercap_linux_amd64_*.zip
 rm bettercap*.zip
-wget 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O logo.png
+wget 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O 'logo.png'
 ./bettercap -eval "caplets.update; ui.update; q"
 sed -i 's/^set api.rest.username.*/set api.rest.username admin/g' /usr/local/share/bettercap/caplets/http-ui.cap
 sed -i 's/^set api.rest.password.*/set api.rest.password bettercap/g' /usr/local/share/bettercap/caplets/http-ui.cap
@@ -828,7 +837,7 @@ sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\p
 sudo -u ${RUID} -E bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\pywin32-219.win32-py2.6.exe"
 mkdir /opt/fuzzbunch
 cd /opt/fuzzbunch/
-wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O logo.svg
+wget 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._National_Security_Agency.svg' -O 'logo.svg'
 bash -c 'echo -e "#!/bin/bash\n(cd $HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py \"\$@\")" > /usr/bin/fuzzbunch'
 chmod +x /usr/bin/fuzzbunch
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;" > /usr/share/applications/fuzzbunch.desktop'
@@ -845,7 +854,7 @@ wget $URL_EVILCLIPPY_README
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")" > /usr/bin/evilclippy'
 chmod +x /usr/bin/evilclippy
 mkdir /usr/share/wine/mono
-wget $URL_MONO -o '/usr/share/wine/mono/wine-mono.msi'
+wget $URL_MONO -O '/usr/share/wine/mono/wine-mono.msi'
 sudo -u ${RUID} -E bash -c "wine msiexec /i /usr/share/wine/mono/wine-mono.msi"
 
 clear && echo "Installing PRET"
