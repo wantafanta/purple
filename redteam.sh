@@ -47,14 +47,14 @@ clear && echo "Installing asciinema (terminal session recorder)" # https://githu
 sudo -H pip3 install asciinema
 
 clear && echo "Installing Firewall"
-apt install -y gufw
+apt-get install -y gufw
 ufw disable
 
 clear && echo "Installing FileZilla"
-apt install -y filezilla
+apt-get install -y filezilla
 
 clear && echo "Installing FreeRDP"
-apt install -y freerdp2-x11
+apt-get install -y freerdp2-x11
 
 clear && echo "Installing nmap/zenmap"
 apt-get install -y nmap zenmap
@@ -268,16 +268,16 @@ chmod +x /usr/bin/dnscan
 #chmod +x /usr/bin/deathstar
 
 clear && echo "Installing Empire"
-printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
-read -p "Press Enter to continue." </dev/tty
+#printf "\nEmpire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice.\n\n"
+#read -p "Press Enter to continue." </dev/tty
 cd /opt/empire/
 ./setup/install.sh
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 chmod +x /usr/bin/empire
 bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
 bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
-empire -r /opt/empire/obf.rc
-rm obf.rc
+#empire -r /opt/empire/obf.rc
+#rm obf.rc
 
 clear && echo "Installing Dotnet Core (Covenant)"
 cd /opt/
@@ -375,11 +375,11 @@ python -m pip install aclpwn
 
 clear && echo "Installing Torghost"
 cd /opt/torghost/
-bash install.sh --python3
+bash build.sh
 systemctl disable tor.service
 #firefox http://about:config
 #set network.dns.blockDotOnion;false
-apt install -y chrome-gnome-shell #firefox gnome extensions pre-reqs
+apt-get install -y chrome-gnome-shell #firefox gnome extensions pre-reqs
 
 clear && echo "Installing fireprox"
 cd /opt/fireprox/
@@ -388,7 +388,7 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/fireprox && pipenv run python fire.py \"
 chmod +x /usr/bin/fireprox
 
 clear && echo "Installing SimplyEmail"
-sudo apt install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
+sudo apt-get install -y python-lxml wget grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
 cd /opt/simplyemail/
 pipenv --two install -r setup/req*.txt
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/simplyemail && pipenv run python2.7 SimplyEmail.py \"\$@\")" > /usr/bin/simplyemail'
@@ -485,7 +485,7 @@ clear && echo "Installing Sqlectron"
 URL_SQLECTRON=$(url_latest 'https://api.github.com/repos/sqlectron/sqlectron-gui/releases/latest' 'amd64')
 cd /opt/
 wget $URL_SQLECTRON
-apt install ./Sqlectron*.deb
+apt-get install ./Sqlectron*.deb
 rm Sqlectron*.deb
 
 clear && echo "Installing nullinux"
@@ -510,9 +510,9 @@ clear && echo "Installing GPS Utils"
 apt-get install -y gpsd gpsd-clients
 
 clear && echo "Installing navi" # will be good to use with some pentest .cheat files
-apt install -y fzf
+apt-get install -y fzf
 cd /opt/navi/
-sudo make install
+make install
 
 ########## ---------- ##########
 # Brute-force
@@ -520,11 +520,11 @@ sudo make install
 
 clear && echo "Installing patator"
 cd /opt/patator/
-apt install -y libcurl4-openssl-dev python3-dev libssl-dev # pycurl
-apt install -y ldap-utils # ldapsearch
-apt install -y libmysqlclient-dev # mysqlclient-python
-apt install -y ike-scan unzip default-jdk
-apt install -y libsqlite3-dev libsqlcipher-dev # pysqlcipher
+apt-get install -y libcurl4-openssl-dev python3-dev libssl-dev # pycurl
+apt-get install -y ldap-utils # ldapsearch
+apt-get install -y libmysqlclient-dev # mysqlclient-python
+apt-get install -y ike-scan unzip default-jdk
+apt-get install -y libsqlite3-dev libsqlcipher-dev # pysqlcipher
 pipenv --two install -r requirements.txt
 pipenv run python setup.py install
 bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && sudo pipenv run patator.py \"\$@\")" > /usr/bin/patator'
@@ -571,8 +571,7 @@ wget $URL_COWPATTY
 tar xvzf cowpatty-*.tgz
 rm -r cowpatty-*.tgz
 cd cowpatty*
-make
-make install
+make && make install
 cd /opt/
 rm -r cowpatty-*
 
@@ -609,7 +608,7 @@ wget $URL_OPENCL
 tar xvzf l_opencl_*.tgz
 rm -r l_opencl_*.tgz
 cd l_opencl_*
-sudo apt install -y lsb-core
+sudo apt-get install -y lsb-core
 echo -e "ACCEPT_EULA=accept\nCONTINUE_WITH_OPTIONAL_ERROR=yes\nPSET_INSTALL_DIR=/opt/intel\nCONTINUE_WITH_INSTALLDIR_OVERWRITE=yes\nPSET_MODE=install\nINTEL_SW_IMPROVEMENT_PROGRAM_CONSENT=no\nCOMPONENTS=;intel-openclrt__x86_64;intel-openclrt-pset" > settings.cfg
 sudo bash install.sh --silent settings.cfg
 cd /opt/
@@ -789,7 +788,7 @@ chmod +x /usr/bin/dumpcap
 usermod -a -G wireshark ${RUID}
 
 clear && echo "Installing termshark"
-apt install -y tshark
+apt-get install -y tshark
 URL_TERMSHARK=$(url_latest 'https://api.github.com/repos/gcla/termshark/releases/latest' 'linux_x64')
 cd /opt/
 wget $URL_TERMSHARK
@@ -1021,7 +1020,7 @@ mkdir /opt/creap
 cd /opt/creap/
 wget 'https://raw.githubusercontent.com/Shellntel/scripts/master/crEAP.py'
 chmod +x crEAP.py
-apt install -y mercurial screen
+apt-get install -y mercurial screen
 cd /opt/
 hg clone 'https://bitbucket.org/secdev/scapy-com'
 dpkg --ignore-depends=python-scapy -r python-scapy
@@ -1038,28 +1037,25 @@ bash -c 'echo -e "#!/bin/bash\n(cd /opt/eaphammer/ && sudo pipenv run python eap
 chmod +x /usr/bin/eaphammer
 
 clear && echo "Installing wifite"
-apt install -y wifite tshark
+apt-get install -y wifite tshark
 
 clear && echo "Installing hcxtools" # part wifite reqs.
 cd /opt/
 git clone --depth 1 'https://github.com/ZerBea/hcxtools'
 cd /opt/hcxtools/
-make
-make install
+make && make install
 
 clear && echo "Installing hcxdumptool" # part wifite reqs.
 cd /opt/
 git clone --depth 1 'https://github.com/ZerBea/hcxdumptool'
 cd /opt/hcxdumptool/
-make
-make install
+make && make install
 
 clear && echo "Installing bully" # part wifite reqs.
 cd /opt/
 git clone --depth 1 'https://github.com/aanarchyy/bully'
 cd /opt/bully/src/
-make
-make install
+make && make install
 
 ########## ---------- ##########
 # Misc
@@ -1069,7 +1065,7 @@ clear && echo "Installing proxmark3"
 cd /opt/
 git clone --depth 1 'https://github.com/Proxmark/proxmark3'
 cd /opt/proxmark3/
-sudo apt install -y 7zip build-essential libreadline5 libreadline-dev libusb-0.1-4 libusb-dev libqt4-dev perl pkg-config wget libncurses5-dev gcc-arm-none-eabi libstdc++-arm-none-eabi-newlib libpcsclite-dev pcscd
+sudo apt-get install -y 7zip build-essential libreadline5 libreadline-dev libusb-0.1-4 libusb-dev libqt4-dev perl pkg-config wget libncurses5-dev gcc-arm-none-eabi libstdc++-arm-none-eabi-newlib libpcsclite-dev pcscd
 sudo cp -rf driver/77-mm-usb-device-blacklist.rules /etc/udev/rules.d/77-mm-usb-device-blacklist.rules
 sudo udevadm control --reload-rules
 sudo adduser ${RUID} dialout
@@ -1119,7 +1115,7 @@ sudo systemctl disable lighttpd.service
 sudo systemctl stop lighttpd.service
 
 # Cleanup apt
-apt autoremove -y
+apt-get autoremove -y
 
 # fix vmware display
 sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service

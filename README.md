@@ -69,6 +69,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [Jackit](https://github.com/insecurityofthings/jackit)
 * [john-the-ripper](https://snapcraft.io/john-the-ripper)
 * [JoomScan](https://github.com/rezasp/joomscan)
+* [jSQL Injection](https://github.com/ron190/jsql-injection)
 * [kerbrute](https://github.com/ropnop/kerbrute)
 * [Kismet](http://manpages.ubuntu.com/manpages/disco/man1/kismet.1.html)
 * [LinkedInt](https://github.com/vysec/linkedint)
