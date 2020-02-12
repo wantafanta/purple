@@ -403,6 +403,11 @@ sudo rm torghost-*-amd64.deb
 #firefox http://about:config
 #set network.dns.blockDotOnion;false
 
+clear && echo "-- Installing onionshare"
+sudo add-apt-repository -y ppa:micahflee/ppa
+sudo apt-get update
+sudo apt-get -qq install onionshare
+
 clear && echo "-- Installing fireprox"
 cd /opt/fireprox/
 pipenv --bare --three install -r requirements.txt

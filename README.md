@@ -98,6 +98,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [NTLMv1 Mutlitool](https://github.com/evilmog/ntlmv1-multi)
 * [ODAT: Oracle Database Attacking Tool](https://github.com/quentinhardy/odat/)
 * [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
+* [OnionShare](https://onionshare.org/)
 * [Patator](https://github.com/lanjelot/patator)
 * [Photon](https://github.com/s0md3v/photon)
 * [Powershell](https://snapcraft.io/powershell)
