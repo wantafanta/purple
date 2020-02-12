@@ -19,7 +19,9 @@ clear && echo "-- Lets begin ..."
 
 # static urls (that may need to be updated)
 URL_MONO='https://dl.winehq.org/wine/wine-mono/4.9.4/wine-mono-4.9.4.msi'
+# mono: https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
+# opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
 
 # function to scrape latest release from github api
 url_latest() {
@@ -684,7 +686,7 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sqlmap/ && python3 sqlmap.py \"\$@\
 sudo chmod +x /usr/bin/sqlmap
 
 clear && echo "-- Installing jsql-injection"
-URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases' '.jar')
+URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/tags/v0.82' '.jar')
 mkdir /opt/jsql-injection/
 wget -q $URL_JSQL -O '/opt/jsql-injection/jsql-injection.jar'
 wget -q 'https://raw.githubusercontent.com/ron190/jsql-injection/master/src/main/resources/swing/images/software/bug128.png' -O '/opt/jsql-injection/logo.png'
