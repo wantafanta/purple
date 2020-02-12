@@ -2,10 +2,11 @@
 Only tested on Ubuntu 18.10/19.04/19.10 Desktop (minimal) in VMware Workstation.
 
 `
-sudo bash redteam.sh
+# run without sudo
+bash redteam.sh | tee redteam.log
 `
 
-Press enter a few times, choose yes, next, ctrl+c etc.
+Press enter a few times, choose yes, next etc.
 
 Grabs the latests version of all tools. Where possible run in a virtual environment using pipenv.
  
