@@ -131,6 +131,7 @@ git clone -q --depth 1 'https://github.com/jseidl/usernamer'
 git clone -q --depth 1 'https://github.com/lanjelot/patator'
 git clone -q --depth 1 'https://github.com/lanmaster53/recon-ng'
 git clone -q --depth 1 'https://github.com/laramies/theharvester'
+git clone -q --depth 1 'https://github.com/lgandx/responder'
 git clone -q --depth 1 'https://github.com/lightos/credmap'
 git clone -q --depth 1 --recursive 'https://github.com/m8r0wn/activereign'
 git clone -q --depth 1 'https://github.com/m8r0wn/enumdb'
@@ -151,7 +152,7 @@ git clone -q --depth 1 'https://github.com/s0md3v/hash-buster'
 git clone -q --depth 1 'https://github.com/s0md3v/photon'
 git clone -q --depth 1 'https://github.com/s0md3v/xsstrike'
 git clone -q --depth 1 'https://github.com/SimplySecurity/simplyemail'
-git clone -q --depth 1 'https://github.com/lgandx/responder'
+git clone -q --depth 1 'https://github.com/sqlmapproject/sqlmap'
 git clone -q --depth 1 'https://github.com/SySS-Research/seth'
 git clone -q --depth 1 'https://github.com/trustedsec/unicorn'
 git clone -q --depth 1 'https://github.com/ustayready/fireprox'
@@ -380,7 +381,7 @@ sudo apt-get -qq install neo4j
 sudo systemctl enable neo4j.service
 
 clear && echo "-- Installing BloodHound Custom Queries"
-wget -q 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/customqueries.json' -O '/opt/bloodhound-bin/customqueries.json'
+curl 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/customqueries.json' > ~/.config/bloodhound/customqueries.json
 
 clear && echo "-- Installing bloodhound.py"
 cd /opt/bloodhound.py/
@@ -679,10 +680,11 @@ fi
 wget -q 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O "/home/${RUID}/Documents/jython-standalone-2.7.0.jar"
 
 clear && echo "-- Installing sqlmap"
-sudo apt-get -qq install sqlmap
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sqlmap/ && python3 sqlmap.py \"\$@\")" > /usr/bin/sqlmap'
+sudo chmod +x /usr/bin/sqlmap
 
 clear && echo "-- Installing jsql-injection"
-URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/latest' '.jar')
+URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases' '.jar')
 mkdir /opt/jsql-injection/
 wget -q $URL_JSQL -O '/opt/jsql-injection/jsql-injection.jar'
 wget -q 'https://raw.githubusercontent.com/ron190/jsql-injection/master/src/main/resources/swing/images/software/bug128.png' -O '/opt/jsql-injection/logo.png'
