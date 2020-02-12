@@ -1,8 +1,9 @@
 ### redteam.sh
 Only tested on Ubuntu 18.10/19.04/19.10 Desktop (minimal) in VMware Workstation.
 
+Run without sudo.
+
 `
-&#35;run without sudo
 bash redteam.sh | tee redteam.log
 `
 
