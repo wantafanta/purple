@@ -53,6 +53,7 @@ clear && echo "-- Installing pip modules"
 sudo -H pip install -U pipenv
 sudo -H pip3 install -U pipenv
 sudo -H pip install service_identity rdpy droopescan
+sudo -H pip3 install pypykatz
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -156,6 +157,7 @@ git clone -q --depth 1 'https://github.com/s0md3v/xsstrike'
 git clone -q --depth 1 'https://github.com/SimplySecurity/simplyemail'
 git clone -q --depth 1 'https://github.com/sqlmapproject/sqlmap'
 git clone -q --depth 1 'https://github.com/SySS-Research/seth'
+git clone -q --depth 1 'https://github.com/threat9/routersploit'
 git clone -q --depth 1 'https://github.com/trustedsec/unicorn'
 git clone -q --depth 1 'https://github.com/ustayready/fireprox'
 git clone -q --depth 1 'https://github.com/vysec/linkedint'
@@ -221,6 +223,14 @@ clear && echo "-- Installing searchsploit"
 sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
 sudo ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 
+clear && echo "-- Installing routersploit"
+cd /opt/routersploit/
+pipenv --bare --three install -r requirements.txt
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/routersploit && if [ \$(checksudo) = 0 ]; then (pipenv run python3 rsf.py \"\$@\");fi)" > /usr/bin/rsf'
+sudo chmod +x /usr/bin/rsf
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/routersploit && if [ \$(checksudo) = 0 ]; then (pipenv run python3 rsf.py \"\$@\");fi)" > /usr/bin/routersploit'
+sudo chmod +x /usr/bin/routersploit
+
 clear && echo "-- Installing MongoDB (cve-search Database)"
 sudo apt-get -qq install mongodb
 
@@ -240,6 +250,17 @@ clear && echo "-- Installing Don't Kill My Cat (DKMC)"
 cd /opt/dkmc/
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")" > /usr/bin/dkmc'
 sudo chmod +x /usr/bin/dkmc
+
+clear && echo "-- Installing mimikatz"
+URL_MIMIKATZ=$(url_latest 'https://api.github.com/repos/gentilkiwi/mimikatz/releases/latest' 'mimikatz_trunk.zip')
+mkdir /opt/mimikatz
+wget -q $URL_MIMIKATZ -O '/opt/mimikatz/mimikatz.zip'
+cd /opt/mimikatz/
+unzip mimikatz.zip
+sudo rm mimikatz.zip
+#doesn't work in wine
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/mimikatz/x64/ && wine mimikatz.exe \"\$@\")" > /usr/bin/mimikatz'
+#sudo chmod +x /usr/bin/mimikatz
 
 clear && echo "-- Installing NtdsAudit"
 URL_NTDSAUDIT=$(url_latest 'https://api.github.com/repos/Dionach/NtdsAudit/releases/latest' 'NtdsAudit.exe')
@@ -292,7 +313,7 @@ sudo chmod +x /usr/bin/dnscan
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && if [ \$(checksudo) = 0 ]; then (pipenv run python DeathStar.py \"\$@\");fi)" > /usr/bin/deathstar'
 #sudo chmod +x /usr/bin/deathstar
 
-clear && echo "-- Installing Empire"
+clear && clear && echo "-- Installing Empire"
 #echo
 #echo "Empire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice."
 #echo
@@ -303,9 +324,9 @@ sudo ./setup/install.sh
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 sudo chmod +x /usr/bin/empire
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
-bash -c 'echo -e "preobfuscate\nexit" > obf.rc'
-#empire -r /opt/empire/obf.rc
-#sudo rm obf.rc
+bash -c 'echo -e "preobfuscate\nexit" > /opt/empire/obf.rc'
+empire -r /opt/empire/obf.rc
+sudo rm /opt/empire/obf.rc
 
 clear && echo "-- Installing Dotnet Core (Covenant)"
 wget -q 'https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb' -O '/opt/packages-microsoft-prod.deb'
@@ -383,6 +404,7 @@ sudo apt-get -qq install neo4j
 sudo systemctl enable neo4j.service
 
 clear && echo "-- Installing BloodHound Custom Queries"
+mkdir ~/.config/bloodhound
 curl 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/customqueries.json' > ~/.config/bloodhound/customqueries.json
 
 clear && echo "-- Installing bloodhound.py"
@@ -915,43 +937,47 @@ clear && echo "-- Installing frogger2"
 sudo apt-get -qq install yersinia vlan arp-scan
 sudo chmod +x /opt/vlan-hopping/frogger2.sh
 
-#clear && echo "-- Installing Elasticsearch 6.x (natlas Database)"
-#wget -q -O - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-#echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
-#sudo apt-get -qq update
-#sudo apt-get -qq install apt-transport-https elasticsearch
-#sudo systemctl daemon-reload
-#sudo systemctl enable elasticsearch.service
-#sudo systemctl start elasticsearch.service
+clear && echo "-- Installing Elasticsearch 6.x (natlas Database)"
+wget -q -O - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+sudo apt-get -qq update
+sudo apt-get -qq install apt-transport-https elasticsearch
+sudo systemctl daemon-reload
+sudo systemctl enable elasticsearch.service
+sudo systemctl start elasticsearch.service
 
-#clear && echo "-- Installing natlas"
-#URL_NATLAS_AGENT=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-agent')
-#URL_NATLAS_SERVER=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-server')
-#mkdir /opt/natlas
-#cd /opt/natlas/
-#wget -q $URL_NATLAS_AGENT
-#wget -q $URL_NATLAS_SERVER
-#tar xvzf natlas-server*.tgz
-#tar xvzf natlas-agent*.tgz
-#sudo rm -r natlas-*.tgz
-#cd /opt/natlas/natlas-server/
-#sudo ./setup-server.sh
+clear && echo "-- Installing natlas"
+URL_NATLAS_AGENT=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-agent')
+URL_NATLAS_SERVER=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-server')
+mkdir /opt/natlas
+cd /opt/natlas/
+wget -q $URL_NATLAS_AGENT
+wget -q $URL_NATLAS_SERVER
+tar xvzf natlas-server*.tgz
+tar xvzf natlas-agent*.tgz
+sudo rm -r natlas-*.tgz
+cd /opt/natlas/natlas-server/
+sudo ./setup-server.sh
+#https://github.com/natlas/natlas/blob/main/natlas-server/README.md
+echo 'LOCAL_SUBRESOURCES=True' > /opt/natlas/natlas-server/.env
 
-#sudo cp /opt/natlas/natlas-server/deployment/natlas-server.service /etc/systemd/system/natlas-server.service
-#sudo systemctl daemon-reload
-#sudo systemctl enable natlas-server.service
-#sudo systemctl start natlas-server.service
+sudo cp /opt/natlas/natlas-server/deployment/natlas-server.service /etc/systemd/system/natlas-server.service
+sudo systemctl daemon-reload
+sudo systemctl enable natlas-server.service
+sudo systemctl start natlas-server.service
 
-#sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/natlas.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/natlas.desktop'
 
-#cd /opt/natlas/natlas-agent/
-#sudo ./setup-agent.sh
+cd /opt/natlas/natlas-agent/
+sudo ./setup-agent.sh
+# https://github.com/natlas/natlas/blob/main/natlas-agent/README.md
+echo 'NATLAS_SCAN_LOCAL=True' > /opt/natlas/natlas-agent/.env
 
-#sudo cp /opt/natlas/natlas-agent/deployment/natlas-agent.service /etc/systemd/system/natlas-agent.service
-#sudo systemctl daemon-reload
-#sudo systemctl start natlas-agent
+sudo cp /opt/natlas/natlas-agent/deployment/natlas-agent.service /etc/systemd/system/natlas-agent.service
+sudo systemctl daemon-reload
+sudo systemctl start natlas-agent
 
-#sudo chmod -R 777 /opt/natlas/
+sudo chmod -R 777 /opt/natlas/
 
 ########## ---------- ##########
 # OSINT
@@ -1085,7 +1111,7 @@ sudo make clean && sudo make all
 sudo ln -sf /opt/proxmark3/client/proxmark3 /usr/local/bin/proxmark3
 
 clear && echo "-- Installing Go"
-sudo add-apt-repository ppa:longsleep/golang-backports
+sudo add-apt-repository -y ppa:longsleep/golang-backports
 sudo apt-get -qq update
 sudo apt-get -qq install golang-go
 
@@ -1127,6 +1153,8 @@ sudo systemctl stop lighttpd.service #fluxion
 
 # Cleanup apt
 sudo apt-get autoremove -y
+# fix empire
+sudo pip3 install -r /opt/empire/setup/requirements.txt
 
 # fix vmware display
 sudo sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
