@@ -123,6 +123,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [SecLists](https://github.com/danielmiessler/seclists)
 * [Seth](https://github.com/SySS-Research/seth)
 * [Shellter](https://www.shellterproject.com)
+* [Shodan](https://cli.shodan.io/)
 * [SilentTrinity](https://github.com/byt3bl33d3r/silenttrinity)
 * [SimplyEmail](https://github.com/SimplySecurity/simplyemail)
 * [sippts](https://github.com/Pepelux/sippts)

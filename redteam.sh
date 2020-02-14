@@ -53,7 +53,7 @@ clear && echo "-- Installing pip modules"
 sudo -H pip install -U pipenv
 sudo -H pip3 install -U pipenv
 sudo -H pip install service_identity rdpy droopescan
-sudo -H pip3 install pypykatz
+sudo -H pip3 install pypykatz shodan
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -966,7 +966,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable natlas-server.service
 sudo systemctl start natlas-server.service
 
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/natlas.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;app2;app3;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''\n\n[Desktop Action app2]\nName=Start Agent\nExec=gnome-terminal --window -- bash -c '\''sudo systemctl start natlas-agent'\''\n\n[Desktop Action app3]\nName=Stop Agent\nExec=gnome-terminal --window -- bash -c '\''sudo systemctl stop natlas-agent'\''" > /usr/share/applications/natlas.desktop'
 
 cd /opt/natlas/natlas-agent/
 sudo ./setup-agent.sh
@@ -975,7 +975,8 @@ echo 'NATLAS_SCAN_LOCAL=True' > /opt/natlas/natlas-agent/.env
 
 sudo cp /opt/natlas/natlas-agent/deployment/natlas-agent.service /etc/systemd/system/natlas-agent.service
 sudo systemctl daemon-reload
-sudo systemctl start natlas-agent
+sudo systemctl disable natlas-agent.service
+#sudo systemctl start natlas-agent
 
 sudo chmod -R 777 /opt/natlas/
 
@@ -1116,27 +1117,27 @@ sudo apt-get -qq update
 sudo apt-get -qq install golang-go
 
 # moved to end of script due to time of populating the database
-clear && echo "-- Installing cve-search"
-cd /opt/cve-search/
-pipenv --bare --three install -r requirements.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 bin/search.py \"\$@\");fi)" > /usr/bin/cve-search'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 web/index.py \"\$@\");fi)" > /usr/bin/cve-search-webui'
-sudo chmod +x /usr/bin/cve-search*
+#clear && echo "-- Installing cve-search"
+#cd /opt/cve-search/
+#pipenv --bare --three install -r requirements.txt
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 bin/search.py \"\$@\");fi)" > /usr/bin/cve-search'
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 web/index.py \"\$@\");fi)" > /usr/bin/cve-search-webui'
+#sudo chmod +x /usr/bin/cve-search*
 
-clear && read -r -p "Populating the cve database will take a good few hours. Do you want to do this now? [y/N] " response
-response=${response,,} # convert to lower case
-if [[ "$response" =~ ^(yes|y)$ ]]
-then
-  clear && echo "Ok... Populating the cve-search database now..."
-  pipenv --bare run sudo python ./sbin/db_mgmt_json.py -p
-  pipenv --bare run sudo python ./sbin/db_mgmt_cpe_dictionary.py
-  pipenv --bare run sudo python ./sbin/db_updater.py -c
-else
-  clear && echo "Nevermind. A script has been created in /opt/ for you to run later."
-  sudo bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\npipenv --bare run sudo python ./sbin/db_mgmt_json.py -p\npipenv --bare run sudo python ./sbin/db_mgmt_cpe_dictionary.py\npipenv --bare run sudo python ./sbin/db_updater.py -c" > /opt/cve-populate.sh'
-  sudo chmod +x /opt/*.sh
-fi
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=cve-search\nExec=firefox http://127.0.0.1:5000\nIcon=/opt/cve-search/web/static/img/favicon.ico\nCategories=Application;" > /usr/share/applications/cve-search.desktop'
+#clear && read -r -p "Populating the cve database will take a good few hours. Do you want to do this now? [y/N] " response
+#response=${response,,} # convert to lower case
+#if [[ "$response" =~ ^(yes|y)$ ]]
+#then
+#  clear && echo "Ok... Populating the cve-search database now..."
+#  pipenv --bare run sudo python ./sbin/db_mgmt_json.py -p
+#  pipenv --bare run sudo python ./sbin/db_mgmt_cpe_dictionary.py
+#  pipenv --bare run sudo python ./sbin/db_updater.py -c
+#else
+#  clear && echo "Nevermind. A script has been created in /opt/ for you to run later."
+#  sudo bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\npipenv --bare run sudo python ./sbin/db_mgmt_json.py -p\npipenv --bare run sudo python ./sbin/db_mgmt_cpe_dictionary.py\npipenv --bare run sudo python ./sbin/db_updater.py -c" > /opt/cve-populate.sh'
+#  sudo chmod +x /opt/*.sh
+#fi
+#sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=cve-search\nExec=firefox http://127.0.0.1:5000\nIcon=/opt/cve-search/web/static/img/favicon.ico\nCategories=Application;" > /usr/share/applications/cve-search.desktop'
 
 ########## ---------- ##########
 # End
@@ -1165,7 +1166,7 @@ sudo chown -R ${RUID}:${RUID} /home/${RUID}/.bash_history
 
 # Set permissions in /opt/
 sudo chown -R ${RUID}:${RUID} /opt/
-#sudo chmod -R 777 /opt/natlas/
+sudo chmod -R 777 /opt/natlas/
 
 # Set neo4j database password to \`bloodhound\`
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
