@@ -72,6 +72,9 @@ sudo apt-get -qq install filezilla
 clear && echo "-- Installing FreeRDP"
 sudo apt-get -qq install freerdp2-x11
 
+clear && echo "-- Installing Kazam Screencaster"
+sudo apt-get -qq install kazam
+
 clear && echo "-- Installing nmap/zenmap"
 sudo apt-get -qq install nmap zenmap
 sudo wget -q 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
@@ -106,6 +109,7 @@ git clone -q --depth 1 'https://github.com/almandin/fuxploider'
 git clone -q --depth 1 'https://github.com/BC-SECURITY/empire'
 git clone -q --depth 1 'https://github.com/beefproject/beef'
 git clone -q --depth 1 'https://github.com/BishopFox/spoofcheck'
+git clone -q --depth 1 'https://github.com/bitsadmin/wesng'
 git clone -q --depth 1 'https://github.com/BloodHoundAD/bloodhound'
 git clone -q --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
@@ -154,6 +158,7 @@ git clone -q --depth 1 'https://github.com/s0lst1c3/eaphammer'
 git clone -q --depth 1 'https://github.com/s0md3v/hash-buster'
 git clone -q --depth 1 'https://github.com/s0md3v/photon'
 git clone -q --depth 1 'https://github.com/s0md3v/xsstrike'
+git clone -q --depth 1 --recursive 'https://github.com/Screetsec/sudomy'
 git clone -q --depth 1 'https://github.com/SimplySecurity/simplyemail'
 git clone -q --depth 1 'https://github.com/sqlmapproject/sqlmap'
 git clone -q --depth 1 'https://github.com/SySS-Research/seth'
@@ -295,11 +300,16 @@ sudo chmod +x /usr/bin/merlin-cert
 wget -q 'https://camo.githubusercontent.com/c39b27165e5a911744220274b00b1bfcb2742408/68747470733a2f2f692e696d6775722e636f6d2f34694b7576756a2e6a7067' -O '/opt/merlin/logo.jpeg'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Merlin\nExec=gnome-terminal --window -- merlin\nIcon=/opt/merlin/logo.jpeg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Generate Certificate\nExec=gnome-terminal --window -- merlin-cert" > /usr/share/applications/merlin.desktop'
 
-clear && echo "Updating Windows Exploit Suggester"
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/windows-exploit-suggester && ./windows-exploit-suggester.py \"\$@\")" > /usr/bin/windows-exploit-suggester'
+clear && echo "Installing Windows Exploit Suggester"
+sudo bash -c 'echo -e "#!/bin/bash\n(/opt/windows-exploit-suggester/windows-exploit-suggester.py \"\$@\")" > /usr/bin/windows-exploit-suggester'
 sudo chmod +x /usr/bin/windows-exploit-suggester
-python windows-exploit-suggester --update
-bash -c 'echo -e "python windows-exploit-suggester --update" >> /opt/update.sh'
+
+clear && echo "Installing Windows Exploit Suggester - Next Generation (wesng)"
+cd /opt/wesng
+sudo python3 setup.py install
+#pipenv --bare --three run python setup.py install --record files.txt
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/wesng/ && if [ \$(checksudo) = 0 ]; then (pipenv run python wes.py \"\$@\");fi)" > /usr/bin/wesng'
+#sudo chmod +x /usr/bin/wesng
 
 clear && echo "-- Installing DNScan"
 cd /opt/dnscan/
@@ -323,10 +333,19 @@ cd /opt/empire/
 sudo ./setup/install.sh
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 sudo chmod +x /usr/bin/empire
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;" > /usr/share/applications/empire.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=starkiller" > /usr/share/applications/empire.desktop'
 bash -c 'echo -e "preobfuscate\nexit" > /opt/empire/obf.rc'
 empire -r /opt/empire/obf.rc
 sudo rm /opt/empire/obf.rc
+
+clear && echo "-- Installing Starkiller (Empire GUI)"
+URL_STARKILLER=$(url_latest 'https://api.github.com/repos/BC-SECURITY/Starkiller/releases/latest' '.AppImage')
+mkdir /opt/starkiller
+wget -q $URL_STARKILLER -O '/opt/starkiller/starkiller.AppImage'
+sudo chmod +x /opt/starkiller/starkiller.AppImage
+sudo ln -sf /opt/starkiller/starkiller.AppImage /usr/local/bin/starkiller
+wget -q 'https://raw.githubusercontent.com/BC-SECURITY/Starkiller/master/src/assets/icon.png' -O '/opt/starkiller/icon.png'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Starkiller\nExec=starkiller\nIcon=/opt/starkiller/icon.png\nCategories=Application;" > /usr/share/applications/starkiller.desktop'
 
 clear && echo "-- Installing Dotnet Core (Covenant)"
 wget -q 'https://packages.microsoft.com/config/ubuntu/19.04/packages-microsoft-prod.deb' -O '/opt/packages-microsoft-prod.deb'
@@ -371,6 +390,8 @@ clear && echo "-- Installing CrackMapExec"
 sudo apt-get -qq install libssl-dev libffi-dev python-dev build-essential
 cd /opt/crackmapexec/
 pipenv --bare --two run python setup.py install --record files.txt
+pipenv run python -m pip install -r requirements.txt
+pipenv run python -m pip install neo4j #lsassy
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (pipenv run cme \"\$@\");fi)" > /usr/bin/cme'
 sudo chmod +x /usr/bin/cme
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (pipenv run cmedb \"\$@\");fi)" > /usr/bin/cmedb'
@@ -542,9 +563,7 @@ sudo rm Sqlectron*.deb
 clear && echo "-- Installing nullinux"
 cd /opt/nullinux/
 sudo apt-get -qq install smbclient
-pipenv --bare --three install -r requirements.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/nullinux && if [ \$(checksudo) = 0 ]; then (pipenv run python nullinux.py \"\$@\");fi)" > /usr/bin/nullinux'
-sudo chmod +x /usr/bin/nullinux
+sudo bash setup.sh
 
 clear && echo "-- Installing enumdb"
 cd /opt/enumdb/
@@ -1035,12 +1054,29 @@ sudo chmod +x /usr/bin/recon-*
 pipenv --bare install olefile pypdf3 lxml # recon/domains-contacts/metacrawler
 pipenv --bare install pyaes # recon/domains-credentials/pwnedlist/account_creds
 pipenv --bare install pycryptodome # recon/domains-credentials/pwnedlist/domain_creds
+pipenv --bare install bs4 # recon/contacts-contacts/abc
 # install all modules
-#bash -c 'echo -e "marketplace install /\nexit" > modules.rc'
-#pipenv --bare run python recon-ng -r modules.rc
-#sudo rm modules.rc
+bash -c 'echo -e "marketplace install /\nexit" > modules.rc'
+#recon-ng -r /opt/recon-ng/modules.rc
 # add api keys
-#bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys add builtwith_api <key>\nkeys add censysio_id <key>\nkeys add censysio_secret <key>\nkeys add flickr_api <key>\nkeys add fullcontact_api <key>\nkeys add github_api <key>\nkeys add google_api <key>\nkeys add hashes_api <key>\nkeys add hibp_api <key>\nkeys add ipinfodb_api <key>\nkeys add ipstack_api <key>\nkeys add namechk_api <key>\nkeys add pwnedlist_api <key>\nkeys add pwnedlist_secret <key>\nkeys add shodan_api <key>\nkeys add twitter_api <key>\nkeys add twitter_secret <key>\nkeys add virustotal_api <key>\nexit" > api.rc'
+bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys add builtwith_api <key>\nkeys add censysio_id <key>\nkeys add censysio_secret <key>\nkeys add flickr_api <key>\nkeys add fullcontact_api <key>\nkeys add github_api <key>\nkeys add google_api <key>\nkeys add hashes_api <key>\nkeys add hibp_api <key>\nkeys add ipinfodb_api <key>\nkeys add ipstack_api <key>\nkeys add namechk_api <key>\nkeys add pwnedlist_api <key>\nkeys add pwnedlist_iv <key>\nkeys add pwnedlist_secret <key>\nkeys add shodan_api <key>\nkeys add twitter_api <key>\nkeys add twitter_secret <key>\nkeys add virustotal_api <key>\nexit" > api.rc'
+#recon-ng -r /opt/recon-ng/api.rc
+
+clear && echo "-- Installing Sudomy"
+sudo apt-get -qq install phantomjs npm
+sudo npm i -g wappalyzer --unsafe-perm=true
+cd /opt/sudomy/
+pip install -r requirements.txt
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sudomy && if [ \$(checksudo) = 0 ]; then (bash ./sudomy \"\$@\");fi)" > /usr/bin/sudomy'
+sudo chmod +x /usr/bin/sudomy
+
+clear && echo "-- Installing httprobe (Sudomy)"
+cd /opt/
+mkdir httprobe
+cd /opt/httprobe/
+wget -q 'https://github.com/tomnomnom/httprobe/releases/download/v0.1.2/httprobe-linux-amd64-0.1.2.tgz'
+tar xvzf httprobe*.tgz
+sudo ln -sf /opt/httprobe/httprobe /usr/local/bin/httprobe
 
 ########## ---------- ##########
 # Phishing
