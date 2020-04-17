@@ -1239,6 +1239,7 @@ echo -e "\n-- Creds:"
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
 echo 'BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).'
+echo 'pwndrop username and password have been set ( u:admin p:pwndrop )'
 echo -e "\nPress Enter to reboot."
 read -p "" </dev/tty
 
