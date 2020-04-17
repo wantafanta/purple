@@ -158,6 +158,7 @@ git clone -q --depth 1 'https://github.com/s0lst1c3/eaphammer'
 git clone -q --depth 1 'https://github.com/s0md3v/hash-buster'
 git clone -q --depth 1 'https://github.com/s0md3v/photon'
 git clone -q --depth 1 'https://github.com/s0md3v/xsstrike'
+git clone -q --depth 1 'https://github.com/sachinkamath/ntlmrecon'
 git clone -q --depth 1 --recursive 'https://github.com/Screetsec/sudomy'
 git clone -q --depth 1 'https://github.com/SimplySecurity/simplyemail'
 git clone -q --depth 1 'https://github.com/sqlmapproject/sqlmap'
@@ -932,6 +933,12 @@ sudo apt-get -qq install snmp
 clear && echo "-- Installing nbtscan"
 sudo apt-get -qq install nbtscan
 
+clear && echo "-- Installing NTLMRecon"
+cd /op/ntlmrecon/
+pipenv --bare --three run python setup.py install --record files.txt
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntlmrecon && if [ \$(checksudo) = 0 ]; then (pipenv run ntlmrecon \"\$@\");fi)" > /usr/bin/ntlmrecon'
+sudo chmod +x /usr/bin/ntlmrecon
+
 clear && echo "-- Installing Nessus"
 while [ ! -f ~/Downloads/Nessus*.deb ] #nessus installation package not found - ask if required
 do
@@ -1151,6 +1158,20 @@ clear && echo "-- Installing Go"
 sudo add-apt-repository -y ppa:longsleep/golang-backports
 sudo apt-get -qq update
 sudo apt-get -qq install golang-go
+
+clear && echo "-- Installing pwndrop"
+URL_PWNDROP=$(url_latest 'https://api.github.com/repos/kgretzky/pwndrop/releases/latest' 'linux-amd64')
+wget -q $URL_PWNDROP
+tar zxvf *linux-amd64.tar.gz
+sudo rm -r *linux-amd64.tar.gz
+cd /opt/pwndrop/
+#sudo ./pwndrop stop
+sudo ./pwndrop install
+#sudo ./pwndrop start
+#sudo ./pwndrop status
+echo -e '[pwndrop]\ndata_dir   = /usr/local/pwndrop/data\nadmin_dir  = /usr/local/pwndrop/admin\nlisten_ip  = 127.0.0.1\nhttp_port  = 80\nhttps_port = 443\n\n[setup]\nusername = "admin"\npassword = "pwndrop"\nredirect_url = ""\nsecret_path = "/pwndrop"' | sudo tee '/usr/local/pwndrop/pwndrop.ini'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=pwndrop\nExec=firefox http://localhost/pwndrop\nIcon=/opt/pwndrop/admin/favicon.png\nCategories=Application;\nActions=app1;app2;\n\n[Desktop Action app1]\nName=Start Service\nExec=gnome-terminal --window -- bash -c '\''sudo /opt/pwndrop/pwndrop start -no-autocert -no-dns && read -p \"Press Enter to close.\"'\''\n\n[Desktop Action app2]\nName=Stop Service\nExec=gnome-terminal --window -- bash -c '\''sudo /opt/pwndrop/pwndrop stop && read -p \"Press Enter to close.\"'\''" > /usr/share/applications/pwndrop.desktop'
+sudo systemctl disable pwndrop.service
 
 # moved to end of script due to time of populating the database
 #clear && echo "-- Installing cve-search"

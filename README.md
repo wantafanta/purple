@@ -1,5 +1,5 @@
 ### redteam.sh
-Only tested on Ubuntu 18.10/19.04/19.10 Desktop (minimal) in VMware Workstation.
+Only tested on Ubuntu 19.10 Desktop (minimal) in VMware Workstation.
 
 Run without sudo.
 
@@ -9,7 +9,7 @@ bash redteam.sh | tee redteam.log
 
 Press enter a few times, choose yes, next etc.
 
-Grabs the latests version of all tools. Where possible run in a virtual environment using pipenv.
+Grabs the latest version of all tools. Where possible run in a virtual environment using pipenv.
  
 #### Tools
 * [ActiveReign](https://github.com/m8r0wn/activereign)
@@ -99,6 +99,7 @@ Grabs the latests version of all tools. Where possible run in a virtual environm
 * [nullinux](https://github.com/m8r0wn/nullinux)
 * [NTDSAudit](https://github.com/Dionach/NtdsAudit)
 * [NTDSDumpEx](https://github.com/zcgonvh/NTDSDumpEx)
+* [NTLMRecon](https://github.com/sachinkamath/NTLMRecon)
 * [NTLMv1 Mutlitool](https://github.com/evilmog/ntlmv1-multi)
 * [ODAT: Oracle Database Attacking Tool](https://github.com/quentinhardy/odat/)
 * [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
