@@ -116,6 +116,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [pymeta](https://github.com/m8r0wn/pymeta)
 * [pypykatz](https://github.com/skelsec/pypykatz)
 * [pwndb](https://github.com/davidtavarez/pwndb)
+* [pwndrop](https://github.com/kgretzky/pwndrop)
 * [Recon-ng](https://github.com/lanmaster53/recon-ng)
 * [recursebuster](https://github.com/C-Sto/recursebuster)
 * [Remmina](https://snapcraft.io/remmina)
