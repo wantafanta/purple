@@ -1,5 +1,5 @@
 ### redteam.sh
-Only tested on Ubuntu 19.10 Desktop (minimal) in VMware Workstation.
+Tested on Ubuntu 19.10 Desktop (minimal) in VMware Workstation.
 
 Run without sudo.
 
@@ -32,7 +32,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [crEAP](https://github.com/Shellntel/scripts)
 * [Credmap](https://github.com/lightos/credmap)
 * [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
-* [cve-search](https://github.com/cve-search/cve-search)
+* ~~[cve-search](https://github.com/cve-search/cve-search)
 * [DBeaver](https://github.com/dbeaver/dbeaver)
 * [dirble](https://github.com/nccgroup/dirble)
 * [DNScan](https://github.com/rbsec/dnscan)
@@ -41,17 +41,17 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Don't Kill MY Cat (DKMC)](https://github.com/Mr-Un1k0d3r/dkmc)
 * [eaphammer](https://github.com/s0lst1c3/eaphammer)
 * [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
-  * [Starkiller] (https://github.com/BC-SECURITY/Starkiller)
+  * [Starkiller](https://github.com/BC-SECURITY/Starkiller)
 * [enumdb](https://github.com/m8r0wn/enumdb)
 * [EvilClippy](https://github.com/outflanknl/EvilClippy)
 * [evilginx2](https://github.com/kgretzky/evilginx2)
 * [Evil-SSDP](https://gitlab.com/initstring/evil-ssdp)
 * File Cracks
-* FileZilla
+* [FileZilla](https://filezilla-project.org/)
 * [fireprox](https://github.com/ustayready/fireprox)
 * [Fluxion](https://github.com/FluxionNetwork/fluxion)
   * [Aircrack-ng](https://www.aircrack-ng.org/)
-  * coWPAtty
+  * [coWPAtty](https://www.willhackforsushi.com/?page_id=50)
   * Mdk3
 * [fuxploider](https://github.com/almandin/fuxploider)
 * [FreeRDP](https://github.com/FreeRDP/FreeRDP)
@@ -105,6 +105,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
 * [OnionShare](https://onionshare.org/)
 * [Patator](https://github.com/lanjelot/patator)
+  * [ike-scan](https://github.com/royhills/ike-scan)
 * [Photon](https://github.com/s0md3v/photon)
 * [Powershell](https://snapcraft.io/powershell)
   * [LyncSniper](https://github.com/mdsecresearch/lyncsniper)
@@ -136,7 +137,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Sqlectron](https://sqlectron.github.io/)
 * [Sqlmap](https://github.com/sqlmapproject/sqlmap)
 * [Spraying Toolkit](https://github.com/byt3bl33d3r/sprayingtoolkit)
-* [Sudomy] (https://github.com/Screetsec/sudomy)
+* [Sudomy](https://github.com/Screetsec/sudomy)
 * [Termshark](https://github.com/gcla/termshark)
 * [testssl.sh](https://github.com/drwetter/testssl.sh.git)
 * [theHarvester](https://github.com/laramies/theharvester)

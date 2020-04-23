@@ -18,7 +18,7 @@ sudo chmod +x /usr/bin/checksudo
 clear && echo "-- Lets begin ..."
 
 # static urls (that may need to be updated)
-URL_MONO='https://dl.winehq.org/wine/wine-mono/4.9.4/wine-mono-4.9.4.msi'
+URL_MONO='https://dl.winehq.org/wine/wine-mono/5.0.0/wine-mono-5.0.0-x86.msi'
 # mono: https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 # opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
