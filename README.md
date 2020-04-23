@@ -32,7 +32,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [crEAP](https://github.com/Shellntel/scripts)
 * [Credmap](https://github.com/lightos/credmap)
 * [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
-* ~~[cve-search](https://github.com/cve-search/cve-search)
+* ~~[cve-search](https://github.com/cve-search/cve-search)~~
 * [DBeaver](https://github.com/dbeaver/dbeaver)
 * [dirble](https://github.com/nccgroup/dirble)
 * [DNScan](https://github.com/rbsec/dnscan)
@@ -86,7 +86,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mimikatz](https://github.com/gentilkiwi/mimikatz)
 * [mitm6](https://github.com/fox-it/mitm6)
-* ~~[natlas](https://github.com/natlas/natlas/)~~
+* [natlas](https://github.com/natlas/natlas/)
 * [navi](https://github.com/denisidoro/navi)
 * nbtscan
 * [Nessus](https://www.tenable.com/downloads/nessus)
