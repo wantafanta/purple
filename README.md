@@ -90,7 +90,6 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Nessus](https://www.tenable.com/downloads/nessus)
 * [nikto](https://github.com/sullo/nikto)
 * [nmap](https://nmap.org/)
-  * [zenmap](https://nmap.org/zenmap/) (no release for Ubuntu 20.04 yet)
   * [vulners](https://github.com/vulnersCom/nmap-vulners)
   * [vulscan](https://github.com/scipag/vulscan)
 * [nmapautomator](https://github.com/wantafanta/nmapautomator)
@@ -158,6 +157,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Spoofcheck](https://github.com/BishopFox/spoofcheck)
 * [tplmap](https://github.com/epinna/tplmap)
 * [Windows Exploit Suggester](https://github.com/GDSSecurity/windows-exploit-suggester)
+* [zenmap](https://nmap.org/zenmap/)
 
 #### Links
 * [GTFOBins - Get The F**k Out Binaries](https://gtfobins.github.io)

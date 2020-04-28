@@ -58,7 +58,7 @@ clear && echo "-- Installing Ubuntu OS updates"
 sudo apt-get -qq update && sudo apt-get -qq upgrade
 
 clear && echo "-- Installing apt packages"
-sudo apt-get -qq install open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc mlocate curl rename python3-pip libcanberra-gtk-module libgconf-2-4 jq gnome-tweak-tool
+sudo apt-get -qq install open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc mlocate curl rename python3-pip libcanberra-gtk-module libgconf-2-4 jq gnome-tweak-tool wireguard
 if [[ $(py2_support) == "false" ]]; then
   sudo apt-get -qq install python-is-python3
 else
@@ -985,7 +985,7 @@ clear && echo "-- Installing nbtscan"
 sudo apt-get -qq install nbtscan
 
 clear && echo "-- Installing NTLMRecon"
-cd /op/ntlmrecon/
+cd /opt/ntlmrecon/
 pipenv --bare --three run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntlmrecon && if [ \$(checksudo) = 0 ]; then (pipenv run ntlmrecon \"\$@\");fi)" > /usr/bin/ntlmrecon'
 sudo chmod +x /usr/bin/ntlmrecon
@@ -1017,48 +1017,50 @@ clear && echo "-- Installing frogger2"
 sudo apt-get -qq install yersinia vlan arp-scan screen
 sudo chmod +x /opt/vlan-hopping/frogger2.sh
 
-clear && echo "-- Installing Elasticsearch 6.x (natlas Database)"
-wget -q -O - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
-echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
-sudo apt-get -qq update
-sudo apt-get -qq install apt-transport-https elasticsearch
-sudo systemctl daemon-reload
-sudo systemctl enable elasticsearch.service
-sudo systemctl start elasticsearch.service
+if [[ $(py2_support) == "true" ]]; then
+  clear && echo "-- Installing Elasticsearch 6.x (natlas Database)"
+  wget -q -O - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+  echo "deb https://artifacts.elastic.co/packages/6.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-6.x.list
+  sudo apt-get -qq update
+  sudo apt-get -qq install apt-transport-https elasticsearch
+  sudo systemctl daemon-reload
+  sudo systemctl enable elasticsearch.service
+  sudo systemctl start elasticsearch.service
 
-clear && echo "-- Installing natlas"
-URL_NATLAS_AGENT=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-agent')
-URL_NATLAS_SERVER=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-server')
-mkdir /opt/natlas
-cd /opt/natlas/
-wget -q $URL_NATLAS_AGENT
-wget -q $URL_NATLAS_SERVER
-tar xvzf natlas-server*.tgz
-tar xvzf natlas-agent*.tgz
-sudo rm -r natlas-*.tgz
-cd /opt/natlas/natlas-server/
-sudo ./setup-server.sh
-#https://github.com/natlas/natlas/blob/main/natlas-server/README.md
-echo 'LOCAL_SUBRESOURCES=True' > /opt/natlas/natlas-server/.env
+  clear && echo "-- Installing natlas"
+  URL_NATLAS_AGENT=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-agent')
+  URL_NATLAS_SERVER=$(url_latest 'https://api.github.com/repos/natlas/natlas/releases/latest' 'natlas-server')
+  mkdir /opt/natlas
+  cd /opt/natlas/
+  wget -q $URL_NATLAS_AGENT
+  wget -q $URL_NATLAS_SERVER
+  tar xvzf natlas-server*.tgz
+  tar xvzf natlas-agent*.tgz
+  sudo rm -r natlas-*.tgz
+  cd /opt/natlas/natlas-server/
+  sudo ./setup-server.sh
+  #https://github.com/natlas/natlas/blob/main/natlas-server/README.md
+  echo 'LOCAL_SUBRESOURCES=True' > /opt/natlas/natlas-server/.env
 
-sudo cp /opt/natlas/natlas-server/deployment/natlas-server.service /etc/systemd/system/natlas-server.service
-sudo systemctl daemon-reload
-sudo systemctl enable natlas-server.service
-sudo systemctl start natlas-server.service
+  sudo cp /opt/natlas/natlas-server/deployment/natlas-server.service /etc/systemd/system/natlas-server.service
+  sudo systemctl daemon-reload
+  sudo systemctl enable natlas-server.service
+  sudo systemctl start natlas-server.service
 
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;app2;app3;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''\n\n[Desktop Action app2]\nName=Start Agent\nExec=gnome-terminal --window -- bash -c '\''sudo systemctl start natlas-agent'\''\n\n[Desktop Action app3]\nName=Stop Agent\nExec=gnome-terminal --window -- bash -c '\''sudo systemctl stop natlas-agent'\''" > /usr/share/applications/natlas.desktop'
+  sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Natlas\nExec=firefox http://localhost:5000\nIcon=/opt/natlas/natlas-server/app/static/img/natlas-logo.png\nCategories=Application;\nActions=app1;app2;app3;\n\n[Desktop Action app1]\nName=Add User\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && read -p \"Enter valid email address: \" email && clear && cd /opt/natlas/natlas-server/ && source venv/bin/activate && ./add-user.py --admin \$email && printf \"\\\n\\\n\" && read -p \"Press Enter to close.\" </dev/tty'\''\n\n[Desktop Action app2]\nName=Start Agent\nExec=gnome-terminal --window -- bash -c '\''sudo systemctl start natlas-agent'\''\n\n[Desktop Action app3]\nName=Stop Agent\nExec=gnome-terminal --window -- bash -c '\''sudo systemctl stop natlas-agent'\''" > /usr/share/applications/natlas.desktop'
 
-cd /opt/natlas/natlas-agent/
-sudo ./setup-agent.sh
-# https://github.com/natlas/natlas/blob/main/natlas-agent/README.md
-echo 'NATLAS_SCAN_LOCAL=True' > /opt/natlas/natlas-agent/.env
+  cd /opt/natlas/natlas-agent/
+  sudo ./setup-agent.sh
+  # https://github.com/natlas/natlas/blob/main/natlas-agent/README.md
+  echo 'NATLAS_SCAN_LOCAL=True' > /opt/natlas/natlas-agent/.env
 
-sudo cp /opt/natlas/natlas-agent/deployment/natlas-agent.service /etc/systemd/system/natlas-agent.service
-sudo systemctl daemon-reload
-sudo systemctl disable natlas-agent.service
-#sudo systemctl start natlas-agent
+  sudo cp /opt/natlas/natlas-agent/deployment/natlas-agent.service /etc/systemd/system/natlas-agent.service
+  sudo systemctl daemon-reload
+  sudo systemctl disable natlas-agent.service
+  #sudo systemctl start natlas-agent
 
-sudo chmod -R 777 /opt/natlas/
+  sudo chmod -R 777 /opt/natlas/
+fi
 
 ########## ---------- ##########
 # OSINT
@@ -1261,7 +1263,7 @@ sudo systemctl disable pwndrop.service
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'Burp Suite Community Edition-0.desktop', 'BurpSuitePro.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
 sudo systemctl stop apache2.service
@@ -1288,6 +1290,9 @@ sudo chmod -R 777 /opt/natlas/
 
 # Set neo4j database password to \`bloodhound\`
 curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
+
+# Update the mlocate database
+sudo updatedb
 
 clear && echo -e "Done.\nAll modules stored in /opt/"
 #echo 'View Docker images via "sudo docker images"'
