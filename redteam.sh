@@ -373,7 +373,7 @@ sudo ln -sf /opt/starkiller/starkiller.AppImage /usr/local/bin/starkiller
 wget -q 'https://raw.githubusercontent.com/BC-SECURITY/Starkiller/master/src/assets/icon.png' -O '/opt/starkiller/icon.png'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Starkiller\nExec=starkiller\nIcon=/opt/starkiller/icon.png\nCategories=Application;" > /usr/share/applications/starkiller.desktop'
 
-if [[ $(py2_support) == "true" ]]; then # dotnet-sdk-2.2 not in 20.04 repo
+if [[ $(py2_support) == "true" ]]; then # dotnet-sdk-2.2 no longer supported
   clear && echo "-- Installing Dotnet Core (Covenant)"
   cd /opt/
   wget -q 'https://packages.microsoft.com/config/ubuntu/19.10/packages-microsoft-prod.deb' -O '/opt/packages-microsoft-prod.deb'
@@ -382,7 +382,7 @@ if [[ $(py2_support) == "true" ]]; then # dotnet-sdk-2.2 not in 20.04 repo
   sudo apt-get -qq update
   sudo apt-get -qq install apt-transport-https
   sudo apt-get -qq update
-  sudo apt-get -qq install dotnet-sdk-2.2
+  sudo apt-get -qq install dotnet-sdk-3.0
 
   clear && echo "-- Installing Covenant"
   cd /opt/covenant/Covenant/
@@ -1276,9 +1276,10 @@ sudo systemctl disable lighttpd.service #fluxion
 sudo apt-get autoremove -y
 # fix empire
 sudo pip3 install -r /opt/empire/setup/requirements.txt
-sudo /opt/empire/setup/reset.sh
+#cd /opt/empire/
+#sudo ./setup/reset.sh
 
-# fix vmware display
+# Fix VMware display
 sudo sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
 
 # Clear terminal history
