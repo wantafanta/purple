@@ -375,11 +375,12 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 
 clear && echo "-- Installing Dotnet Core 2.2 (Covenant)"
 cd /opt/
-wget 'https://download.visualstudio.microsoft.com/download/pr/022d9abf-35f0-4fd5-8d1c-86056df76e89/477f1ebb70f314054129a9f51e9ec8ec/dotnet-sdk-2.2.207-linux-x64.tar.gz'
-mkdir -p /opt/dotnet && tar zxf dotnet-sdk-2.2.207-linux-x64.tar.gz -C /opt/dotnet
+wget -q 'https://download.visualstudio.microsoft.com/download/pr/022d9abf-35f0-4fd5-8d1c-86056df76e89/477f1ebb70f314054129a9f51e9ec8ec/dotnet-sdk-2.2.207-linux-x64.tar.gz'
+mkdir -p /opt/dotnet && tar zxf dotnet-sdk-*.tar.gz -C /opt/dotnet
 sudo ln -sf /opt/dotnet/dotnet /usr/bin/dotnet
 export DOTNET_ROOT=/opt/dotnet
 export PATH=$PATH:/opt/dotnet
+sudo rm -r dotnet-sdk-*.tar.gz
 
 clear && echo "-- Installing Covenant"
 cd /opt/covenant/Covenant/
