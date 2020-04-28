@@ -19,7 +19,8 @@ py2_support() {
 }
 
 if [[ $(py2_support) == "false" ]]; then
-  echo "Ubuntu 20.04 no longer supports Python 2, so some tools won't be installed. If you need them, run this script on Ubuntu 19.10 ( https://releases.ubuntu.com/19.10/ )." 1>&2
+  echo "Ubuntu 20.04 no longer supports Python 2, so the below tools won't be installed. If you need them, run this script on Ubuntu 19.10 ( https://releases.ubuntu.com/19.10/ )." 1>&2
+  echo -e "\n-- Covenant\n-- crEAP\n-- Don't Kill MY Cat (DKMC)\n-- Jackit\n-- LinkedInt\n-- natlas\n-- ODAT: Oracle Database Attacking Tool\n-- PRET\n-- rdpy\n-- Seth\n-- SimplyEmail\n-- Spoofcheck\n-- tplmap\n-- Windows Exploit Suggester\n-- zenmap\n"
   echo "Press Enter to continue."
   read -p "" </dev/tty
 fi
