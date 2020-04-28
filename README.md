@@ -27,9 +27,8 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Bully](https://github.com/aanarchyy/bully)
 * [Burp Suite](https://portswigger.net/burp)
   * Community Edition or Professional
-* [Covenant](https://github.com/cobbr/Covenant) (dotnet 2.2 not supported in Ubuntu 20.04 yet)
+* [Covenant](https://github.com/cobbr/Covenant)
 * [CrackMapExec](https://github.com/byt3bl33d3r/crackmapexec)
-* [crEAP](https://github.com/Shellntel/scripts)
 * [Credmap](https://github.com/lightos/credmap)
 * [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
 * ~~[cve-search](https://github.com/cve-search/cve-search)~~
@@ -147,6 +146,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [XSStrike](https://github.com/s0md3v/xsstrike)
 
 #### Python 2 (will be skipped in Ubuntu 20.04)
+* [crEAP](https://github.com/Shellntel/scripts)
 * [Don't Kill MY Cat (DKMC)](https://github.com/Mr-Un1k0d3r/dkmc)
 * [Jackit](https://github.com/insecurityofthings/jackit)
 * [LinkedInt](https://github.com/vysec/linkedint)

@@ -20,7 +20,7 @@ py2_support() {
 
 if [[ $(py2_support) == "false" ]]; then
   echo "Ubuntu 20.04 no longer supports Python 2, so the below tools won't be installed. If you need them, run this script on Ubuntu 19.10 ( https://releases.ubuntu.com/19.10/ )." 1>&2
-  echo -e "\n-- Covenant\n-- crEAP\n-- Don't Kill MY Cat (DKMC)\n-- Jackit\n-- LinkedInt\n-- natlas\n-- ODAT: Oracle Database Attacking Tool\n-- PRET\n-- rdpy\n-- Seth\n-- SimplyEmail\n-- Spoofcheck\n-- tplmap\n-- Windows Exploit Suggester\n-- zenmap\n"
+  echo -e "\n-- crEAP\n-- Don't Kill MY Cat (DKMC)\n-- Jackit\n-- LinkedInt\n-- natlas\n-- ODAT: Oracle Database Attacking Tool\n-- PRET\n-- rdpy\n-- Seth\n-- SimplyEmail\n-- Spoofcheck\n-- tplmap\n-- Windows Exploit Suggester\n-- zenmap\n"
   echo "Press Enter to continue."
   read -p "" </dev/tty
 fi
@@ -373,24 +373,20 @@ sudo ln -sf /opt/starkiller/starkiller.AppImage /usr/local/bin/starkiller
 wget -q 'https://raw.githubusercontent.com/BC-SECURITY/Starkiller/master/src/assets/icon.png' -O '/opt/starkiller/icon.png'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Starkiller\nExec=starkiller\nIcon=/opt/starkiller/icon.png\nCategories=Application;" > /usr/share/applications/starkiller.desktop'
 
-if [[ $(py2_support) == "true" ]]; then # dotnet-sdk-2.2 no longer supported
-  clear && echo "-- Installing Dotnet Core (Covenant)"
-  cd /opt/
-  wget -q 'https://packages.microsoft.com/config/ubuntu/19.10/packages-microsoft-prod.deb' -O '/opt/packages-microsoft-prod.deb'
-  sudo dpkg -i /opt/packages-microsoft-prod.deb
-  sudo rm /opt/packages-microsoft-prod.deb
-  sudo apt-get -qq update
-  sudo apt-get -qq install apt-transport-https
-  sudo apt-get -qq update
-  sudo apt-get -qq install dotnet-sdk-3.0
+clear && echo "-- Installing Dotnet Core 2.2 (Covenant)"
+cd /opt/
+wget 'https://download.visualstudio.microsoft.com/download/pr/022d9abf-35f0-4fd5-8d1c-86056df76e89/477f1ebb70f314054129a9f51e9ec8ec/dotnet-sdk-2.2.207-linux-x64.tar.gz'
+mkdir -p /opt/dotnet && tar zxf dotnet-sdk-2.2.207-linux-x64.tar.gz -C /opt/dotnet
+sudo ln -sf /opt/dotnet/dotnet /usr/bin/dotnet
+export DOTNET_ROOT=/opt/dotnet
+export PATH=$PATH:/opt/dotnet
 
-  clear && echo "-- Installing Covenant"
-  cd /opt/covenant/Covenant/
-  sudo dotnet build
-  sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/covenant/Covenant/ && sudo dotnet run \"\$@\")" > /usr/bin/covenant'
-  sudo chmod +x /usr/bin/covenant
-  sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Covenant\nExec=gnome-terminal --window -- covenant\nIcon=/opt/covenant/Covenant/wwwroot/images/favicon.svg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox https://localhost:7443" > /usr/share/applications/covenant.desktop'
-fi
+clear && echo "-- Installing Covenant"
+cd /opt/covenant/Covenant/
+sudo dotnet build
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/covenant/Covenant/ && sudo dotnet run \"\$@\")" > /usr/bin/covenant'
+sudo chmod +x /usr/bin/covenant
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Covenant\nExec=gnome-terminal --window -- covenant\nIcon=/opt/covenant/Covenant/wwwroot/images/favicon.svg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox https://localhost:7443" > /usr/share/applications/covenant.desktop'
 
 clear && echo "-- Installing mitm6"
 cd /opt/mitm6/
