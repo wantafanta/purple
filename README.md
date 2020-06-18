@@ -78,11 +78,13 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Linux Smart Enumeration](https://github.com/diego-treitos/linux-smart-enumeration)
 * [lsassy](https://github.com/Hackndo/lsassy)
 * [Lynis](https://github.com/CISOfy/lynis)
+* [Maltego](https://www.maltego.com/)
 * [Merlin](https://github.com/Ne0nd0g/merlin)
 * [Metasploit Framework](https://github.com/rapid7/metasploit-framework)
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mimikatz](https://github.com/gentilkiwi/mimikatz)
 * [mitm6](https://github.com/fox-it/mitm6)
+* [Modlishka](https://github.com/drk1wi/Modlishka)
 * [natlas](https://github.com/natlas/natlas/)
 * [navi](https://github.com/denisidoro/navi)
 * nbtscan

@@ -31,12 +31,14 @@ sudo chmod +x /usr/bin/checksudo
 clear && echo "-- Lets begin ..."
 
 # static urls (that may need to be updated)
-URL_MONO='https://dl.winehq.org/wine/wine-mono/5.0.0/wine-mono-5.0.0-x86.msi'
+URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.0/wine-mono-5.1.0-x86.msi'
 # mono: https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 # opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
-URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/10852/download?i_agree_to_tenable_license_agreement=true'
+URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11053/download?i_agree_to_tenable_license_agreement=true'
 # nesus: https://www.tenable.com/downloads/nessus - Nessus-8.10.0-ubuntu1110_amd64.deb
+URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.11.13104.deb'
+# maltego: https://www.maltego.com/downloads/
 
 # function to scrape latest release from github api
 url_latest() {
@@ -75,6 +77,9 @@ if [[ $(py2_support) == "true" ]]; then
 fi
 sudo -H pip3 install -U pipenv
 sudo -H pip3 install pypykatz shodan droopescan
+
+clear && echo "-- Installing poetry"
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -1064,6 +1069,12 @@ fi
 # OSINT
 ########## ---------- ##########
 
+clear && echo "-- Installing Maltego"
+cd /opt/
+wget -q $URL_MALTEGO
+sudo apt-get -qq install ./Maltego*.deb
+sudo rm Maltego*.deb
+
 clear && echo "-- Installing Cr3d0v3r"
 cd /opt/cr3dov3r/
 pipenv --bare --three install
@@ -1155,6 +1166,14 @@ unzip *.zip
 sudo rm *.zip
 sudo bash install.sh
 sudo chmod +x /usr/local/bin/evilginx
+
+clear && echo "-- Installing Modlishka"
+URL_MODLISHKA=$(url_latest 'https://api.github.com/repos/drk1wi/Modlishka/releases/latest' 'linux')
+mkdir /opt/modlishka
+cd /opt/modlishka/
+wget -q $URL_MODLISHKA
+sudo chmod +x /opt/modlishka/*
+sudo ln -sf /opt/modlishka/Modlishka-linux-amd64 /usr/local/bin/modlishka
 
 ########## ---------- ##########
 # Wireless
@@ -1254,7 +1273,7 @@ sudo systemctl disable pwndrop.service
 #  sudo bash -c 'echo -e "#!/bin/bash\ncd /opt/cve-search/\npipenv --bare run sudo python ./sbin/db_mgmt_json.py -p\npipenv --bare run sudo python ./sbin/db_mgmt_cpe_dictionary.py\npipenv --bare run sudo python ./sbin/db_updater.py -c" > /opt/cve-populate.sh'
 #  sudo chmod +x /opt/*.sh
 #fi
-#sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=cve-search\nExec=firefox http://127.0.0.1:5000\nIcon=/opt/cve-search/web/static/img/favicon.ico\nCategories=Application;" > /usr/share/applications/cve-search.desktop'
+#sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=cve-search\nExec=firefox http://localhost:5000\nIcon=/opt/cve-search/web/static/img/favicon.ico\nCategories=Application;" > /usr/share/applications/cve-search.desktop'
 
 ########## ---------- ##########
 # End
