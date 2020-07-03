@@ -20,7 +20,7 @@ py2_support() {
 
 if [[ $(py2_support) == "false" ]]; then
   echo "Ubuntu 20.04 no longer supports Python 2, so the below tools won't be installed. If you need them, run this script on Ubuntu 19.10 ( https://releases.ubuntu.com/19.10/ )." 1>&2
-  echo -e "\n-- crEAP\n-- Don't Kill MY Cat (DKMC)\n-- Jackit\n-- LinkedInt\n-- natlas\n-- ODAT: Oracle Database Attacking Tool\n-- PRET\n-- rdpy\n-- Seth\n-- SimplyEmail\n-- Spoofcheck\n-- tplmap\n-- Windows Exploit Suggester\n-- zenmap\n"
+  echo -e "\n-- crEAP\n-- Don't Kill MY Cat (DKMC)\n-- Jackit\n-- LinkedInt\n-- natlas\n-- ODAT: Oracle Database Attacking Tool\n-- PRET\n-- rdpy\n-- proxmark3\n-- Seth\n-- SimplyEmail\n-- Spoofcheck\n-- tplmap\n-- Windows Exploit Suggester\n-- zenmap\n"
   echo "Press Enter to continue."
   read -p "" </dev/tty
 fi
@@ -175,7 +175,6 @@ git clone -q --depth 1 --recursive 'https://github.com/mdsecresearch/lyncsniper'
 git clone -q --depth 1 'https://github.com/mIcHyAmRaNe/okadminfinder3'
 git clone -q --depth 1 'https://github.com/offensive-security/exploitdb'
 git clone -q --depth 1 'https://github.com/Pepelux/sippts'
-git clone -q --depth 1 'https://github.com/Proxmark/proxmark3'
 git clone -q --depth 1 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries' ghostpack #https://github.com/GhostPack
 git clone -q --depth 1 'https://github.com/rezasp/joomscan'
 git clone -q --depth 1 'https://github.com/rbsec/dnscan'
@@ -378,9 +377,9 @@ sudo ln -sf /opt/starkiller/starkiller.AppImage /usr/local/bin/starkiller
 wget -q 'https://raw.githubusercontent.com/BC-SECURITY/Starkiller/master/src/assets/icon.png' -O '/opt/starkiller/icon.png'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Starkiller\nExec=starkiller\nIcon=/opt/starkiller/icon.png\nCategories=Application;" > /usr/share/applications/starkiller.desktop'
 
-clear && echo "-- Installing Dotnet Core 2.2 (Covenant)"
+clear && echo "-- Installing Dotnet Core 3.1 (Covenant)"
 cd /opt/
-wget -q 'https://download.visualstudio.microsoft.com/download/pr/022d9abf-35f0-4fd5-8d1c-86056df76e89/477f1ebb70f314054129a9f51e9ec8ec/dotnet-sdk-2.2.207-linux-x64.tar.gz'
+wget -q 'https://download.visualstudio.microsoft.com/download/pr/8db2b522-7fa2-4903-97ec-d6d04d297a01/f467006b9098c2de256e40d2e2f36fea/dotnet-sdk-3.1.301-linux-x64.tar.gz'
 mkdir -p /opt/dotnet && tar zxf dotnet-sdk-*.tar.gz -C /opt/dotnet
 sudo ln -sf /opt/dotnet/dotnet /usr/bin/dotnet
 export DOTNET_ROOT=/opt/dotnet
@@ -708,7 +707,7 @@ wget -q $URL_HASHCAT
 7zr x hashcat-*.7z
 sudo rm hashcat-*.7z
 mv hashcat-*/ hashcat/
-sudo ln -sf /opt/hashcat/hashcat64.bin /usr/local/bin/hashcat
+sudo ln -sf /opt/hashcat/hashcat.bin /usr/local/bin/hashcat
 # allows hashcat to work using cpu
 # https://software.intel.com/en-us/articles/opencl-drivers#latest_CPU_runtime
 cd /opt/
@@ -780,7 +779,7 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 clear && echo "-- Installing Whatwaf"
 cd /opt/whatwaf/
 pipenv --bare --three install -r requirements.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/whatwaf && if [ \$(checksudo) = 0 ]; then (pipenv run python3 whatwaf.py \"\$@\");fi)" > /usr/bin/whatwaf'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/whatwaf && if [ \$(checksudo) = 0 ]; then (pipenv run python3 whatwaf \"\$@\");fi)" > /usr/bin/whatwaf'
 sudo chmod +x /usr/bin/whatwaf
 
 clear && echo "-- Installing nikto"
@@ -1223,14 +1222,17 @@ sudo make && sudo make install
 # Misc
 ########## ---------- ##########
 
-clear && echo "-- Installing proxmark3"
-cd /opt/proxmark3/
-sudo apt-get -qq install p7zip-full build-essential libreadline5 libreadline-dev libusb-0.1-4 libusb-dev libqt4-dev perl pkg-config wget libncurses5-dev gcc-arm-none-eabi libstdc++-arm-none-eabi-newlib libpcsclite-dev pcscd
-sudo cp -rf driver/77-mm-usb-device-blacklist.rules /etc/udev/rules.d/77-mm-usb-device-blacklist.rules
-sudo udevadm control --reload-rules
-sudo adduser ${USER} dialout
-sudo make clean && sudo make all
-sudo ln -sf /opt/proxmark3/client/proxmark3 /usr/local/bin/proxmark3
+if [[ $(py2_support) == "true" ]]; then # libqt4-dev not in 20.04 repo
+  clear && echo "-- Installing proxmark3"
+  git clone -q --depth 1 'https://github.com/Proxmark/proxmark3' /opt/proxmark3
+  cd /opt/proxmark3/
+  sudo apt-get -qq install p7zip-full build-essential libreadline5 libreadline-dev libusb-0.1-4 libusb-dev libqt4-dev perl pkg-config wget libncurses5-dev gcc-arm-none-eabi libstdc++-arm-none-eabi-newlib libpcsclite-dev pcscd
+  sudo cp -rf driver/77-mm-usb-device-blacklist.rules /etc/udev/rules.d/77-mm-usb-device-blacklist.rules
+  sudo udevadm control --reload-rules
+  sudo adduser ${USER} dialout
+  sudo make clean && sudo make all
+  sudo ln -sf /opt/proxmark3/client/proxmark3 /usr/local/bin/proxmark3
+fi
 
 clear && echo "-- Installing Go"
 sudo add-apt-repository -y ppa:longsleep/golang-backports
