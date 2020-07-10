@@ -140,7 +140,6 @@ git clone -q --depth 1 'https://github.com/BC-SECURITY/empire'
 git clone -q --depth 1 'https://github.com/beefproject/beef'
 git clone -q --depth 1 'https://github.com/bitsadmin/wesng'
 git clone -q --depth 1 'https://github.com/BloodHoundAD/bloodhound'
-#git clone -q --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
 git clone -q --depth 1 --recurse-submodules 'https://github.com/cobbr/covenant'
@@ -219,7 +218,6 @@ bash -c "echo -e 'alias creap=\"sudo /opt/creap/crEAP.py\"' >> /home/${USER}/.ba
 bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${USER}/.bash_aliases"
 bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${USER}/.bash_aliases"
 bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias evilginx=\"sudo evilginx\"' >> /home/${USER}/.bash_aliases"
 bash -c "echo -e 'alias frogger=\"sudo /opt/vlan-hopping/frogger2.sh\"' >> /home/${USER}/.bash_aliases"
 bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${USER}/.bash_aliases"
 bash -c "echo -e 'alias kerbrute=\"/opt/kerbrute/kerbrute_linux_amd64\"' >> /home/${USER}/.bash_aliases"
@@ -416,7 +414,7 @@ pipenv --bare --three install lsassy
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/lsassy/ && if [ \$(checksudo) = 0 ]; then (pipenv run lsassy \"\$@\");fi)" > /usr/bin/lsassy'
 sudo chmod +x /usr/bin/lsassy
 
-clear && echo "-- Installing CrackMapExec"
+clear && echo "-- Installing CrackMapExec" # new github feature uses actions/atifacts which require authentication. public download requires auther to use releases
 URL_CME=$(url_latest 'https://api.github.com/repos/byt3bl33d3r/CrackMapExec/releases/latest' 'cme-ubuntu')
 URL_CMEDB=$(url_latest 'https://api.github.com/repos/byt3bl33d3r/CrackMapExec/releases/latest' 'cmedb-ubuntu')
 mkdir /opt/crackmapexec/
@@ -427,8 +425,22 @@ unzip cme-ubuntu-latest.zip
 unzip cmedb-ubuntu-latest.zip
 sudo rm cme*.zip
 sudo chmod +x cme*
-sudo ln -sf /opt/crackmapexec/cme /usr/local/bin/cme
-sudo ln -sf /opt/crackmapexec/cmedb /usr/local/bin/cmedb
+
+if [ ! -f /opt/creackmapexec/cme ] # cme binary not found, build from source
+then
+  git clone -q --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec' /opt/crackmapexec
+  sudo apt-get -qq install libssl-dev libffi-dev python3-dev build-essential
+  cd /opt/crackmapexec/
+  pipenv --bare --three run python setup.py install --record files.txt
+  pipenv run python -m pip install -r requirements.txt
+  sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (pipenv run cme \"\$@\");fi)" > /usr/bin/cme'
+  sudo chmod +x /usr/bin/cme
+  sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (pipenv run cmedb \"\$@\");fi)" > /usr/bin/cmedb'
+  sudo chmod +x /usr/bin/cmedb
+else
+  sudo ln -sf /opt/crackmapexec/cme /usr/local/bin/cme
+  sudo ln -sf /opt/crackmapexec/cmedb /usr/local/bin/cmedb
+fi
 
 clear && echo "-- Installing ActiveReign"
 cd /opt/activereign/
@@ -449,12 +461,14 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 
 clear && echo "-- Installing Neo4j (BloodHound Database)"
 cd /opt/
-sudo apt-get remove -y java-common
-sudo apt-get -qq install openjdk-8-jre-headless
-wget -q --no-check-certificate -O - 'https://debian.neo4j.org/neotechnology.gpg.key' | sudo apt-key add -
-echo 'deb http://debian.neo4j.org/repo stable/' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
-sudo apt-get -qq update
-sudo apt-get -qq install neo4j
+if [[ $(py2_support) == "false" ]]; then # not in < 20.04 repo
+  sudo apt-get remove -y java-common
+  sudo apt-get -qq install openjdk-8-jre-headless
+  wget -q --no-check-certificate -O - 'https://debian.neo4j.org/neotechnology.gpg.key' | sudo apt-key add -
+  echo 'deb http://debian.neo4j.org/repo stable latest' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
+  sudo apt-get -qq update
+fi
+sudo apt-get -qq install neo4j #sudo apt-get install neo4j=1:4.1.1
 sudo systemctl enable neo4j.service
 
 clear && echo "-- Installing BloodHound Custom Queries"
@@ -470,6 +484,15 @@ sudo chmod +x /usr/bin/bloodhound.py
 clear && echo "-- Installing Aclpwn" #Active Directory ACL exploitation with BloodHound
 #https://github.com/fox-it/aclpwn.py
 sudo -H pip3 install aclpwn
+
+clear && echo "-- Installing Stormspotter"
+git clone -q --depth 1 'https://github.com/Azure/stormspotter' /opt/stormspotter
+cd /opt/stormspotter/
+pipenv --bare --three install .
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/stormspotter/ && if [ \$(checksudo) = 0 ]; then (pipenv run stormspotter \"\$@\");fi)" > /usr/bin/stormspotter'
+sudo chmod +x /usr/bin/stormspotter
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/stormspotter/ && if [ \$(checksudo) = 0 ]; then (pipenv run stormdash \"\$@\");fi)" > /usr/bin/stormdash'
+sudo chmod +x /usr/bin/stormdash
 
 clear && echo "-- Installing Torghost"
 cd /opt/
@@ -1235,8 +1258,10 @@ if [[ $(py2_support) == "true" ]]; then # libqt4-dev not in 20.04 repo
 fi
 
 clear && echo "-- Installing Go"
-sudo add-apt-repository -y ppa:longsleep/golang-backports
-sudo apt-get -qq update
+if [[ $(py2_support) == "false" ]]; then # not in < 20.04 repo
+  sudo add-apt-repository -y ppa:longsleep/golang-backports
+  sudo apt-get -qq update
+fi
 sudo apt-get -qq install golang-go
 
 clear && echo "-- Installing pwndrop"

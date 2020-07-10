@@ -131,6 +131,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Sqlectron](https://sqlectron.github.io/)
 * [Sqlmap](https://github.com/sqlmapproject/sqlmap)
 * [Spraying Toolkit](https://github.com/byt3bl33d3r/sprayingtoolkit) (issues with pip requirements in Ubuntu 20.04)
+* [Stormspotter](https://github.com/azure/stormspotter)
 * [Sudomy](https://github.com/Screetsec/sudomy)
 * [Termshark](https://github.com/gcla/termshark)
 * [testssl.sh](https://github.com/drwetter/testssl.sh.git)
