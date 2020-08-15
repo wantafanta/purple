@@ -35,9 +35,9 @@ URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.0/wine-mono-5.1.0-x86.msi'
 # mono: https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 # opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
-URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11053/download?i_agree_to_tenable_license_agreement=true'
+URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11264/download?i_agree_to_tenable_license_agreement=true'
 # nesus: https://www.tenable.com/downloads/nessus - Nessus-8.10.0-ubuntu1110_amd64.deb
-URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.11.13104.deb'
+URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.12.13389.deb'
 # maltego: https://www.maltego.com/downloads/
 
 # function to scrape latest release from github api
@@ -76,7 +76,7 @@ if [[ $(py2_support) == "true" ]]; then
   sudo -H pip install service_identity rdpy
 fi
 sudo -H pip3 install -U pipenv
-sudo -H pip3 install pypykatz shodan droopescan
+sudo -H pip3 install pypykatz shodan droopescan h8mail
 
 clear && echo "-- Installing poetry"
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
@@ -160,6 +160,7 @@ git clone -q --depth 1 'https://github.com/fox-it/bloodhound.py'
 git clone -q --depth 1 'https://github.com/fox-it/mitm6'
 git clone -q --depth 1 'https://github.com/Hackndo/lsassy'
 git clone -q --depth 1 'https://gitlab.com/initstring/evil-ssdp'
+git clone -q --depth 1 'https://github.com/insidetrust/statistically-likely-usernames'
 git clone -q --depth 1 'https://github.com/jseidl/usernamer'
 git clone -q --depth 1 'https://github.com/lanjelot/patator'
 git clone -q --depth 1 'https://github.com/lanmaster53/recon-ng'
@@ -428,6 +429,7 @@ sudo chmod +x cme*
 
 if [ ! -f /opt/creackmapexec/cme ] # cme binary not found, build from source
 then
+  sudo rm -r /opt/crackmapexec/
   git clone -q --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec' /opt/crackmapexec
   sudo apt-get -qq install libssl-dev libffi-dev python3-dev build-essential
   cd /opt/crackmapexec/
@@ -461,15 +463,23 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 
 clear && echo "-- Installing Neo4j (BloodHound Database)"
 cd /opt/
-if [[ $(py2_support) == "false" ]]; then # not in < 20.04 repo
-  sudo apt-get remove -y java-common
-  sudo apt-get -qq install openjdk-8-jre-headless
-  wget -q --no-check-certificate -O - 'https://debian.neo4j.org/neotechnology.gpg.key' | sudo apt-key add -
-  echo 'deb http://debian.neo4j.org/repo stable latest' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
-  sudo apt-get -qq update
-fi
-sudo apt-get -qq install neo4j #sudo apt-get install neo4j=1:4.1.1
+sudo apt-get remove -y java-common
+sudo apt-get -qq install openjdk-11-jre-headless
+wget -q --no-check-certificate -O - 'https://debian.neo4j.com/neotechnology.gpg.key' | sudo apt-key add -
+echo 'deb https://debian.neo4j.com stable 4.0' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
+sudo apt-get -qq update
+sudo apt-get -qq install neo4j
+sudo systemctl stop neo4j.service
+sudo sed -i 's/#dbms.security.auth_enabled=false/dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
+sudo systemctl start neo4j.service
 sudo systemctl enable neo4j.service
+
+clear && echo "-- Installing cypher-shell"
+URL_CYPHERSHELL=$(url_latest 'https://api.github.com/repos/neo4j/cypher-shell/releases/latest' '.deb')
+cd /opt/
+wget -q $URL_CYPHERSHELL
+sudo apt-get -qq install ./cypher-shell_*.deb
+sudo rm cypher-shell_*.deb
 
 clear && echo "-- Installing BloodHound Custom Queries"
 mkdir ~/.config/bloodhound
@@ -484,6 +494,13 @@ sudo chmod +x /usr/bin/bloodhound.py
 clear && echo "-- Installing Aclpwn" #Active Directory ACL exploitation with BloodHound
 #https://github.com/fox-it/aclpwn.py
 sudo -H pip3 install aclpwn
+
+clear && echo "-- Installing Scout Suite"
+git clone -q --depth 1 'https://github.com/nccgroup/scoutsuite' /opt/scoutsuite
+cd /opt/scoutsuite/
+pipenv --bare --three install -r requirements.txt
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/scoutsuite && if [ \$(checksudo) = 0 ]; then (pipenv run python3 scout.py \"\$@\");fi)" > /usr/bin/scoutsuite'
+sudo chmod +x /usr/bin/scoutsuite
 
 clear && echo "-- Installing Stormspotter"
 git clone -q --depth 1 'https://github.com/Azure/stormspotter' /opt/stormspotter
@@ -786,18 +803,35 @@ fi
 # download jython (burp extensions)
 wget -q 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O "/home/${USER}/Documents/jython-standalone-2.7.0.jar"
 
+clear && echo "-- Installing CyberChef"
+URL_CYBERCHEF=$(url_latest 'https://api.github.com/repos/gchq/cyberchef/releases/latest' 'CyberChef_')
+mkdir /opt/cyberchef/
+cd /opt/cyberchef/
+wget -q $URL_CYBERCHEF
+unzip CyberChef_*
+sudo rm CyberChef_*.zip
+mv CyberChef*.html CyberChef.html
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=CyberChef\nExec=firefox /opt/cyberchef/CyberChef.html\nIcon=/opt/cyberchef/images/cyberchef-128x128.png\nCategories=Application;" > /usr/share/applications/CyberChef.desktop'
+
 clear && echo "-- Installing sqlmap"
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sqlmap/ && python3 sqlmap.py \"\$@\")" > /usr/bin/sqlmap'
 sudo chmod +x /usr/bin/sqlmap
 
 clear && echo "-- Installing jsql-injection"
-URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/tags/v0.82' '.jar')
+URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/tags/v0.82' '.jar') # https://github.com/ron190/jsql-injection/releases/
 mkdir /opt/jsql-injection/
 wget -q $URL_JSQL -O '/opt/jsql-injection/jsql-injection.jar'
 wget -q 'https://raw.githubusercontent.com/ron190/jsql-injection/master/src/main/resources/swing/images/software/bug128.png' -O '/opt/jsql-injection/logo.png'
 sudo bash -c 'echo -e "#!/bin/bash\n(java -jar /opt/jsql-injection/jsql-injection.jar \"\$@\")" > /usr/bin/jsql'
 sudo chmod +x /usr/bin/jsql
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=jSQL Injection\nExec=gnome-terminal --window -- jsql\nIcon=/opt/jsql-injection/logo.png\nCategories=Application;" > /usr/share/applications/jsql.desktop'
+
+clear && echo "-- Installing JD-GUI"
+URL_JDGUI=$(url_latest 'https://api.github.com/repos/java-decompiler/jd-gui/releases/latest' '.deb')
+cd /opt/
+wget -q $URL_JDGUI
+sudo apt-get -qq install ./jd-gui-*.deb
+sudo rm jd-gui-*.deb
 
 clear && echo "-- Installing Whatwaf"
 cd /opt/whatwaf/
@@ -896,10 +930,9 @@ fi
 # Webshell
 ########## ---------- ##########
 
-#cd /opt
-#php
 #https://github.com/mIcHyAmRaNe/wso-webshell
 #https://github.com/flozz/p0wny-shell
+#https://github.com/xl7dev/WebShell
 
 ########## ---------- ##########
 # Network
@@ -1258,7 +1291,7 @@ if [[ $(py2_support) == "true" ]]; then # libqt4-dev not in 20.04 repo
 fi
 
 clear && echo "-- Installing Go"
-if [[ $(py2_support) == "false" ]]; then # not in < 20.04 repo
+if [[ $(py2_support) == "true" ]]; then # not in < 20.04 repo
   sudo add-apt-repository -y ppa:longsleep/golang-backports
   sudo apt-get -qq update
 fi
@@ -1333,8 +1366,11 @@ sudo chown -R ${USER}:${USER} /home/${USER}/.bash_history
 sudo chown -R ${USER}:${USER} /opt/
 sudo chmod -R 777 /opt/natlas/
 
-# Set neo4j database password to \`bloodhound\`
-curl -H "Content-Type: application/json" -X POST -d '{"password":"bloodhound"}' -u neo4j:neo4j http://localhost:7474/user/neo4j/password
+# Set neo4j database password to "bloodhound"
+echo "ALTER USER neo4j SET PASSWORD 'bloohound'" | cypher-shell -d system
+sudo systemctl stop neo4j.service
+sudo sed -i 's/dbms.security.auth_enabled=false/#dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
+sudo systemctl start neo4j.service
 
 # Update the mlocate database
 sudo updatedb
@@ -1345,7 +1381,7 @@ clear && echo -e "Done.\nAll modules stored in /opt/"
 #echo 'Run "cme" to setup initial CrackMapExec database'
 echo -e "\n-- Notes:"
 echo 'Download Burp Suite CA Certificate from http://burp/cert/'
-echo 'To resolve .onion addresses (via torghost) open http://about:config/ and set network.dns.blockDotOnion to false'
+echo 'To resolve .onion addresses (via torghost) open about:config in Firefox and set network.dns.blockDotOnion to false'
 echo -e "\n-- Creds:"
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
