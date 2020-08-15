@@ -427,7 +427,7 @@ unzip cmedb-ubuntu-latest.zip
 sudo rm cme*.zip
 sudo chmod +x cme*
 
-if [ ! -f /opt/creackmapexec/cme ] # cme binary not found, build from source
+if [ ! -f /opt/crackmapexec/cme ] # cme binary not found, build from source
 then
   sudo rm -r /opt/crackmapexec/
   git clone -q --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec' /opt/crackmapexec
@@ -469,9 +469,9 @@ wget -q --no-check-certificate -O - 'https://debian.neo4j.com/neotechnology.gpg.
 echo 'deb https://debian.neo4j.com stable 4.0' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
 sudo apt-get -qq update
 sudo apt-get -qq install neo4j
-sudo systemctl stop neo4j.service
-sudo sed -i 's/#dbms.security.auth_enabled=false/dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
-sudo systemctl start neo4j.service
+#sudo systemctl stop neo4j.service
+#sudo sed -i 's/#dbms.security.auth_enabled=false/dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
+#sudo systemctl start neo4j.service
 sudo systemctl enable neo4j.service
 
 clear && echo "-- Installing cypher-shell"
@@ -1367,10 +1367,11 @@ sudo chown -R ${USER}:${USER} /opt/
 sudo chmod -R 777 /opt/natlas/
 
 # Set neo4j database password to "bloodhound"
-echo "ALTER USER neo4j SET PASSWORD 'bloohound'" | cypher-shell -d system
-sudo systemctl stop neo4j.service
-sudo sed -i 's/dbms.security.auth_enabled=false/#dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
-sudo systemctl start neo4j.service
+sudo neo4j-admin set-initial-password bloodhound
+#echo "ALTER USER neo4j SET PASSWORD 'bloodhound'" | cypher-shell -d system
+#sudo systemctl stop neo4j.service
+#sudo sed -i 's/dbms.security.auth_enabled=false/#dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
+#sudo systemctl start neo4j.service
 
 # Update the mlocate database
 sudo updatedb
