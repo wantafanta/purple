@@ -938,6 +938,10 @@ fi
 # Network
 ########## ---------- ##########
 
+clear && echo "-- Installing proxychains"
+sudo apt-get -qq install proxychains4
+# /etc/proxychains4.conf
+
 clear && echo "-- Installing nmapAutomator"
 cd /opt/nmapautomator/
 sudo chmod +x nmapAutomator.sh
@@ -1070,6 +1074,7 @@ then
   sudo /etc/init.d/nessusd start
 fi
 #sudo rm ~/Downloads/Nessus*.deb
+wget -q -U firefox 'https://gist.githubusercontent.com/wantafanta/0d31a15974b41862b1fcbcb804c571be/raw/fd0b4cd4feff5f2eaed55a34db4e1f3be9e60fac/nessus-merge.py' -O '/opt/nessus-merge.py'
 
 clear && echo "-- Installing frogger2"
 sudo apt-get -qq install yersinia vlan arp-scan screen
