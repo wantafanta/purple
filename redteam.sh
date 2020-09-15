@@ -940,7 +940,6 @@ fi
 
 clear && echo "-- Installing proxychains"
 sudo apt-get -qq install proxychains4
-# /etc/proxychains4.conf
 
 clear && echo "-- Installing nmapAutomator"
 cd /opt/nmapautomator/
