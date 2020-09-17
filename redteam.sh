@@ -91,6 +91,7 @@ sudo -H pip3 install -U asciinema
 clear && echo "-- Installing Firewall"
 sudo apt-get -qq install gufw
 sudo ufw disable
+git clone --depth 1 'https://github.com/halfer/ufw-vpn' /opt/ufw-vpn
 
 clear && echo "-- Installing FileZilla"
 sudo apt-get -qq install filezilla
@@ -803,6 +804,39 @@ fi
 # download jython (burp extensions)
 wget -q 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O "/home/${USER}/Documents/jython-standalone-2.7.0.jar"
 
+clear && echo "-- Installing smuggler"
+git clone --depth 1 'https://github.com/defparam/smuggler' /opt/smuggler
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/smuggler && if [ \$(checksudo) = 0 ]; then (python3 ./smuggler.py \"\$@\");fi)" > /usr/bin/smuggler'
+sudo chmod +x /usr/bin/smuggler
+
+clear && echo "-- Installing Swagger UI"
+git clone -q --depth 1 'https://github.com/swagger-api/swagger-ui' /opt/swagger-ui
+cd /opt/swagger-ui/
+npm install
+#npm run build
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/swagger-ui && if [ \$(checksudo) = 0 ]; then (npm start \"\$@\");fi)" > /usr/bin/swagger-ui'
+#sudo chmod +x /usr/bin/swagger-ui
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/swagger-ui && if [ \$(checksudo) = 0 ]; then (npm run dev \"\$@\");fi)" > /usr/bin/swagger-ui-dev'
+#sudo chmod +x /usr/bin/swagger-ui-dev
+wget -q 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png' -O '/opt/swagger-ui/logo.png'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger UI\nExec=firefox /opt/swagger-ui/dist/index.html\nIcon=/opt/swagger-ui/logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Run local dev build\nExec=gnome-terminal --window -- bash -c '\''cd /opt/swagger-ui && npm run dev'\''" > /usr/share/applications/swagger-ui.desktop'
+# put local yaml/json files in dev-helpers folder
+
+clear && echo "-- Installing Swagger Editor"
+git clone --depth 1 'https://github.com/swagger-api/swagger-editor' /opt/swagger-editor
+cd /opt/swagger-editor/
+#npm install
+#npm run build
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/swagger-editor && if [ \$(checksudo) = 0 ]; then (npm start \"\$@\");fi)" > /usr/bin/swagger-editor'
+#sudo chmod +x /usr/bin/swagger-editor
+wget -q 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png' -O '/opt/swagger-editor/logo.png'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger Editor\nExec=firefox /opt/swagger-editor/index.html\nIcon=/opt/swagger-ui/logo.png\nCategories=Application;" > /usr/share/applications/swagger-editor.desktop'
+
+clear && echo "-- Installing Swagger-EZ"
+git clone --depth 1 'https://github.com/RhinoSecurityLabs/swagger-ez' /opt/swagger-ez
+wget -q 'https://avatars0.githubusercontent.com/u/11430746' -O '/opt/swagger-ez/logo.png'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger-EZ\nExec=firefox /opt/swagger-ez/index.html\nIcon=/opt/swagger-ez/logo.png\nCategories=Application;" > /usr/share/applications/swagger-ez.desktop'
+
 clear && echo "-- Installing CyberChef"
 URL_CYBERCHEF=$(url_latest 'https://api.github.com/repos/gchq/cyberchef/releases/latest' 'CyberChef_')
 mkdir /opt/cyberchef/
@@ -811,7 +845,7 @@ wget -q $URL_CYBERCHEF
 unzip CyberChef_*
 sudo rm CyberChef_*.zip
 mv CyberChef*.html CyberChef.html
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=CyberChef\nExec=firefox /opt/cyberchef/CyberChef.html\nIcon=/opt/cyberchef/images/cyberchef-128x128.png\nCategories=Application;" > /usr/share/applications/CyberChef.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=CyberChef\nExec=firefox /opt/cyberchef/CyberChef.html\nIcon=/opt/cyberchef/images/cyberchef-128x128.png\nCategories=Application;" > /usr/share/applications/cyberchef.desktop'
 
 clear && echo "-- Installing sqlmap"
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sqlmap/ && python3 sqlmap.py \"\$@\")" > /usr/bin/sqlmap'
