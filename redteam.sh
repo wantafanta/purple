@@ -209,6 +209,7 @@ sudo chmod +x *.sh
 #-- DESKTOP
 gsettings set org.gnome.shell.extensions.desktop-icons show-home false
 gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
+gsettings set org.gnome.desktop.privacy remember-app-usage false
 bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > /home/${USER}/Desktop/LOLBAS.desktop"
 bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec=firefox https://gtfobins.github.io/\nIcon=firefox\nTerminal=false' > /home/${USER}/Desktop/GTFOBins.desktop"
 sudo chown -R ${USER}:${USER} /home/${USER}/Desktop/*.desktop
@@ -1390,6 +1391,7 @@ sudo systemctl disable lighttpd.service #fluxion
 sudo apt-get autoremove -y
 # fix empire
 sudo pip3 install -r /opt/empire/setup/requirements.txt
+sudo pip3 install pyparsing
 #cd /opt/empire/
 #sudo ./setup/reset.sh
 
