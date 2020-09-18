@@ -838,6 +838,14 @@ git clone --depth 1 'https://github.com/RhinoSecurityLabs/swagger-ez' /opt/swagg
 wget -q 'https://avatars0.githubusercontent.com/u/11430746' -O '/opt/swagger-ez/logo.png'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger-EZ\nExec=firefox /opt/swagger-ez/index.html\nIcon=/opt/swagger-ez/logo.png\nCategories=Application;" > /usr/share/applications/swagger-ez.desktop'
 
+clear && echo "-- Installing Postman"
+cd /opt/
+curl 'https://dl.pstmn.io/download/latest/linux64' -o '/opt/postman.tar.gz'
+tar xvf postman.tar.gz
+sudo rm postman.tar.gz
+mv /opt/Postman /opt/postman
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Postman\nExec=/opt/postman/Postman\nIcon=/opt/postman/app/resources/app/assets/icon.png\nCategories=Application;" > /usr/share/applications/postman.desktop'
+
 clear && echo "-- Installing CyberChef"
 URL_CYBERCHEF=$(url_latest 'https://api.github.com/repos/gchq/cyberchef/releases/latest' 'CyberChef_')
 mkdir /opt/cyberchef/
