@@ -638,8 +638,8 @@ clear && echo "-- Installing Sqlectron"
 URL_SQLECTRON=$(url_latest 'https://api.github.com/repos/sqlectron/sqlectron-gui/releases/latest' 'amd64')
 cd /opt/
 wget -q $URL_SQLECTRON
-sudo apt-get -qq install ./Sqlectron*.deb
-sudo rm Sqlectron*.deb
+sudo apt-get -qq install ./sqlectron*.deb
+sudo rm sqlectron*.deb
 
 clear && echo "-- Installing nullinux"
 cd /opt/nullinux/
