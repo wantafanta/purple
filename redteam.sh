@@ -70,16 +70,25 @@ fi
 sudo apt-get -qq install ruby-dev ruby-bundler #ruby for beef & wpscan
 sudo apt-get -qq install chrome-gnome-shell #firefox gnome extensions pre-reqs
 
+clear && echo "-- Installing pipx"
+sudo apt-get -qq install python3-venv
+python3 -m pip install --user pipx
+python3 -m pipx ensurepath
+
 clear && echo "-- Installing pip modules"
 if [[ $(py2_support) == "true" ]]; then
   sudo -H pip install -U pipenv
-  sudo -H pip install service_identity rdpy
+  clear && pipx install service_identity # https://service-identity.readthedocs.io/en/stable/
+  clear && pipx install rdpy # https://github.com/citronneur/rdpy
 fi
 sudo -H pip3 install -U pipenv
-sudo -H pip3 install pypykatz shodan droopescan h8mail
+clear && pipx install pypykatz # https://github.com/skelsec/pypykatz
+clear && pipx install shodan # https://github.com/achillean/shodan-python
+clear && pipx install droopescan # https://github.com/droope/droopescan/
+clear && pipx install h8mail # https://github.com/khast3x/h8mail
 
-clear && echo "-- Installing poetry"
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+#clear && echo "-- Installing poetry"
+#curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
@@ -139,7 +148,6 @@ git clone -q --depth 1 'https://github.com/actuated/msf-exploit-loop'
 git clone -q --depth 1 'https://github.com/almandin/fuxploider'
 git clone -q --depth 1 'https://github.com/BC-SECURITY/empire'
 git clone -q --depth 1 'https://github.com/beefproject/beef'
-git clone -q --depth 1 'https://github.com/bitsadmin/wesng'
 git clone -q --depth 1 'https://github.com/BloodHoundAD/bloodhound'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
@@ -158,8 +166,6 @@ git clone -q --depth 1 'https://github.com/Ekultek/whatwaf'
 git clone -q --depth 1 'https://github.com/evilmog/ntlmv1-multi'
 git clone -q --depth 1 'https://github.com/FluxionNetwork/fluxion'
 git clone -q --depth 1 'https://github.com/fox-it/bloodhound.py'
-git clone -q --depth 1 'https://github.com/fox-it/mitm6'
-git clone -q --depth 1 'https://github.com/Hackndo/lsassy'
 git clone -q --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 git clone -q --depth 1 'https://github.com/insidetrust/statistically-likely-usernames'
 git clone -q --depth 1 'https://github.com/jseidl/usernamer'
@@ -168,7 +174,6 @@ git clone -q --depth 1 'https://github.com/lanmaster53/recon-ng'
 git clone -q --depth 1 'https://github.com/laramies/theharvester'
 git clone -q --depth 1 'https://github.com/lgandx/responder'
 git clone -q --depth 1 'https://github.com/lightos/credmap'
-git clone -q --depth 1 --recursive 'https://github.com/m8r0wn/activereign'
 git clone -q --depth 1 'https://github.com/m8r0wn/enumdb'
 git clone -q --depth 1 'https://github.com/m8r0wn/nullinux'
 git clone -q --depth 1 'https://github.com/m8r0wn/pymeta'
@@ -202,16 +207,16 @@ git clone -q --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration
 git clone -q --depth 1 'https://github.com/CISOfy/lynis'
 
 #-- /OPT/ SCRIPTS
-bash -c 'echo -e "#!/bin/bash\nls | xargs -I{} git -C {} pull" > update.sh'
-bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > map-shares.sh'
-sudo chmod +x *.sh
+bash -c 'echo -e "#!/bin/bash\nclear\nls | xargs -I{} git -C {} pull\nclear\npipx upgrade-all\nclear\nsudo airodump-ng-oui-update\nclear\nnikto -update\nclear\nwpscan --update\nclear\nsudo updatedb" > /opt/update.sh'
+bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > /opt/map-shares.sh'
+sudo chmod +x /opt/*.sh
 
 #-- DESKTOP
 gsettings set org.gnome.shell.extensions.desktop-icons show-home false
 gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
 gsettings set org.gnome.desktop.privacy remember-app-usage false
-bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > /home/${USER}/Desktop/LOLBAS.desktop"
-bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec=firefox https://gtfobins.github.io/\nIcon=firefox\nTerminal=false' > /home/${USER}/Desktop/GTFOBins.desktop"
+bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > ~/Desktop/LOLBAS.desktop"
+bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec=firefox https://gtfobins.github.io/\nIcon=firefox\nTerminal=false' > ~/Desktop/GTFOBins.desktop"
 sudo chown -R ${USER}:${USER} /home/${USER}/Desktop/*.desktop
 
 #-- BASH ALIASES
@@ -333,12 +338,7 @@ if [[ $(py2_support) == "true" ]]; then
   sudo chmod +x /usr/bin/windows-exploit-suggester
 fi
 
-clear && echo "Installing Windows Exploit Suggester - Next Generation (wesng)"
-cd /opt/wesng
-sudo python3 setup.py install
-#pipenv --bare --three run python3 setup.py install --record files.txt
-#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/wesng/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 wes.py \"\$@\");fi)" > /usr/bin/wesng'
-#sudo chmod +x /usr/bin/wesng
+clear && pipx install wesng # https://github.com/bitsadmin/wesng
 
 clear && echo "-- Installing DNScan"
 cd /opt/dnscan/
@@ -394,65 +394,15 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/covenant/Covenant/ && sudo dotnet r
 sudo chmod +x /usr/bin/covenant
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Covenant\nExec=gnome-terminal --window -- covenant\nIcon=/opt/covenant/Covenant/wwwroot/images/favicon.svg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox https://localhost:7443" > /usr/share/applications/covenant.desktop'
 
-clear && echo "-- Installing mitm6"
-cd /opt/mitm6/
-pipenv --bare --three run sudo pip3 install -r requirements.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/mitm6/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo mitm6 \"\$@\");fi)" > /usr/bin/mitm6'
-sudo chmod +x /usr/bin/mitm6
-
-clear && echo "-- Installing Impacket"
-URL_IMPACKET=$(url_latest 'https://api.github.com/repos/SecureAuthCorp/impacket/releases/latest' 'impacket')
-cd /opt/
-wget -q $URL_IMPACKET
-tar xvf impacket*.tar.gz
-sudo rm impacket-*.tar.gz
-mv impacket-*/ impacket/
-cd /opt/impacket/
-sudo -H pip3 install -r requirements.txt
-sudo -H pip3 install .
-
-clear && echo "-- Installing lsassy"
-cd /opt/lsassy/
-pipenv --bare --three install lsassy
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/lsassy/ && if [ \$(checksudo) = 0 ]; then (pipenv run lsassy \"\$@\");fi)" > /usr/bin/lsassy'
-sudo chmod +x /usr/bin/lsassy
-
-clear && echo "-- Installing CrackMapExec" # new github feature uses actions/atifacts which require authentication. public download requires auther to use releases
-URL_CME=$(url_latest 'https://api.github.com/repos/byt3bl33d3r/CrackMapExec/releases/latest' 'cme-ubuntu')
-URL_CMEDB=$(url_latest 'https://api.github.com/repos/byt3bl33d3r/CrackMapExec/releases/latest' 'cmedb-ubuntu')
-mkdir /opt/crackmapexec/
-cd /opt/crackmapexec/
-wget -q $URL_CME
-wget -q $URL_CMEDB
-unzip cme-ubuntu-latest.zip
-unzip cmedb-ubuntu-latest.zip
-sudo rm cme*.zip
-sudo chmod +x cme*
-
-if [ ! -f /opt/crackmapexec/cme ] # cme binary not found, build from source
-then
-  sudo rm -r /opt/crackmapexec/
-  git clone -q --depth 1 --recursive 'https://github.com/byt3bl33d3r/crackmapexec' /opt/crackmapexec
-  sudo apt-get -qq install libssl-dev libffi-dev python3-dev build-essential
-  cd /opt/crackmapexec/
-  pipenv --bare --three run python setup.py install --record files.txt
-  pipenv run python -m pip install -r requirements.txt
-  sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (pipenv run cme \"\$@\");fi)" > /usr/bin/cme'
-  sudo chmod +x /usr/bin/cme
-  sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (pipenv run cmedb \"\$@\");fi)" > /usr/bin/cmedb'
-  sudo chmod +x /usr/bin/cmedb
-else
-  sudo ln -sf /opt/crackmapexec/cme /usr/local/bin/cme
-  sudo ln -sf /opt/crackmapexec/cmedb /usr/local/bin/cmedb
-fi
-
-clear && echo "-- Installing ActiveReign"
-cd /opt/activereign/
-pipenv --bare --three run python3 setup.py install --record files.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/activereign/ && if [ \$(checksudo) = 0 ]; then (pipenv run activereign \"\$@\");fi)" > /usr/bin/activereign'
-sudo chmod +x /usr/bin/activereign
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/activereign/ && if [ \$(checksudo) = 0 ]; then (pipenv run activereign \"\$@\");fi)" > /usr/bin/ar3'
-sudo chmod +x /usr/bin/ar3
+clear && pipx install mitm6 # https://github.com/fox-it/mitm6/
+sudo ln -sf ~/.local/bin/mitm6 /usr/local/bin/mitm6
+clear && pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
+sudo ln -sf ~/.local/bin/*.py /usr/local/bin/
+clear && pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
+clear && pipx install activereign # https://github.com/m8r0wn/activereign
+clear && pipx inject activereign impacket
+clear && pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
+# sudo ~/.local/bin/
 
 clear && echo "-- Installing BloodHound"
 URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
@@ -493,9 +443,7 @@ pipenv --bare --three run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bloodhound.py/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 bloodhound.py \"\$@\");fi)" > /usr/bin/bloodhound.py'
 sudo chmod +x /usr/bin/bloodhound.py
 
-clear && echo "-- Installing Aclpwn" #Active Directory ACL exploitation with BloodHound
-#https://github.com/fox-it/aclpwn.py
-sudo -H pip3 install aclpwn
+pipx install aclpwn # https://github.com/fox-it/aclpwn.py
 
 clear && echo "-- Installing Scout Suite"
 git clone -q --depth 1 'https://github.com/nccgroup/scoutsuite' /opt/scoutsuite
@@ -503,6 +451,9 @@ cd /opt/scoutsuite/
 pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/scoutsuite && if [ \$(checksudo) = 0 ]; then (pipenv run python3 scout.py \"\$@\");fi)" > /usr/bin/scoutsuite'
 sudo chmod +x /usr/bin/scoutsuite
+
+clear && pipx install roadrecon # https://github.com/dirkjanm/roadtools
+clear && pipx inject roadrecon neo4j-driver
 
 clear && echo "-- Installing Stormspotter"
 git clone -q --depth 1 'https://github.com/Azure/stormspotter' /opt/stormspotter
@@ -1014,6 +965,8 @@ tar xvf termshark*.tar.gz
 sudo rm termshark*.tar.gz
 mv termshark_*/ termshark/
 
+pipx install credslayer # https://github.com/ShellCode33/credslayer
+
 clear && echo "-- Installing bettercap"
 URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'bettercap_linux_amd64_')
 sudo apt-get -qq install libnetfilter-queue-dev
@@ -1299,12 +1252,12 @@ if [[ $(py2_support) == "true" ]]; then
   sudo python setup.py install --record files.txt
 fi
 
-clear && echo "-- Installing eaphammer"
-cd /opt/eaphammer/
-sudo ./kali-setup
-pipenv --bare --three run sudo pip3 install -r pip.req
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/eaphammer/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 eaphammer \"\$@\");fi)" > /usr/bin/eaphammer'
-sudo chmod +x /usr/bin/eaphammer
+#clear && echo "-- Installing eaphammer"
+#cd /opt/eaphammer/
+#sudo ./kali-setup
+#pipenv --bare --three run sudo pip3 install -r pip.req
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/eaphammer/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 eaphammer \"\$@\");fi)" > /usr/bin/eaphammer'
+#sudo chmod +x /usr/bin/eaphammer
 
 clear && echo "-- Installing wifite"
 sudo apt-get -qq install wifite tshark
@@ -1390,8 +1343,8 @@ sudo systemctl disable pwndrop.service
 sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
-sudo systemctl stop apache2.service
-sudo systemctl disable apache2.service
+# sudo systemctl stop apache2.service #eaphammer
+# sudo systemctl disable apache2.service #eaphammer
 sudo systemctl stop lighttpd.service #fluxion
 sudo systemctl disable lighttpd.service #fluxion
 
@@ -1407,7 +1360,7 @@ sudo pip3 install pyparsing
 sudo sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
 
 # Clear terminal history
-cat /dev/null > /home/${USER}/.bash_history && history -c
+sudo cat /dev/null > /home/${USER}/.bash_history && history -c
 sudo chown -R ${USER}:${USER} /home/${USER}/.bash_history
 
 # Set permissions in /opt/
@@ -1429,12 +1382,11 @@ clear && echo -e "Done.\nAll modules stored in /opt/"
 #echo 'Run "msfconsole" to setup initial msf database'
 #echo 'Run "cme" to setup initial CrackMapExec database'
 echo -e "\n-- Notes:"
-echo 'Download Burp Suite CA Certificate from http://burp/cert/'
 echo 'To resolve .onion addresses (via torghost) open about:config in Firefox and set network.dns.blockDotOnion to false'
 echo -e "\n-- Creds:"
 echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
-echo 'BloodHound Database username and password have been set ( u:neo4j p:bloodhound ).'
+echo 'BloodHound Database username and password have been set ( u:neo4j p:bloodhound )'
 echo 'pwndrop username and password have been set ( u:admin p:pwndrop )'
 echo -e "\nPress Enter to reboot."
 read -p "" </dev/tty

@@ -9,7 +9,7 @@ bash redteam.sh | tee redteam.log
 
 Press enter a few times, choose yes, next etc.
 
-Grabs the latest version of all tools. Where possible run in a virtual environment using pipenv.
+Grabs the latest version of all tools. Where possible run in a virtual environment using pipenv and pipx.
 
 #### Tools
 * [ActiveReign](https://github.com/m8r0wn/activereign)
@@ -31,6 +31,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [CrackMapExec](https://github.com/byt3bl33d3r/crackmapexec)
 * [Credmap](https://github.com/lightos/credmap)
 * [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
+* [CredSlayer](https://github.com/ShellCode33/CredSLayer)
 * ~~[cve-search](https://github.com/cve-search/cve-search)~~
 * [CyberChef](https://gchq.github.io/CyberChef/)
 * [DBeaver](https://github.com/dbeaver/dbeaver)
@@ -39,7 +40,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * Docker
   * [cameradar](https://github.com/Ullaakut/cameradar)
 * [droopescan](https://github.com/droope/droopescan)
-* [eaphammer](https://github.com/s0lst1c3/eaphammer)
+* ~~[eaphammer](https://github.com/s0lst1c3/eaphammer)~~
 * [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
   * [Starkiller](https://github.com/BC-SECURITY/Starkiller)
 * [enumdb](https://github.com/m8r0wn/enumdb)
