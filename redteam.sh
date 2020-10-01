@@ -361,6 +361,7 @@ clear && clear && echo "-- Installing Empire"
 cd /opt/empire/
 sudo apt-get -qq install python3-m2crypto
 sudo ./setup/install.sh
+sudo pip3 install pyparsing
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 sudo chmod +x /usr/bin/empire
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=starkiller" > /usr/share/applications/empire.desktop'
@@ -751,7 +752,9 @@ then
   sudo bash ~/Downloads/burpsuite_pro_linux*.sh -dir /opt/burpsuitepro -overwrite -q
   #sudo rm ~/Downloads/burpsuite_pro_linux*.sh
   sudo rename -d "s/(?:.*)BurpSuitePro.desktop/BurpSuitePro.desktop/" /usr/share/applications/*BurpSuitePro.desktop
-  sudo bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher' >> '/usr/share/applications/BurpSuitePro.desktop'"
+  sudo bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher;\nActions=app1;\n\n[Desktop Action app1]\nName=Run Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
+  touch /opt/burpsuitepro/collaborator.config
+  # https://portswigger.net/burp/documentation/collaborator/deploying#collaborator-configuration-file-format
 fi
 # download jython (burp extensions)
 wget -q 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O "/home/${USER}/Documents/jython-standalone-2.7.0.jar"
