@@ -31,12 +31,12 @@ sudo chmod +x /usr/bin/checksudo
 clear && echo "-- Lets begin ..."
 
 # static urls (that may need to be updated)
-URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.0/wine-mono-5.1.0-x86.msi'
+URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.1/wine-mono-5.1.1-x86.msi'
 # mono: https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 # opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
-URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11264/download?i_agree_to_tenable_license_agreement=true'
-# nesus: https://www.tenable.com/downloads/nessus - Nessus-8.10.0-ubuntu1110_amd64.deb
+URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11437/download?i_agree_to_tenable_license_agreement=true'
+# nesus: https://www.tenable.com/downloads/nessus - Nessus-8.11.1-ubuntu1110_amd64.deb
 URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.12.13389.deb'
 # maltego: https://www.maltego.com/downloads/
 
@@ -752,7 +752,7 @@ then
   sudo bash ~/Downloads/burpsuite_pro_linux*.sh -dir /opt/burpsuitepro -overwrite -q
   #sudo rm ~/Downloads/burpsuite_pro_linux*.sh
   sudo rename -d "s/(?:.*)BurpSuitePro.desktop/BurpSuitePro.desktop/" /usr/share/applications/*BurpSuitePro.desktop
-  sudo bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher;\nActions=app1;\n\n[Desktop Action app1]\nName=Run Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
+  sudo bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher;\nActions=app1;\n\n[Desktop Action app1]\nName=Start Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
   touch /opt/burpsuitepro/collaborator.config
   # https://portswigger.net/burp/documentation/collaborator/deploying#collaborator-configuration-file-format
 fi
@@ -774,7 +774,7 @@ npm install
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/swagger-ui && if [ \$(checksudo) = 0 ]; then (npm run dev \"\$@\");fi)" > /usr/bin/swagger-ui-dev'
 #sudo chmod +x /usr/bin/swagger-ui-dev
 wget -q 'https://upload.wikimedia.org/wikipedia/commons/a/ab/Swagger-logo.png' -O '/opt/swagger-ui/logo.png'
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger UI\nExec=firefox /opt/swagger-ui/dist/index.html\nIcon=/opt/swagger-ui/logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Run local dev build\nExec=gnome-terminal --window -- bash -c '\''cd /opt/swagger-ui && npm run dev'\''" > /usr/share/applications/swagger-ui.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger UI\nExec=firefox /opt/swagger-ui/dist/index.html\nIcon=/opt/swagger-ui/logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Start local dev build\nExec=gnome-terminal --window -- bash -c '\''cd /opt/swagger-ui && npm run dev'\''" > /usr/share/applications/swagger-ui.desktop'
 # put local yaml/json files in dev-helpers folder
 
 clear && echo "-- Installing Swagger Editor"
