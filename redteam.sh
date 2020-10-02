@@ -37,7 +37,7 @@ URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532
 # opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
 URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11437/download?i_agree_to_tenable_license_agreement=true'
 # nesus: https://www.tenable.com/downloads/nessus - Nessus-8.11.1-ubuntu1110_amd64.deb
-URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.12.13389.deb'
+URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.13.13462.deb'
 # maltego: https://www.maltego.com/downloads/
 
 # function to scrape latest release from github api
@@ -78,14 +78,15 @@ python3 -m pipx ensurepath
 clear && echo "-- Installing pip modules"
 if [[ $(py2_support) == "true" ]]; then
   sudo -H pip install -U pipenv
-  clear && pipx install service_identity # https://service-identity.readthedocs.io/en/stable/
-  clear && pipx install rdpy # https://github.com/citronneur/rdpy
+  clear && python3 -m pipx install service_identity # https://service-identity.readthedocs.io/en/stable/
+  clear && python3 -m pipx install rdpy # https://github.com/citronneur/rdpy
 fi
 sudo -H pip3 install -U pipenv
-clear && pipx install pypykatz # https://github.com/skelsec/pypykatz
-clear && pipx install shodan # https://github.com/achillean/shodan-python
-clear && pipx install droopescan # https://github.com/droope/droopescan/
-clear && pipx install h8mail # https://github.com/khast3x/h8mail
+
+clear && python3 -m pipx install pypykatz # https://github.com/skelsec/pypykatz
+clear && python3 -m pipx install shodan # https://github.com/achillean/shodan-python
+clear && python3 -m pipx install droopescan # https://github.com/droope/droopescan/
+clear && python3 -m pipx install h8mail # https://github.com/khast3x/h8mail
 
 #clear && echo "-- Installing poetry"
 #curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
@@ -169,7 +170,6 @@ git clone -q --depth 1 'https://github.com/fox-it/bloodhound.py'
 git clone -q --depth 1 'https://gitlab.com/initstring/evil-ssdp'
 git clone -q --depth 1 'https://github.com/insidetrust/statistically-likely-usernames'
 git clone -q --depth 1 'https://github.com/jseidl/usernamer'
-git clone -q --depth 1 'https://github.com/lanjelot/patator'
 git clone -q --depth 1 'https://github.com/lanmaster53/recon-ng'
 git clone -q --depth 1 'https://github.com/laramies/theharvester'
 git clone -q --depth 1 'https://github.com/lgandx/responder'
@@ -264,8 +264,8 @@ sudo chmod +x /usr/bin/rsf
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/routersploit && if [ \$(checksudo) = 0 ]; then (pipenv run python3 rsf.py \"\$@\");fi)" > /usr/bin/routersploit'
 sudo chmod +x /usr/bin/routersploit
 
-clear && echo "-- Installing MongoDB (cve-search Database)"
-sudo apt-get -qq install mongodb
+#clear && echo "-- Installing MongoDB (cve-search Database)"
+#sudo apt-get -qq install mongodb
 
 clear && echo "-- Installing Shellter (Community Edition)"
 URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter.zip'
@@ -338,7 +338,7 @@ if [[ $(py2_support) == "true" ]]; then
   sudo chmod +x /usr/bin/windows-exploit-suggester
 fi
 
-clear && pipx install wesng # https://github.com/bitsadmin/wesng
+clear && python3 -m pipx install wesng # https://github.com/bitsadmin/wesng
 
 clear && echo "-- Installing DNScan"
 cd /opt/dnscan/
@@ -395,14 +395,14 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/covenant/Covenant/ && sudo dotnet r
 sudo chmod +x /usr/bin/covenant
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Covenant\nExec=gnome-terminal --window -- covenant\nIcon=/opt/covenant/Covenant/wwwroot/images/favicon.svg\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=firefox https://localhost:7443" > /usr/share/applications/covenant.desktop'
 
-clear && pipx install mitm6 # https://github.com/fox-it/mitm6/
-sudo ln -sf ~/.local/bin/mitm6 /usr/local/bin/mitm6
-clear && pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
-sudo ln -sf ~/.local/bin/*.py /usr/local/bin/
-clear && pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
-clear && pipx install activereign # https://github.com/m8r0wn/activereign
+clear && python3 -m pipx install mitm6 # https://github.com/fox-it/mitm6/
+sudo ln -sf ~/.local/pipx/venvs/mitm6/bin/mitm6 /usr/local/bin/mitm6
+clear && python3 -m pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
+sudo ln -sf ~/.local/pipx/venvs/impacket/bin/*.py /usr/local/bin/
+clear && python3 -m pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
+clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
 clear && pipx inject activereign impacket
-clear && pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
+clear && python3 -m pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
 # sudo ~/.local/bin/
 
 clear && echo "-- Installing BloodHound"
@@ -444,7 +444,7 @@ pipenv --bare --three run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bloodhound.py/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 bloodhound.py \"\$@\");fi)" > /usr/bin/bloodhound.py'
 sudo chmod +x /usr/bin/bloodhound.py
 
-pipx install aclpwn # https://github.com/fox-it/aclpwn.py
+python3 -m pipx install aclpwn # https://github.com/fox-it/aclpwn.py
 
 clear && echo "-- Installing Scout Suite"
 git clone -q --depth 1 'https://github.com/nccgroup/scoutsuite' /opt/scoutsuite
@@ -453,7 +453,7 @@ pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/scoutsuite && if [ \$(checksudo) = 0 ]; then (pipenv run python3 scout.py \"\$@\");fi)" > /usr/bin/scoutsuite'
 sudo chmod +x /usr/bin/scoutsuite
 
-clear && pipx install roadrecon # https://github.com/dirkjanm/roadtools
+clear && python3 -m pipx install roadrecon # https://github.com/dirkjanm/roadtools
 clear && pipx inject roadrecon neo4j-driver
 
 clear && echo "-- Installing Stormspotter"
@@ -623,15 +623,17 @@ sudo make install
 ########## ---------- ##########
 
 clear && echo "-- Installing patator"
-cd /opt/patator/
+#git clone -q --depth 1 'https://github.com/lanjelot/patator' /opt/patator
+#cd /opt/patator/
 sudo apt-get -qq install libcurl4-openssl-dev python3-dev libssl-dev # pycurl
 sudo apt-get -qq install ldap-utils # ldapsearch
 sudo apt-get -qq install libmysqlclient-dev # mysqlclient-python
 sudo apt-get -qq install ike-scan unzip default-jdk
 sudo apt-get -qq install libsqlite3-dev libsqlcipher-dev # pysqlcipher
-pipenv --bare --three run sudo python setup.py install --record files.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo patator.py \"\$@\");fi)" > /usr/bin/patator'
-sudo chmod +x /usr/bin/patator
+#pipenv --bare --three run sudo python setup.py install --record files.txt
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo patator.py \"\$@\");fi)" > /usr/bin/patator'
+#sudo chmod +x /usr/bin/patator
+python3 -m pipx install patator
 
 clear && echo "-- Installing kerbrute"
 URL_KERBRUTE=$(url_latest 'https://api.github.com/repos/ropnop/kerbrute/releases/latest' 'linux_amd64')
@@ -727,6 +729,7 @@ mv hashcat-utils-*/ hashcat-utils/
 # Web
 ########## ---------- ##########
 
+trap '' INT
 # burp suite community or pro
 if [ ! -f ~/Downloads/burpsuite_pro_linux*.sh ] #burp professional installation script not found - ask if required
 then
@@ -753,9 +756,10 @@ then
   #sudo rm ~/Downloads/burpsuite_pro_linux*.sh
   sudo rename -d "s/(?:.*)BurpSuitePro.desktop/BurpSuitePro.desktop/" /usr/share/applications/*BurpSuitePro.desktop
   sudo bash -c "echo -e 'StartupWMClass=com-install4j-runtime-launcher-UnixLauncher;\nActions=app1;\n\n[Desktop Action app1]\nName=Start Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
-  touch /opt/burpsuitepro/collaborator.config
+  sudo touch /opt/burpsuitepro/collaborator.config
   # https://portswigger.net/burp/documentation/collaborator/deploying#collaborator-configuration-file-format
 fi
+trap - INT
 # download jython (burp extensions)
 wget -q 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O "/home/${USER}/Documents/jython-standalone-2.7.0.jar"
 
@@ -938,6 +942,12 @@ fi
 clear && echo "-- Installing proxychains"
 sudo apt-get -qq install proxychains4
 
+clear && echo "-- Install nmap-parse-output"
+sudo apt-get -qq install xsltproc
+git clone -q --depth 1 'https://github.com/ernw/nmap-parse-output' /opt/nmap-parse-output
+bash -c "echo -e 'source /opt/nmap-parse-output/_nmap-parse-output' >> /home/${USER}/.bashrc"
+sudo ln -sf /opt/nmap-parse-output/nmap-parse-output /usr/local/bin/nmap-parse-output
+
 clear && echo "-- Installing nmapAutomator"
 cd /opt/nmapautomator/
 sudo chmod +x nmapAutomator.sh
@@ -968,7 +978,7 @@ tar xvf termshark*.tar.gz
 sudo rm termshark*.tar.gz
 mv termshark_*/ termshark/
 
-pipx install credslayer # https://github.com/ShellCode33/credslayer
+python3 -m pipx install credslayer # https://github.com/ShellCode33/credslayer
 
 clear && echo "-- Installing bettercap"
 URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'bettercap_linux_amd64_')
@@ -1050,6 +1060,7 @@ pipenv --bare --three run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntlmrecon && if [ \$(checksudo) = 0 ]; then (pipenv run ntlmrecon \"\$@\");fi)" > /usr/bin/ntlmrecon'
 sudo chmod +x /usr/bin/ntlmrecon
 
+trap '' INT
 clear && echo "-- Installing Nessus"
 cd /opt/
 curl -O -J -L $URL_NESSUS
@@ -1072,6 +1083,7 @@ then
   sudo /etc/init.d/nessusd start
 fi
 #sudo rm ~/Downloads/Nessus*.deb
+trap - INT
 wget -q -U firefox 'https://gist.githubusercontent.com/wantafanta/0d31a15974b41862b1fcbcb804c571be/raw/fd0b4cd4feff5f2eaed55a34db4e1f3be9e60fac/nessus-merge.py' -O '/opt/nessus-merge.py'
 
 clear && echo "-- Installing frogger2"
@@ -1343,7 +1355,7 @@ sudo systemctl disable pwndrop.service
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
+sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'cyberchef.desktop', 'beef.desktop', 'metasploit-framework.desktop', 'pwndrop.desktop', 'covenant.desktop', 'empire.desktop', 'silenttrinity.desktop', 'merlin.desktop', 'fuzzbunch.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop', 'fluxion.desktop']"
 
 # Services fixes
 # sudo systemctl stop apache2.service #eaphammer
