@@ -35,8 +35,6 @@ URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.1/wine-mono-5.1.1-x86.msi'
 # mono: https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
 # opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
-URL_NESSUS='https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/11437/download?i_agree_to_tenable_license_agreement=true'
-# nesus: https://www.tenable.com/downloads/nessus - Nessus-8.11.1-ubuntu1110_amd64.deb
 URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.13.13462.deb'
 # maltego: https://www.maltego.com/downloads/
 
@@ -401,7 +399,7 @@ clear && python3 -m pipx install impacket # https://github.com/SecureAuthCorp/im
 sudo ln -sf ~/.local/pipx/venvs/impacket/bin/*.py /usr/local/bin/
 clear && python3 -m pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
 clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
-clear && pipx inject activereign impacket
+clear && python3 -m pipx inject activereign impacket
 clear && python3 -m pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
 # sudo ~/.local/bin/
 
@@ -454,7 +452,7 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/scoutsuite && if [ \$(checksudo) = 
 sudo chmod +x /usr/bin/scoutsuite
 
 clear && python3 -m pipx install roadrecon # https://github.com/dirkjanm/roadtools
-clear && pipx inject roadrecon neo4j-driver
+clear && python3 -m pipx inject roadrecon neo4j-driver
 
 clear && echo "-- Installing Stormspotter"
 git clone -q --depth 1 'https://github.com/Azure/stormspotter' /opt/stormspotter
@@ -1062,6 +1060,9 @@ sudo chmod +x /usr/bin/ntlmrecon
 
 trap '' INT
 clear && echo "-- Installing Nessus"
+ID_NESSUS=$(curl -s 'https://www.tenable.com/downloads/nessus?loginAttempted=true' | grep -oE 'id=.?__NEXT_DATA__[^<>]*>[^<>]+' | cut -d'>' -f2 | jq -c '[ .props.pageProps.page.downloads[] | select( .description | contains("18.04")) ][] | select(.file | startswith("Nessus-8"))' | jq -r .id)
+URL_NESSUS="https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/$ID_NESSUS/download?i_agree_to_tenable_license_agreement=true"
+# nesus: https://www.tenable.com/downloads/nessus
 cd /opt/
 curl -O -J -L $URL_NESSUS
 mv Nessus*.deb ~/Downloads/
