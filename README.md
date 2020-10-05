@@ -86,6 +86,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Maltego](https://www.maltego.com/)
 * [Merlin](https://github.com/Ne0nd0g/merlin)
 * [Metasploit Framework](https://github.com/rapid7/metasploit-framework)
+  * [Kage](https://github.com/Zerx0r/Kage)
   * [msf-exploit-loop](https://github.com/actuated/msf-exploit-loop)
 * [mimikatz](https://github.com/gentilkiwi/mimikatz)
 * [mitm6](https://github.com/fox-it/mitm6)

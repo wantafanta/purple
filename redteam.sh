@@ -243,12 +243,23 @@ cd /opt/
 curl https://raw.githubusercontent.com/rapid7/metasploit-omnibus/master/config/templates/metasploit-framework-wrappers/msfupdate.erb > msfinstall && sudo chmod 755 msfinstall && sudo ./msfinstall
 sudo rm msfinstall
 sudo wget -q 'https://raw.githubusercontent.com/rapid7/metasploit-framework/master/lib/msf/core/web_services/public/favicon.ico' -O '/opt/metasploit-framework/logo.ico'
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Metasploit Framework\nExec=gnome-terminal --window -- sudo msfconsole\nIcon=/opt/metasploit-framework/logo.ico\nCategories=Application;" > /usr/share/applications/metasploit-framework.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Metasploit Framework\nExec=gnome-terminal --window -- sudo msfconsole\nIcon=/opt/metasploit-framework/logo.ico\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=kage" > /usr/share/applications/metasploit-framework.desktop'
 sudo cp /opt/metasploit-framework/embedded/framework/config/database.yml.example /opt/metasploit-framework/embedded/framework/config/database.yml
 sudo sed -i 's/^  password:.*/  password: msf/g' /opt/metasploit-framework/embedded/framework/config/database.yml
 sudo -u postgres bash -c "psql -c \"CREATE USER metasploit_framework_development WITH PASSWORD 'msf';\""
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE metasploit_framework_development;\""
 sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE metasploit_framework_development TO metasploit_framework_development;\""
+
+clear && echo "-- Installing Kage (Metasploit GUI)"
+cd /opt/
+URL_KAGE=$(url_latest 'https://api.github.com/repos/Zerx0r/Kage/releases/latest' '.AppImage')
+mkdir /opt/kage
+wget -q $URL_KAGE -O '/opt/kage/kage.AppImage'
+sudo chmod +x /opt/kage/kage.AppImage
+sudo ln -sf /opt/kage/kage.AppImage /usr/local/bin/kage
+wget -q 'https://raw.githubusercontent.com/Zerx0r/Kage/master/static/kage-logo.svg' -O '/opt/kage/icon.svg'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Kage\nExec=kage\nIcon=/opt/kage/icon.svg\nCategories=Application;" > /usr/share/applications/kage.desktop'
+mkdir "/home/${USER}/.local/share/appimagekit/" && touch "/home/${USER}/.local/share/appimagekit/no_desktopintegration"
 
 clear && echo "-- Installing searchsploit"
 sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
