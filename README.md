@@ -46,7 +46,9 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [enumdb](https://github.com/m8r0wn/enumdb)
 * [EvilClippy](https://github.com/outflanknl/EvilClippy)
 * [evilginx2](https://github.com/kgretzky/evilginx2)
+* [evil-winrm](https://github.com/Hackplayers/evil-winrm)
 * [Evil-SSDP](https://gitlab.com/initstring/evil-ssdp)
+* [ffuf](https://github.com/ffuf/ffuf)
 * File Cracks
 * [FileZilla](https://filezilla-project.org/)
 * [fireprox](https://github.com/ustayready/fireprox)
@@ -156,6 +158,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [unicorn](https://github.com/trustedsec/unicorn)
 * [Usernamer](https://github.com/jseidl/usernamer)
 * [Visual Studio Code](https://snapcraft.io/vscode)
+* [wfuzz](https://github.com/xmendez/wfuzz)
 * [WhatWaf](https://github.com/Ekultek/whatwaf)
 * [wifite](https://github.com/derv82/wifite2)
 * [Windows Exploit Suggester - Next Generation](https://github.com/bitsadmin/wesng)

@@ -30,13 +30,10 @@ sudo chmod +x /usr/bin/checksudo
 
 clear && echo "-- Lets begin ..."
 
-# static urls (that may need to be updated)
-URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.1/wine-mono-5.1.1-x86.msi'
-# mono: https://dl.winehq.org/wine/wine-mono/
-URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz'
-# opencl: https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
-URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.13.13462.deb'
-# maltego: https://www.maltego.com/downloads/
+# static urls (manually update)
+URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.13.13462.deb' # https://www.maltego.com/downloads/
+URL_MONO='https://dl.winehq.org/wine/wine-mono/5.1.1/wine-mono-5.1.1-x86.msi' # https://dl.winehq.org/wine/wine-mono/
+URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz' # https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
 
 # function to scrape latest release from github api
 url_latest() {
@@ -172,9 +169,7 @@ git clone -q --depth 1 'https://github.com/lanmaster53/recon-ng'
 git clone -q --depth 1 'https://github.com/laramies/theharvester'
 git clone -q --depth 1 'https://github.com/lgandx/responder'
 git clone -q --depth 1 'https://github.com/lightos/credmap'
-git clone -q --depth 1 'https://github.com/m8r0wn/enumdb'
 git clone -q --depth 1 'https://github.com/m8r0wn/nullinux'
-git clone -q --depth 1 'https://github.com/m8r0wn/pymeta'
 git clone -q --depth 1 --recursive 'https://github.com/mdsecresearch/lyncsniper'
 git clone -q --depth 1 'https://github.com/mIcHyAmRaNe/okadminfinder3'
 git clone -q --depth 1 'https://github.com/offensive-security/exploitdb'
@@ -195,14 +190,17 @@ git clone -q --depth 1 'https://github.com/ustayready/fireprox'
 git clone -q --depth 1 'https://github.com/wantafanta/nmapautomator'
 git clone -q --depth 1 'https://github.com/ZerBea/hcxtools'
 git clone -q --depth 1 'https://github.com/ZerBea/hcxdumptool'
-
 #-- PRIVILEGE ESCALATION
 git clone -q --depth 1 'https://github.com/PowerShellMafia/powersploit'
 git clone -q --depth 1 'https://github.com/mzet-/linux-exploit-suggester'
-git clone -q --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration'
-
 #-- SYSTEM AUDIT
+git clone -q --depth 1 'https://github.com/diego-treitos/linux-smart-enumeration'
 git clone -q --depth 1 'https://github.com/CISOfy/lynis'
+#-- WEB SHELL
+#mkdir /opt/webshells
+#git clone -q --depth 1 'https://github.com/mIcHyAmRaNe/wso-webshell' /opt/webshells/wso-webshell
+#git clone -q --depth 1 'https://github.com/flozz/p0wny-shell' /opt/webshells/p0wny-shell
+#git clone -q --depth 1 'https://github.com/xl7dev/WebShell' /opt/webshells/webshell-collection
 
 #-- /OPT/ SCRIPTS
 bash -c 'echo -e "#!/bin/bash\nclear\nls | xargs -I{} git -C {} pull\nclear\npipx upgrade-all\nclear\nsudo airodump-ng-oui-update\nclear\nnikto -update\nclear\nwpscan --update\nclear\nsudo updatedb" > /opt/update.sh'
@@ -218,24 +216,19 @@ bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec
 sudo chown -R ${USER}:${USER} /home/${USER}/Desktop/*.desktop
 
 #-- BASH ALIASES
-bash -c "echo -e 'alias aquatone=\"/opt/aquatone/aquatone\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias cameradar=\"sudo docker run -t ullaakut/cameradar\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias creap=\"sudo /opt/creap/crEAP.py\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias dirble=\"/opt/dirble/dirble\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias enumdb=\"/opt/enumdb/enumdb.py\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias evil-ssdp=\"/opt/evil-ssdp/evil_ssdp.py\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias frogger=\"sudo /opt/vlan-hopping/frogger2.sh\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias gowitness=\"/opt/gowitness/gowitness-linux-amd64\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias kerbrute=\"/opt/kerbrute/kerbrute_linux_amd64\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias nmapautomator=\"sudo /opt/nmapautomator/nmapAutomator.sh\"' >> /home/${USER}/.bash_aliases"
 bash -c "echo -e 'alias nse=\"ls /usr/share/nmap/scripts/ | grep \"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias recursebuster=\"/opt/recursebuster/recursebuster_elf\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias responder=\"sudo /opt/responder/Responder.py\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias ruler=\"/opt/ruler/ruler-linux64\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias termshark=\"/opt/termshark/termshark\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias unicorn=\"/opt/unicorn/unicorn.py\"' >> /home/${USER}/.bash_aliases"
-bash -c "echo -e 'alias usernamer=\"/opt/usernamer/usernamer.py\"' >> /home/${USER}/.bash_aliases"
 #. ~/.bashrc
+
+#-- SYMBOLIC LINKS
+sudo ln -sf /opt/evil-ssdp/evil_ssdp.py /usr/local/bin/evil-ssdp
+sudo ln -sf /opt/nmapautomator/nmapAutomator.sh /usr/local/bin/nmapautomator
+sudo ln -sf /opt/responder/Responder.py /usr/local/bin/responder
+sudo ln -sf /opt/unicorn/unicorn.py /usr/local/bin/unicorn
+sudo sed -i 's/^#!\/usr\/bin\/env python/#!\/usr\/bin\/env python2/g' /opt/usernamer/usernamer.py
+sudo ln -sf /opt/usernamer/usernamer.py /usr/local/bin/usernamer
+
+#-- BINS
+sudo bash -c 'echo -e "#!/bin/bash\n(sudo docker run -t ullaakut/cameradar \"\$@\")" > /usr/local/bin/cameradar' && sudo chmod +x /usr/local/bin/cameradar
 
 clear && echo "-- Installing Metasploit"
 sudo apt-get -qq install postgresql
@@ -249,6 +242,7 @@ sudo sed -i 's/^  password:.*/  password: msf/g' /opt/metasploit-framework/embed
 sudo -u postgres bash -c "psql -c \"CREATE USER metasploit_framework_development WITH PASSWORD 'msf';\""
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE metasploit_framework_development;\""
 sudo -u postgres bash -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE metasploit_framework_development TO metasploit_framework_development;\""
+mkdir "/home/${USER}/.msf4" && touch "/home/${USER}/.msf4/initial_setup_complete"
 
 clear && echo "-- Installing Kage (Metasploit GUI)"
 cd /opt/
@@ -414,6 +408,9 @@ clear && python3 -m pipx inject activereign impacket
 clear && python3 -m pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
 # sudo ~/.local/bin/
 
+clear && echo "-- Installing evil-winrm"
+sudo gem install evil-winrm # https://github.com/Hackplayers/evil-winrm
+
 clear && echo "-- Installing BloodHound"
 URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
 cd /opt/
@@ -541,8 +538,9 @@ clear && echo "-- Installing gowitness"
 URL_GOWITNESS=$(url_latest 'https://api.github.com/repos/sensepost/gowitness/releases/latest' 'linux-amd64')
 mkdir /opt/gowitness
 cd /opt/gowitness
-wget -q $URL_GOWITNESS
+wget -q $URL_GOWITNESS -O 'gowitness-linux-amd64'
 sudo chmod +x gowitness-linux-amd64
+sudo ln -sf /opt/gowitness/gowitness-linux-amd64 /usr/local/bin/gowitness
 
 clear && echo "-- Installing Chromium Browser" #for aquatone
 sudo apt-get -qq install chromium-browser
@@ -555,6 +553,7 @@ wget -q $URL_AQUATONE
 unzip aquatone*.zip
 sudo rm aquatone*.zip
 sudo chmod +x aquatone
+sudo ln -sf /opt/aquatone/aquatone /usr/local/bin/aquatone
 
 clear && echo "-- Installing ruler"
 URL_RULER=$(url_latest 'https://api.github.com/repos/sensepost/ruler/releases/latest' 'linux64')
@@ -562,6 +561,7 @@ mkdir /opt/ruler
 cd /opt/ruler/
 wget -q $URL_RULER
 sudo chmod +x ruler-linux64
+sudo ln -sf /opt/ruler/ruler-linux64 /usr/local/bin/ruler
 
 clear && echo "-- Installing SilentTrinity"
 cd /opt/silenttrinity/
@@ -609,9 +609,7 @@ sudo apt-get -qq install smbclient
 sudo bash setup.sh
 
 clear && echo "-- Installing enumdb"
-cd /opt/enumdb/
-sudo chmod +x setup.sh
-sudo ./setup.sh
+python3 -m pipx install enumdb
 
 clear && echo "-- Installing File Cracks"
 sudo apt-get -qq install fcrackzip
@@ -650,6 +648,7 @@ mkdir /opt/kerbrute
 cd /opt/kerbrute/
 wget -q $URL_KERBRUTE
 sudo chmod +x kerbrute_linux_amd64
+sudo ln -sf /opt/kerbrute/kerbrute_linux_amd64 /usr/local/bin/kerbrute
 
 ########## ---------- ##########
 # VoIP
@@ -853,6 +852,18 @@ clear && echo "-- Installing nikto"
 sudo apt-get -qq install nikto
 nikto -update
 
+clear && echo "-- Installing ffuf"
+URL_FFUF=$(url_latest 'https://api.github.com/repos/ffuf/ffuf/releases/latest' 'linux_amd64.tar.gz')
+mkdir /opt/ffuf/
+cd /opt/ffuf/
+wget -q $URL_FFUF
+tar xvf *linux_amd64.tar.gz
+chmod +x ffuf
+sudo ln -sf /opt/ffuf/ffuf /usr/local/bin/ffuf
+
+clear && echo "-- Installing wfuzz"
+python3 -m pipx install wfuzz # https://github.com/xmendez/wfuzz
+
 clear && echo "-- Installing testssl.sh"
 sudo bash -c 'echo -e "#!/bin/bash\n(/opt/testssl.sh/testssl.sh \"\$@\")" > /usr/bin/testssl.sh'
 sudo chmod +x /usr/bin/testssl.sh
@@ -873,6 +884,7 @@ cd /opt/
 wget -q $URL_DIRBLE
 unzip dirble*.zip
 sudo rm dirble*.zip
+sudo ln -sf /opt/dirble/dirble /usr/local/bin/dirble
 
 clear && echo "-- Installing recursebuster"
 URL_RECURSEBUSTER=$(url_latest 'https://api.github.com/repos/C-Sto/recursebuster/releases/latest' 'recursebuster_elf')
@@ -882,6 +894,7 @@ cd /opt/recursebuster/
 wget -q $URL_RECURSEBUSTER
 wget -q $URL_RECURSEBUSTER_README
 sudo chmod +x recursebuster_elf
+sudo ln -sf /opt/recursebuster/recursebuster_elf /usr/local/bin/recursebuster
 
 clear && echo "-- Installing okadminfinder3"
 cd /opt/okadminfinder3/
@@ -937,14 +950,6 @@ if [[ $(py2_support) == "true" ]]; then
 fi
 
 ########## ---------- ##########
-# Webshell
-########## ---------- ##########
-
-#https://github.com/mIcHyAmRaNe/wso-webshell
-#https://github.com/flozz/p0wny-shell
-#https://github.com/xl7dev/WebShell
-
-########## ---------- ##########
 # Network
 ########## ---------- ##########
 
@@ -986,6 +991,7 @@ wget -q $URL_TERMSHARK
 tar xvf termshark*.tar.gz
 sudo rm termshark*.tar.gz
 mv termshark_*/ termshark/
+sudo ln -sf /opt/termshark/termshark /usr/local/bin/termshark
 
 python3 -m pipx install credslayer # https://github.com/ShellCode33/credslayer
 
@@ -1101,6 +1107,7 @@ wget -q -U firefox 'https://gist.githubusercontent.com/wantafanta/0d31a15974b418
 clear && echo "-- Installing frogger2"
 sudo apt-get -qq install yersinia vlan arp-scan screen
 sudo chmod +x /opt/vlan-hopping/frogger2.sh
+sudo ln -sf /opt/vlan-hopping/frogger2.sh /usr/local/bin/frogger
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing Elasticsearch 6.x (natlas Database)"
@@ -1183,10 +1190,7 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/pwndb && if [ \$(checksudo) = 0 ]; 
 sudo chmod +x /usr/bin/pwndb
 
 clear && echo "-- Installing pymeta"
-cd /opt/pymeta/
-pipenv --bare --three run python3 setup.py install --record files.txt
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/pymeta && if [ \$(checksudo) = 0 ]; then (pipenv run python3 pymeta.py \"\$@\");fi)" > /usr/bin/pymeta'
-sudo chmod +x /usr/bin/pymeta
+python3 -m pipx install pymetadata
 
 clear && echo "-- Installing theHarvester"
 cd /opt/theharvester/
@@ -1277,6 +1281,7 @@ if [[ $(py2_support) == "true" ]]; then
   sudo dpkg --ignore-depends=python-scapy -r python-scapy
   cd /opt/scapy-com/
   sudo python setup.py install --record files.txt
+  sudo ln -sf /opt/creap/crEAP.py /usr/local/bin/creap
 fi
 
 #clear && echo "-- Installing eaphammer"
