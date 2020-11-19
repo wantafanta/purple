@@ -14,7 +14,7 @@ fi
 # check ubuntu version
 py2_support() {
   local version=$(lsb_release -rs)
-  local py2=$(if [[ $version == "20.04" ]]; then echo "false"; else echo "true"; fi)
+  local py2=$(if [[ $version == "20.04" || "20.10" ]]; then echo "false"; else echo "true"; fi)
   echo $py2
 }
 
@@ -403,6 +403,8 @@ sudo ln -sf ~/.local/pipx/venvs/mitm6/bin/mitm6 /usr/local/bin/mitm6
 clear && python3 -m pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
 sudo ln -sf ~/.local/pipx/venvs/impacket/bin/*.py /usr/local/bin/
 clear && python3 -m pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
+sudo ln -sf ~/.local/pipx/venvs/crackmapexec/bin/cme* /usr/local/bin/
+sudo ln -sf ~/.local/pipx/venvs/crackmapexec/bin/crackmapexec /usr/local/bin/
 clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
 clear && python3 -m pipx inject activereign impacket
 clear && python3 -m pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
