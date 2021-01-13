@@ -405,6 +405,9 @@ sudo ln -sf ~/.local/pipx/venvs/impacket/bin/*.py /usr/local/bin/
 clear && python3 -m pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
 sudo ln -sf ~/.local/pipx/venvs/crackmapexec/bin/cme* /usr/local/bin/
 sudo ln -sf ~/.local/pipx/venvs/crackmapexec/bin/crackmapexec /usr/local/bin/
+
+cp /opt/empire/data/module_source/credentials/Invoke-Mimikatz.ps1 ~/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/Invoke-Mimikatz.ps1
+
 clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
 clear && python3 -m pipx inject activereign impacket
 clear && python3 -m pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
@@ -463,15 +466,6 @@ sudo chmod +x /usr/bin/scoutsuite
 
 clear && python3 -m pipx install roadrecon # https://github.com/dirkjanm/roadtools
 clear && python3 -m pipx inject roadrecon neo4j-driver
-
-clear && echo "-- Installing Stormspotter"
-git clone -q --depth 1 'https://github.com/Azure/stormspotter' /opt/stormspotter
-cd /opt/stormspotter/
-pipenv --bare --three install .
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/stormspotter/ && if [ \$(checksudo) = 0 ]; then (pipenv run stormspotter \"\$@\");fi)" > /usr/bin/stormspotter'
-sudo chmod +x /usr/bin/stormspotter
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/stormspotter/ && if [ \$(checksudo) = 0 ]; then (pipenv run stormdash \"\$@\");fi)" > /usr/bin/stormdash'
-sudo chmod +x /usr/bin/stormdash
 
 clear && echo "-- Installing Torghost"
 cd /opt/
@@ -829,7 +823,7 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sqlmap/ && python3 sqlmap.py \"\$@\
 sudo chmod +x /usr/bin/sqlmap
 
 clear && echo "-- Installing jsql-injection"
-URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/tags/v0.82' '.jar') # https://github.com/ron190/jsql-injection/releases/
+URL_JSQL=$(url_latest 'https://api.github.com/repos/ron190/jsql-injection/releases/tags/v0.83' '.jar') # https://github.com/ron190/jsql-injection/releases/
 mkdir /opt/jsql-injection/
 wget -q $URL_JSQL -O '/opt/jsql-injection/jsql-injection.jar'
 wget -q 'https://github.com/ron190/jsql-injection/raw/master/view/src/main/resources/swing/images/software/bug128.png' -O '/opt/jsql-injection/logo.png'
@@ -955,11 +949,14 @@ fi
 # Network
 ########## ---------- ##########
 
-clear && echo "-- Installing proxychains"
+clear && echo "-- Installing proxychains" # https://github.com/rofl0r/proxychains-ng
 sudo apt-get -qq install proxychains4
 
-clear && echo "-- Install nmap-parse-output"
-sudo apt-get -qq install xsltproc
+clear && echo "-- Installing sshuttle" # https://github.com/sshuttle/sshuttle
+sudo apt-get -qq install sshuttle
+
+clear && echo "-- Install nmap-parse-output" # https://github.com/ernw/nmap-parse-output
+sudo apt-get -qq install xsltproc libxml2-utils
 git clone -q --depth 1 'https://github.com/ernw/nmap-parse-output' /opt/nmap-parse-output
 bash -c "echo -e 'source /opt/nmap-parse-output/_nmap-parse-output' >> /home/${USER}/.bashrc"
 sudo ln -sf /opt/nmap-parse-output/nmap-parse-output /usr/local/bin/nmap-parse-output
@@ -1240,6 +1237,13 @@ cd /opt/httprobe/
 wget -q 'https://github.com/tomnomnom/httprobe/releases/download/v0.1.2/httprobe-linux-amd64-0.1.2.tgz'
 tar xvzf httprobe*.tgz
 sudo ln -sf /opt/httprobe/httprobe /usr/local/bin/httprobe
+
+clear && echo "bopscrk (Before Outset PaSsword CRacKing)"
+git clone -q --depth 1 'https://github.com/r3nt0n/bopscrk' /opt/bopscrk
+cd /opt/bopscrk/
+pipenv --bare --three install -r requirements.txt
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bopscrk && if [ \$(checksudo) = 0 ]; then (pipenv run python bopscrk.py \"\$@\");fi)" > /usr/bin/bopscrk'
+sudo chmod +x /usr/bin/bopscrk
 
 ########## ---------- ##########
 # Phishing

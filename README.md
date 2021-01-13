@@ -24,6 +24,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
   * [Aclpwn](https://github.com/fox-it/aclpwn.py)
   * [BloodHound.py](https://github.com/fox-it/bloodhound.py)
   * [BloodHound Custom Queries](https://github.com/hausec/Bloodhound-Custom-Queries/)
+* [bopscrk (Before Outset PaSsword CRacKing)](https://github.com/r3nt0n/bopscrk)
 * [Bully](https://github.com/aanarchyy/bully)
 * [Burp Suite](https://portswigger.net/burp)
   * Community Edition or Professional
@@ -144,8 +145,8 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Sqlectron](https://sqlectron.github.io/)
 * [Sqlmap](https://github.com/sqlmapproject/sqlmap)
 * [Spraying Toolkit](https://github.com/byt3bl33d3r/sprayingtoolkit) (issues with pip requirements in Ubuntu 20.04)
+* [sshuttle](https://github.com/sshuttle/sshuttle)
 * [statistically-likely-usernames](https://github.com/insidetrust/statistically-likely-usernames)
-* [Stormspotter](https://github.com/azure/stormspotter)
 * [Sudomy](https://github.com/Screetsec/sudomy)
 * [Swagger-EZ](https://github.com/RhinoSecurityLabs/swagger-ez)
 * [Swagger-UI](https://github.com/swagger-api/swagger-ui)
