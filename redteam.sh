@@ -134,7 +134,6 @@ sudo snap connect remmina:avahi-observe :avahi-observe
 sudo snap connect remmina:cups-control :cups-control
 sudo snap connect remmina:mount-observe :mount-observe
 sudo snap connect remmina:password-manager-service :password-manager-service
-sudo snap install john-the-ripper
 
 clear && echo "-- Cloning repositories"
 cd /opt/
@@ -349,11 +348,8 @@ pipenv --bare --three install
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnscan/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 dnscan.py \"\$@\");fi)" > /usr/bin/dnscan'
 sudo chmod +x /usr/bin/dnscan
 
-#clear && echo "-- Installing DeathStar"
-#cd /opt/deathstar/
-#pipenv --bare --three install
-#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/deathstar/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 DeathStar.py \"\$@\");fi)" > /usr/bin/deathstar'
-#sudo chmod +x /usr/bin/deathstar
+clear && echo "-- Installing DeathStar"
+clear && python3 -m pipx install deathstar-empire
 
 clear && clear && echo "-- Installing Empire"
 #echo
@@ -367,7 +363,7 @@ sudo ./setup/install.sh
 sudo pip3 install pyparsing
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./empire \"\$@\")" > /usr/bin/empire'
 sudo chmod +x /usr/bin/empire
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Web UI\nExec=starkiller" > /usr/share/applications/empire.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire\nIcon=/opt/empire/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;\nActions=app1;app2;\n\n[Desktop Action app1]\nName=Web UI\nExec=starkiller\n[Desktop Action app2]\nName=DeathStar\nExec=gnome-terminal --window -- bash -c '\''read -p \"Enter REST API username: \" user && read -p \"Enter REST API password: \" pass && deathstar -u \$user -p \$pass && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/empire.desktop'
 bash -c 'echo -e "preobfuscate\nexit" > /opt/empire/obf.rc'
 empire -r /opt/empire/obf.rc
 sudo rm /opt/empire/obf.rc
@@ -638,6 +634,46 @@ sudo apt-get -qq install libsqlite3-dev libsqlcipher-dev # pysqlcipher
 #sudo chmod +x /usr/bin/patator
 python3 -m pipx install patator
 
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/ftp_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/ssh_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/telnet_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/smtp_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/smtp_vrfy
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/smtp_rcpt
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/finger_lookup
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/http_fuzz
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/rdp_gateway
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/ajp_fuzz
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/pop_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/pop_passd
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/imap_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/ldap_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/dcom_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/smb_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/smb_lookupsid
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/rlogin_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/vmauthd_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/mssql_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/oracle_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/mysql_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/mysql_query
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/rdp_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/pgsql_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/vnc_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/dns_forward
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/dns_reverse
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/snmp_login
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/ike_enum
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/unzip_pass
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/keystore_pass
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/sqlcipher_pass
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/umbraco_crack
+sudo ln -sf ~/.local/bin/patator.py /usr/bin/tcp_fuzz
+
+clear && echo "-- Installing iker.py" # https://labs.portcullis.co.uk/download/iker_v1.1.tar
+curl 'https://raw.githubusercontent.com/Zamanry/iker/master/iker.py' | sudo tee /usr/local/bin/iker.py
+sudo chmod +x /usr/local/bin/iker.py
+
 clear && echo "-- Installing kerbrute"
 URL_KERBRUTE=$(url_latest 'https://api.github.com/repos/ropnop/kerbrute/releases/latest' 'linux_amd64')
 mkdir /opt/kerbrute
@@ -654,7 +690,7 @@ clear && echo "-- Installing sippts"
 sudo cpan -i IO:Socket:Timeout NetAddr:IP String:HexConvert Net:Pcap Net::Address::IP::Local DBI DBD::SQLite
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipscan.pl \"\$@\")" > /usr/bin/sipscan'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipexten.pl \"\$@\")" > /usr/bin/sipexten'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipcrack.pl \"\$@\")" > /usr/bin/sipcrack'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipcracker.pl \"\$@\")" > /usr/bin/sipcracker'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipinvite.pl \"\$@\")" > /usr/bin/sipinvite'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipsniff.pl \"\$@\")" > /usr/bin/sipsniff'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipspy.pl \"\$@\")" > /usr/bin/sipspy'
@@ -699,6 +735,9 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 ########## ---------- ##########
 # Password Cracking
 ########## ---------- ##########
+
+clear && echo "-- Installing John the Ripper"
+sudo apt-get -qq install john
 
 clear && echo "-- Installing hashcat"
 URL_HASHCAT=$(url_latest 'https://api.github.com/repos/hashcat/hashcat/releases/latest' 'hashcat')
