@@ -17,6 +17,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
   * [Chromium](https://www.chromium.org/Home)
 * [asciinema](https://github.com/asciinema/asciinema/)
 * ~~[BeaconGraph](https://github.com/daddycocoaman/beacongraph)~~
+* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
 * [BeEF](https://github.com/beefproject/beef)
 * [bettercap](https://github.com/bettercap/bettercap)
 * [BloodHound](https://github.com/BloodHoundAD/bloodhound)
@@ -40,9 +41,11 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [DNScan](https://github.com/rbsec/dnscan)
 * Docker
   * [cameradar](https://github.com/Ullaakut/cameradar)
+* [draw.io](https://github.com/jgraph/drawio-desktop)
 * [droopescan](https://github.com/droope/droopescan)
 * ~~[eaphammer](https://github.com/s0lst1c3/eaphammer)~~
 * [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
+  * [DeathStar](https://github.com/byt3bl33d3r/deathstar)
   * [Starkiller](https://github.com/BC-SECURITY/Starkiller)
 * [enumdb](https://github.com/m8r0wn/enumdb)
 * [EvilClippy](https://github.com/outflanknl/EvilClippy)
@@ -126,7 +129,9 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [pymeta](https://github.com/m8r0wn/pymeta)
 * [pypykatz](https://github.com/skelsec/pypykatz)
 * [pwndb](https://github.com/davidtavarez/pwndb)
+* [PwnDoc](https://github.com/pwndoc/pwndoc)
 * [pwndrop](https://github.com/kgretzky/pwndrop)
+* [rdesktop](https://github.com/rdesktop)
 * [Recon-ng](https://github.com/lanmaster53/recon-ng)
 * [recursebuster](https://github.com/C-Sto/recursebuster)
 * [Remmina](https://snapcraft.io/remmina)
