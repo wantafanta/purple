@@ -572,6 +572,9 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 cd /opt/pwndoc
 sudo docker-compose up -d --build
 sudo docker-compose stop
+sudo docker update --restart no pwndoc-backend
+sudo docker update --restart no pwndoc-frontend
+docker update --restart no mongo-pwndoc
 # admin / admin
 
 clear && echo "-- Installing credmap"
