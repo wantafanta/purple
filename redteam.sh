@@ -14,7 +14,7 @@ fi
 # check ubuntu version
 py2_support() {
   local version=$(lsb_release -rs)
-  local py2=$(if [[ $version == "20.04" || "20.10" || "21.04" || "21.10" ]]; then echo "false"; else echo "true"; fi)
+  local py2=$(if [[ $version == "20.04" || "21.10" || "22.04" || "22.10" ]]; then echo "false"; else echo "true"; fi)
   echo $py2
 }
 
@@ -43,10 +43,11 @@ url_latest() {
 }
 
 # function to check application is installed
-[ -f './error.log' ] && rm './error.log'
+SWD=$(pwd)
+[ -f "$SWD/error.log" ] && rm "$SWD/error.log"
 check_app() {
   local name=$(echo $1)
-  [ -f $2 ] && echo "$name is installed." || echo "$name is not installed." >> './error.log'
+  [ -f $2 ] && echo "$name is installed." || echo "$name is not installed." >> "$SWD/error.log"
 }
 
 # get user ids
@@ -1643,7 +1644,6 @@ echo 'BeEF username and password have been set ( u:admin p:beef )'
 echo 'bettercap UI username and password have been set ( u:admin p:bettercap )'
 echo 'BloodHound Database username and password have been set ( u:neo4j p:bloodhound )'
 echo 'Empire username and password are default ( u:empireadmin p:password123 )'
-echo 'Pwndoc username and password are default ( u:admin p:admin )'
 echo 'pwndrop username and password have been set ( u:admin p:pwndrop )'
 echo -e "\nPress Enter to reboot."
 read -p "" </dev/tty
