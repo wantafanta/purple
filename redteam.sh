@@ -95,8 +95,8 @@ clear && python3 -m pipx install h8mail # https://github.com/khast3x/h8mail
 #curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 clear && echo "Configuring TMUX"
-echo 'set -g default-terminal "screen-256color"' > ~/.tmux.conf
-sudo chown -R ${USER}:${USER} ~/.tmux.conf
+echo 'set -g default-terminal "screen-256color"' > "/home/${USER}/.tmux.conf"
+sudo chown -R ${USER}:${USER} "/home/${USER}/.tmux.conf"
 
 clear && echo "-- Installing asciinema (terminal session recorder)" # https://github.com/asciinema/asciinema/
 sudo -H pip3 install -U asciinema
@@ -104,7 +104,7 @@ sudo -H pip3 install -U asciinema
 clear && echo "-- Installing Firewall"
 sudo apt-get -qq install gufw
 sudo ufw disable
-git clone --depth 1 'https://github.com/halfer/ufw-vpn' /opt/ufw-vpn
+git clone --depth 1 'https://github.com/halfer/ufw-vpn' '/opt/ufw-vpn'
 
 clear && echo "-- Installing FileZilla"
 sudo apt-get -qq install filezilla
@@ -125,7 +125,7 @@ if [[ $(py2_support) == "true" ]]; then # not in 20.04 repo
   sudo apt-get -qq install zenmap
 fi
 sudo wget -q 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
-sudo git clone -q --depth 1 'https://github.com/scipag/vulscan' /usr/share/nmap/scripts/vulscan
+sudo git clone -q --depth 1 'https://github.com/scipag/vulscan' '/usr/share/nmap/scripts/vulscan'
 sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
 sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
 sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
@@ -225,7 +225,7 @@ gsettings set org.gnome.shell.extensions.desktop-icons show-trash false
 gsettings set org.gnome.desktop.privacy remember-app-usage false
 bash -c "echo -e '[Desktop Entry]\nName=Link to LOLBAS\nType=Application\nExec=firefox https://lolbas-project.github.io/\nIcon=firefox\nTerminal=false' > ~/Desktop/LOLBAS.desktop"
 bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec=firefox https://gtfobins.github.io/\nIcon=firefox\nTerminal=false' > ~/Desktop/GTFOBins.desktop"
-sudo chown -R ${USER}:${USER} /home/${USER}/Desktop/*.desktop
+sudo chown -R ${USER}:${USER} "/home/${USER}/Desktop/*.desktop"
 
 #-- BASH ALIASES
 bash -c "echo -e 'alias nse=\"ls /usr/share/nmap/scripts/ | grep \"' >> /home/${USER}/.bash_aliases"
@@ -266,7 +266,7 @@ mkdir "/home/${USER}/.local/share/appimagekit/" && touch "/home/${USER}/.local/s
 check_app 'kage' '/opt/kage/kage.AppImage'
 
 clear && echo "-- Installing searchsploit"
-sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > ~/.searchsploit_rc
+sed 's|path_array+=(.*)|path_array+=("/opt/exploitdb")|g' /opt/exploitdb/.searchsploit_rc > "/home/${USER}/.searchsploit_rc"
 sudo ln -sf /opt/exploitdb/searchsploit /usr/local/bin/searchsploit
 check_app 'searchsploit' '/opt/exploitdb/searchsploit'
 
@@ -297,7 +297,7 @@ check_app 'shellter' '/opt/shellter/shellter.exe'
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing Don't Kill My Cat (DKMC)"
-  git clone -q --depth 1 'https://github.com/Mr-Un1k0d3r/dkmc' /opt/dkmc
+  git clone -q --depth 1 'https://github.com/Mr-Un1k0d3r/dkmc' '/opt/dkmc'
   cd /opt/dkmc/
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/dkmc/ && python dkmc.py \"\$@\")" > /usr/bin/dkmc'
   sudo chmod +x /usr/bin/dkmc
@@ -353,7 +353,7 @@ check_app 'merlin' '/opt/merlin/merlinServer-Linux-x64'
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "Installing Windows Exploit Suggester"
-  git clone -q --depth 1 'https://github.com/GDSSecurity/windows-exploit-suggester' /opt/windows-exploit-suggester
+  git clone -q --depth 1 'https://github.com/GDSSecurity/windows-exploit-suggester' '/opt/windows-exploit-suggester'
   sudo bash -c 'echo -e "#!/bin/bash\n(python2 /opt/windows-exploit-suggester/windows-exploit-suggester.py \"\$@\")" > /usr/bin/windows-exploit-suggester'
   sudo chmod +x /usr/bin/windows-exploit-suggester
 fi
@@ -417,18 +417,18 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 check_app 'covenant' '/opt/covenant/Covenant/Covenant.cs'
 
 clear && python3 -m pipx install mitm6 # https://github.com/fox-it/mitm6/
-sudo ln -sf ~/.local/pipx/venvs/mitm6/bin/mitm6 /usr/local/bin/mitm6
-check_app 'mitm6' '~/.local/pipx/venvs/mitm6/bin/mitm6'
+sudo ln -sf "/home/${USER}/.local/bin/mitm6" /usr/local/bin/
+check_app 'mitm6' "/home/${USER}/.local/bin/mitm6"
 clear && python3 -m pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
-sudo ln -sf ~/.local/pipx/venvs/impacket/bin/*.py /usr/local/bin/
+sudo ln -sf "/home/${USER}/.local/bin/*.py" /usr/local/bin/
 clear && python3 -m pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
-sudo ln -sf ~/.local/pipx/venvs/crackmapexec/bin/cme* /usr/local/bin/
-sudo ln -sf ~/.local/pipx/venvs/crackmapexec/bin/crackmapexec /usr/local/bin/
-check_app 'crackmapexec' '~/.local/pipx/venvs/crackmapexec/bin/cme'
+sudo ln -sf "/home/${USER}/.local/bin/cme*" /usr/local/bin/
+sudo ln -sf "/home/${USER}/.local/bin/crackmapexec" /usr/local/bin/
+check_app 'crackmapexec' "/home/${USER}/.local/bin/cme"
 
-mkdir ~/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/
-mkdir ~/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/
-cp /opt/empire/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1 ~/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/Invoke-Mimikatz.ps1
+mkdir "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/"
+mkdir "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/"
+cp "/opt/empire/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1" "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/Invoke-Mimikatz.ps1"
 
 clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
 clear && python3 -m pipx inject activereign impacket
@@ -470,8 +470,8 @@ sudo rm cypher-shell_*.deb
 check_app 'cypher-shell' '/usr/bin/cypher-shell'
 
 clear && echo "-- Installing BloodHound Custom Queries"
-mkdir ~/.config/bloodhound
-curl 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/customqueries.json' > ~/.config/bloodhound/customqueries.json
+mkdir "/home/${USER}/.config/bloodhound"
+curl 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/customqueries.json' > "/home/${USER}/.config/bloodhound/customqueries.json"
 
 clear && echo "-- Installing bloodhound.py"
 cd /opt/bloodhound.py/
@@ -480,10 +480,11 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bloodhound.py/ && if [ \$(checksudo
 sudo chmod +x /usr/bin/bloodhound.py
 check_app 'bloodhound.py' '/usr/bin/bloodhound.py'
 
-python3 -m pipx install aclpwn # https://github.com/fox-it/aclpwn.py
+clear && python3 -m pipx install aclpwn # https://github.com/fox-it/aclpwn.py
+clear && python3 -m pipx inject aclpwn neo4j-driver
 
 clear && echo "-- Installing Scout Suite"
-git clone -q --depth 1 'https://github.com/nccgroup/scoutsuite' /opt/scoutsuite
+git clone -q --depth 1 'https://github.com/nccgroup/scoutsuite' '/opt/scoutsuite'
 cd /opt/scoutsuite/
 pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/scoutsuite && if [ \$(checksudo) = 0 ]; then (pipenv run python3 scout.py \"\$@\");fi)" > /usr/bin/scoutsuite'
@@ -529,7 +530,7 @@ check_app 'fireprox' '/opt/fireprox/fire.py'
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing SimplyEmail"
-  git clone -q --depth 1 'https://github.com/SimplySecurity/simplyemail' /opt/simplyemail
+  git clone -q --depth 1 'https://github.com/SimplySecurity/simplyemail' '/opt/simplyemail'
   sudo apt-get -qq install python-lxml grep antiword odt2txt python-dev libxml2-dev libxslt1-dev
   cd /opt/simplyemail/
   pipenv --bare --two install -r setup/req*.txt
@@ -537,7 +538,7 @@ if [[ $(py2_support) == "true" ]]; then
   sudo chmod +x /usr/bin/simplyemail
 
   clear && echo "-- Installing JackIt"
-  git clone -q --depth 1 'https://github.com/insecurityofthings/jackit' /opt/jackit
+  git clone -q --depth 1 'https://github.com/insecurityofthings/jackit' '/opt/jackit'
   cd /opt/jackit/
   pipenv --bare --two run sudo python2 setup.py install --record files.txt
   sudo rm /usr/local/bin/jackit
@@ -545,7 +546,7 @@ if [[ $(py2_support) == "true" ]]; then
   sudo chmod +x /usr/bin/jackit
 
   clear && echo "-- Installing spoofcheck"
-  git clone -q --depth 1 'https://github.com/BishopFox/spoofcheck' /opt/spoofcheck
+  git clone -q --depth 1 'https://github.com/BishopFox/spoofcheck' '/opt/spoofcheck'
   cd /opt/spoofcheck/
   pipenv --bare --two run sudo pip2 install -r requirements.txt
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/spoofcheck/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python2 spoofcheck.py \"\$@\");fi)" > /usr/bin/spoofcheck'
@@ -691,15 +692,16 @@ clear && echo "-- Installing navi" # will be good to use with some pentest .chea
 git clone -q --depth 1 'https://github.com/junegunn/fzf' '/opt/fzf'
 /opt/fzf/install --all
 git clone -q --depth 1 'https://github.com/denisidoro/navi' '/opt/navi'
-/opt/navi/install
-sudo mv ~/.cargo/bin/navi /usr/local/bin/navi
+/opt/navi/scripts/install
+sudo mv "/home/${USER}/.cargo/bin/navi" /usr/local/bin/navi
 bash -c "echo -e 'eval "$(navi widget bash)"' >> /home/${USER}/.bashrc"
 check_app 'navi' '/usr/local/bin/navi'
 
 clear && echo "-- Installing bruteforce-salted-openssl"
+sudo apt-get -qq install autoconf
 git clone -q --depth 1 'https://github.com/glv2/bruteforce-salted-openssl' '/opt/bruteforce-salted-openssl'
 cd /opt/bruteforce-salted-openssl
-./autogen.sh
+bash autogen.sh
 ./configure
 make
 sudo make install
@@ -710,7 +712,7 @@ check_app 'bruteforce-salted-openssl' '/usr/local/bin/bruteforce-salted-openssl'
 ########## ---------- ##########
 
 clear && echo "-- Installing patator"
-#git clone -q --depth 1 'https://github.com/lanjelot/patator' /opt/patator
+#git clone -q --depth 1 'https://github.com/lanjelot/patator' '/opt/patator'
 #cd /opt/patator/
 sudo apt-get -qq install libcurl4-openssl-dev python3-dev libssl-dev # pycurl
 sudo apt-get -qq install ldap-utils # ldapsearch
@@ -721,43 +723,43 @@ sudo apt-get -qq install libsqlite3-dev libsqlcipher-dev # pysqlcipher
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo patator.py \"\$@\");fi)" > /usr/bin/patator'
 #sudo chmod +x /usr/bin/patator
 python3 -m pipx install patator
-check_app 'patator' '~/.local/bin/patator.py'
+check_app 'patator' "/home/${USER}/.local/bin/patator.py"
 
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/ftp_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/ssh_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/telnet_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/smtp_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/smtp_vrfy
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/smtp_rcpt
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/finger_lookup
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/http_fuzz
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/rdp_gateway
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/ajp_fuzz
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/pop_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/pop_passd
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/imap_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/ldap_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/dcom_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/smb_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/smb_lookupsid
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/rlogin_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/vmauthd_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/mssql_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/oracle_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/mysql_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/mysql_query
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/rdp_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/pgsql_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/vnc_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/dns_forward
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/dns_reverse
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/snmp_login
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/ike_enum
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/unzip_pass
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/keystore_pass
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/sqlcipher_pass
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/umbraco_crack
-sudo ln -sf ~/.local/bin/patator.py /usr/bin/tcp_fuzz
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/ftp_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/ssh_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/telnet_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/smtp_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/smtp_vrfy
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/smtp_rcpt
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/finger_lookup
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/http_fuzz
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/rdp_gateway
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/ajp_fuzz
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/pop_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/pop_passd
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/imap_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/ldap_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/dcom_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/smb_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/smb_lookupsid
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/rlogin_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/vmauthd_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/mssql_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/oracle_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/mysql_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/mysql_query
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/rdp_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/pgsql_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/vnc_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/dns_forward
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/dns_reverse
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/snmp_login
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/ike_enum
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/unzip_pass
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/keystore_pass
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/sqlcipher_pass
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/umbraco_crack
+sudo ln -sf "/home/${USER}/.local/bin/patator.py" /usr/bin/tcp_fuzz
 
 clear && echo "-- Installing iker" # https://labs.portcullis.co.uk/download/iker_v1.1.tar
 curl 'https://raw.githubusercontent.com/Zamanry/iker/master/iker.py' | sudo tee /usr/local/bin/iker.py
@@ -902,17 +904,17 @@ check_app 'hashcat-utils' '/opt/hashcat-utils/bin/cap2hccapx.bin'
 check_app 'burpsuitepro' '/opt/burpsuitepro/BurpSuitePro'
 # download jython (burp extensions)
 wget -q 'http://search.maven.org/remotecontent?filepath=org/python/jython-standalone/2.7.0/jython-standalone-2.7.0.jar' -O "/home/${USER}/Documents/jython-standalone-2.7.0.jar"
-check_app 'burpsuite extension: jython' '~/Documents/jython-standalone-2.7.0.jar'
+check_app 'burpsuite extension: jython' "/home/${USER}/Documents/jython-standalone-2.7.0.jar"
 
 clear && echo "-- Installing smuggler"
-git clone --depth 1 'https://github.com/defparam/smuggler' /opt/smuggler
+git clone --depth 1 'https://github.com/defparam/smuggler' '/opt/smuggler'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/smuggler && if [ \$(checksudo) = 0 ]; then (python3 ./smuggler.py \"\$@\");fi)" > /usr/bin/smuggler'
 sudo chmod +x /usr/bin/smuggler
 check_app 'smuggler' '/opt/smuggler/smuggler.py'
 
 clear && echo "-- Installing Swagger UI"
 sudo apt-get -qq install npm
-git clone -q --depth 1 'https://github.com/swagger-api/swagger-ui' /opt/swagger-ui
+git clone -q --depth 1 'https://github.com/swagger-api/swagger-ui' '/opt/swagger-ui'
 cd /opt/swagger-ui/
 npm install
 #npm run build
@@ -926,7 +928,7 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 check_app 'swagger ui' '/opt/swagger-ui/dist/index.html'
 
 clear && echo "-- Installing Swagger Editor"
-git clone --depth 1 'https://github.com/swagger-api/swagger-editor' /opt/swagger-editor
+git clone --depth 1 'https://github.com/swagger-api/swagger-editor' '/opt/swagger-editor'
 cd /opt/swagger-editor/
 #npm install
 #npm run build
@@ -937,7 +939,7 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 check_app 'swagger editor' '/opt/swagger-editor/index.html'
 
 clear && echo "-- Installing Swagger-EZ"
-git clone --depth 1 'https://github.com/RhinoSecurityLabs/swagger-ez' /opt/swagger-ez
+git clone --depth 1 'https://github.com/RhinoSecurityLabs/swagger-ez' '/opt/swagger-ez'
 wget -q 'https://avatars0.githubusercontent.com/u/11430746' -O '/opt/swagger-ez/logo.png'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Swagger-EZ\nExec=firefox /opt/swagger-ez/index.html\nIcon=/opt/swagger-ez/logo.png\nCategories=Application;" > /usr/share/applications/swagger-ez.desktop'
 check_app 'swagger-ez' '/opt/swagger-ez/index.html'
@@ -963,7 +965,7 @@ sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Applicatio
 check_app 'cyberchef' '/opt/cyberchef/CyberChef.html'
 
 clear && echo "-- Installing sqlmap"
-git clone -q --depth 1 'https://github.com/sqlmapproject/sqlmap' /opt/sqlmap
+git clone -q --depth 1 'https://github.com/sqlmapproject/sqlmap' '/opt/sqlmap'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sqlmap/ && python3 sqlmap.py \"\$@\")" > /usr/bin/sqlmap'
 sudo chmod +x /usr/bin/sqlmap
 check_app 'sqlmap' '/opt/sqlmap/sqlmap.py'
@@ -987,7 +989,7 @@ sudo rm jd-gui-*.deb
 check_app 'jd-gui' '/opt/jd-gui/jd-gui.jar'
 
 clear && echo "-- Installing Whatwaf"
-git clone -q --depth 1 'https://github.com/Ekultek/whatwaf' /opt/whatwaf
+git clone -q --depth 1 'https://github.com/Ekultek/whatwaf' '/opt/whatwaf'
 cd /opt/whatwaf/
 pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/whatwaf && if [ \$(checksudo) = 0 ]; then (pipenv run python3 whatwaf \"\$@\");fi)" > /usr/bin/whatwaf'
@@ -1100,7 +1102,7 @@ if [[ $(py2_support) == "true" ]]; then # requires python 3.6, 3.8 used in Ubunt
 fi
 
 clear && echo "-- Installing fuxploider"
-git clone -q --depth 1 'https://github.com/almandin/fuxploider' /opt/fuxploider
+git clone -q --depth 1 'https://github.com/almandin/fuxploider' '/opt/fuxploider'
 cd /opt/fuxploider/
 pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/fuxploider && if [ \$(checksudo) = 0 ]; then (pipenv run python3 fuxploider.py \"\$@\");fi)" > /usr/bin/fuxploider'
@@ -1109,7 +1111,7 @@ check_app 'fuxploider' '/opt/fuxploider/fuxploider.py'
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing tplmap"
-  git clone -q --depth 1 'https://github.com/epinna/tplmap' /opt/tplmap
+  git clone -q --depth 1 'https://github.com/epinna/tplmap' '/opt/tplmap'
   cd /opt/tplmap/
   pipenv --bare --two install -r requirements.txt
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/tplmap && if [ \$(checksudo) = 0 ]; then (pipenv run python2 tplmap.py \"\$@\");fi)" > /usr/bin/tplmap'
@@ -1128,13 +1130,13 @@ sudo apt-get -qq install sshuttle
 
 clear && echo "-- Install nmap-parse-output" # https://github.com/ernw/nmap-parse-output
 sudo apt-get -qq install xsltproc libxml2-utils
-git clone -q --depth 1 'https://github.com/ernw/nmap-parse-output' /opt/nmap-parse-output
+git clone -q --depth 1 'https://github.com/ernw/nmap-parse-output' '/opt/nmap-parse-output'
 bash -c "echo -e 'source /opt/nmap-parse-output/_nmap-parse-output' >> /home/${USER}/.bashrc"
 sudo ln -sf /opt/nmap-parse-output/nmap-parse-output /usr/local/bin/nmap-parse-output
 check_app 'nmap-parse-output' '/opt/nmap-parse-output/nmap-parse-output'
 
 clear && echo "-- Installing nmapAutomator"
-git clone -q --depth 1 'https://github.com/wantafanta/nmapautomator' /opt/nmapautomator
+git clone -q --depth 1 'https://github.com/wantafanta/nmapautomator' '/opt/nmapautomator'
 cd /opt/nmapautomator/
 sudo chmod +x nmapAutomator.sh
 #sslscan, gobuster, nikto, joomscan, wpscan, droopescan, smbmap, smbclient, enum4linux, snmp-check, snmpwalk, dnsrecon, odat.py, 
@@ -1150,7 +1152,7 @@ check_app 'dnsrecon' '/opt/dnsrecon/dnsrecon.py'
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing Seth"
-  git clone -q --depth 1 'https://github.com/SySS-Research/seth' /opt/seth
+  git clone -q --depth 1 'https://github.com/SySS-Research/seth' '/opt/seth'
   cd /opt/seth/
   pipenv --bare --two install
   sudo apt-get -qq install dsniff
@@ -1215,7 +1217,7 @@ sudo dpkg --add-architecture i386 && sudo apt-get -qq update && sudo apt-get -qq
 bash -c 'WINEARCH=win32 wine wineboot'
 
 clear && echo "-- Installing FUZZBUNCH"
-git clone -q --depth 1 'https://github.com/mdiazcl/fuzzbunch-debian' $HOME/.wine/drive_c/fuzzbunch-debian
+git clone -q --depth 1 'https://github.com/mdiazcl/fuzzbunch-debian' "$HOME/.wine/drive_c/fuzzbunch-debian"
 bash -c "echo -e 'Windows Registry Editor Version 5.00\n\n[HKEY_CURRENT_USER\\\Environment]\n\"Path\"=\"c:\\\\\windows;c:\\\\\windows\\\\\system;C:\\\\\Python26;C:\\\\\\\fuzzbunch-debian\\\\\windows\\\\\\\fuzzbunch\"' > /home/${USER}/.wine/drive_c/system.reg"
 bash -c "wine regedit.exe /s c:\\\system.reg"
 bash -c "wine start /w c:\\\fuzzbunch-debian\\\installers\\\python-2.6.msi"
@@ -1225,25 +1227,25 @@ wget -q 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Seal_of_the_U.S._Na
 sudo bash -c 'echo -e "#!/bin/bash\n(cd \$HOME/.wine/drive_c/fuzzbunch-debian/windows && wine cmd.exe /C python fb.py \"\$@\")" > /usr/bin/fuzzbunch'
 sudo chmod +x /usr/bin/fuzzbunch
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=FUZZBUNCH\nExec=gnome-terminal --window -- fuzzbunch\nIcon=/opt/fuzzbunch/logo.svg\nCategories=Application;" > /usr/share/applications/fuzzbunch.desktop'
-check_app 'fuzzbunch' '~/.wine/drive_c/fuzzbunch-debian/windows/fb.py'
+check_app 'fuzzbunch' "/home/${USER}/.wine/drive_c/fuzzbunch-debian/windows/fb.py"
 
 clear && echo "-- Installing Mono"
 sudo mkdir /usr/share/wine/mono
 sudo wget -q $URL_MONO -O '/usr/share/wine/mono/wine-mono.msi'
 bash -c "wine msiexec /i /usr/share/wine/mono/wine-mono.msi"
 
-clear && echo "-- Installing EvilClippy"
-sudo apt-get -qq install mono-mcs
-git clone -q --depth 1 'https://github.com/outflanknl/evilclippy' /opt/evilclippy
-cd /opt/evilclippy/
-mcs /reference:OpenMcdf.dll,System.IO.Compression.FileSystem.dll /out:EvilClippy.exe *.cs
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")" > /usr/bin/evilclippy'
-sudo chmod +x /usr/bin/evilclippy
-check_app 'evilclippy' '/opt/evilclippy/EvilClippy.exe'
+#clear && echo "-- Installing EvilClippy"
+#sudo apt-get -qq install mono-mcs
+#git clone -q --depth 1 'https://github.com/outflanknl/evilclippy' /opt/evilclippy
+#cd /opt/evilclippy/
+#mcs /reference:OpenMcdf.dll,System.IO.Compression.FileSystem.dll /out:EvilClippy.exe *.cs
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/evilclippy/ && wine EvilClippy.exe \"\$@\")" > /usr/bin/evilclippy'
+#sudo chmod +x /usr/bin/evilclippy
+#check_app 'evilclippy' '/opt/evilclippy/EvilClippy.exe'
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing PRET"
-  git clone -q --depth 1 'https://github.com/RUB-NDS/pret' /opt/pret
+  git clone -q --depth 1 'https://github.com/RUB-NDS/pret' '/opt/pret'
   cd /opt/pret/
   pipenv --bare --two install colorama pysnmp
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/pret/ && if [ \$(checksudo) = 0 ]; then (pipenv run python2 pret.py \"\$@\");fi)" > /usr/bin/pret'
@@ -1261,7 +1263,7 @@ cd /opt/ntlmrecon/
 pipenv --bare --three run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntlmrecon && if [ \$(checksudo) = 0 ]; then (pipenv run ntlmrecon \"\$@\");fi)" > /usr/bin/ntlmrecon'
 sudo chmod +x /usr/bin/ntlmrecon
-check_app 'ntlmrecon' '/opt/ntlmrecon/build/lib/ntlmrecon'
+check_app 'ntlmrecon' '/opt/ntlmrecon/setup.py'
 
 trap '' INT
 clear && echo "-- Installing Nessus"
@@ -1294,7 +1296,7 @@ wget -q -U firefox 'https://gist.githubusercontent.com/wantafanta/0d31a15974b418
 check_app 'nessus' '/opt/nessus/sbin/nessuscli'
 
 clear && echo "-- Installing frogger2"
-git clone -q --depth 1 'https://github.com/commonexploits/vlan-hopping' /opt/vlan-hopping
+git clone -q --depth 1 'https://github.com/commonexploits/vlan-hopping' '/opt/vlan-hopping'
 sudo apt-get -qq install yersinia vlan arp-scan screen
 sudo chmod +x /opt/vlan-hopping/frogger2.sh
 sudo ln -sf /opt/vlan-hopping/frogger2.sh /usr/local/bin/frogger
@@ -1367,7 +1369,7 @@ sudo make install
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing LinkedInt"
-  git clone -q --depth 1 'https://github.com/vysec/linkedint' /opt/linkedint
+  git clone -q --depth 1 'https://github.com/vysec/linkedint' '/opt/linkedint'
   cd /opt/linkedint/
   pipenv --bare --two install
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/linkedint && if [ \$(checksudo) = 0 ]; then (pipenv run python2 LinkedInt.py \"\$@\");fi)" > /usr/bin/linkedint'
@@ -1415,7 +1417,7 @@ bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys a
 #recon-ng -r /opt/recon-ng/api.rc
 
 #clear && echo "-- Installing Sudomy"
-#git clone -q --depth 1 --recursive 'https://github.com/Screetsec/sudomy' /opt/sudomy
+#git clone -q --depth 1 --recursive 'https://github.com/Screetsec/sudomy' '/opt/sudomy'
 #sudo apt-get -qq install phantomjs npm
 #sudo npm i -g wappalyzer --unsafe-perm=true
 #cd /opt/sudomy/
@@ -1432,7 +1434,7 @@ bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys a
 #sudo ln -sf /opt/httprobe/httprobe /usr/local/bin/httprobe
 
 clear && echo "bopscrk (Before Outset PaSsword CRacKing)"
-git clone -q --depth 1 'https://github.com/r3nt0n/bopscrk' /opt/bopscrk
+git clone -q --depth 1 'https://github.com/r3nt0n/bopscrk' '/opt/bopscrk'
 cd /opt/bopscrk/
 pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bopscrk && if [ \$(checksudo) = 0 ]; then (pipenv run python bopscrk.py \"\$@\");fi)" > /usr/bin/bopscrk'
@@ -1511,7 +1513,7 @@ sudo make && sudo make install
 
 if [[ $(py2_support) == "true" ]]; then # libqt4-dev not in 20.04 repo
   clear && echo "-- Installing proxmark3"
-  git clone -q --depth 1 'https://github.com/Proxmark/proxmark3' /opt/proxmark3
+  git clone -q --depth 1 'https://github.com/Proxmark/proxmark3' '/opt/proxmark3'
   cd /opt/proxmark3/
   sudo apt-get -qq install p7zip-full build-essential libreadline5 libreadline-dev libusb-0.1-4 libusb-dev libqt4-dev perl pkg-config wget libncurses5-dev gcc-arm-none-eabi libstdc++-arm-none-eabi-newlib libpcsclite-dev pcscd
   sudo cp -rf driver/77-mm-usb-device-blacklist.rules /etc/udev/rules.d/77-mm-usb-device-blacklist.rules
@@ -1549,7 +1551,7 @@ cd /opt/
 wget -q $URL_DRAWIO
 sudo apt-get -qq install ./drawio*.deb
 sudo rm drawio*.deb
-git clone -q --depth 1 'https://github.com/michenriksen/drawio-threatmodeling' cd /opt/drawio-threatmodeling
+git clone -q --depth 1 'https://github.com/michenriksen/drawio-threatmodeling' '/opt/drawio-threatmodeling'
 
 clear && echo "-- Installing Obsidian"
 cd /opt/
@@ -1596,7 +1598,7 @@ git clone -q --depth 1 'https://github.com/The-Viper-One/Pentest-everything' '/o
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'cyberchef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop']"
+sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'cyberchef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop','pwndoc.desktop','obsidian.desktop']"
 
 # Services fixes
 # sudo systemctl stop apache2.service #eaphammer
@@ -1616,8 +1618,8 @@ sudo pip3 install pyparsing
 sudo sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service
 
 # Clear terminal history
-sudo cat /dev/null > /home/${USER}/.bash_history && history -c
-sudo chown -R ${USER}:${USER} /home/${USER}/.bash_history
+sudo cat /dev/null > "/home/${USER}/.bash_history" && history -c
+sudo chown -R ${USER}:${USER} "/home/${USER}/.bash_history"
 
 # Set permissions in /opt/
 sudo chown -R ${USER}:${USER} /opt/
@@ -1649,8 +1651,8 @@ echo -e "\nPress Enter to reboot."
 read -p "" </dev/tty
 
 # Clear terminal history
-sudo cat /dev/null > /home/${USER}/.bash_history && history -c
-sudo chown -R ${USER}:${USER} /home/${USER}/.bash_history
+sudo cat /dev/null > "/home/${USER}/.bash_history" && history -c
+sudo chown -R ${USER}:${USER} "/home/${USER}/.bash_history"
 
 # Reboot
 sudo reboot now
