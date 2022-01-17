@@ -418,13 +418,12 @@ check_app 'covenant' '/opt/covenant/Covenant/Covenant.cs'
 
 clear && python3 -m pipx install mitm6 # https://github.com/fox-it/mitm6/
 sudo ln -sf "/home/${USER}/.local/bin/mitm6" /usr/local/bin/
-check_app 'mitm6' "/home/${USER}/.local/bin/mitm6" # requires sudo
+check_app 'mitm6' "/home/${USER}/.local/bin/mitm6"
 clear && python3 -m pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
-sudo ln -sf "/home/${USER}/.local/bin/*.py" /usr/local/bin/ # requires sudo
+sudo ln -sf "/home/${USER}/.local/bin/*.py" /usr/local/bin/
 clear && python3 -m pipx install crackmapexec # https://github.com/byt3bl33d3r/crackmapexec/
-# cme 5.2.2 no longer needs sudo
-#sudo ln -sf "/home/${USER}/.local/bin/cme*" /usr/local/bin/
-#sudo ln -sf "/home/${USER}/.local/bin/crackmapexec" /usr/local/bin/
+sudo ln -sf "/home/${USER}/.local/bin/cme*" /usr/local/bin/
+sudo ln -sf "/home/${USER}/.local/bin/crackmapexec" /usr/local/bin/
 check_app 'crackmapexec' "/home/${USER}/.local/bin/cme"
 
 mkdir "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/"
