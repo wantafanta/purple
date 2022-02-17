@@ -897,7 +897,7 @@ check_app 'hashcat-utils' '/opt/hashcat-utils/bin/cap2hccapx.bin'
   sudo sudo /opt/install.sh -dir /opt/burpsuitepro -overwrite -q
   sudo rm /opt/install.sh
   sudo rename -d "s/(?:.*)BurpSuitePro.desktop/BurpSuitePro.desktop/" /usr/share/applications/*BurpSuitePro.desktop
-  sudo bash -c "echo -e '\nActions=app1;\n\n[Desktop Action app1]\nName=Start Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
+  sudo bash -c "echo -e '\nActions=app1;\n\n[Desktop Action app1]\nName=Start Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''echo \"config file location: /opt/burpsuitepro/\" && echo \"\" && cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
   sudo touch /opt/burpsuitepro/collaborator.config
   # https://portswigger.net/burp/documentation/collaborator/deploying#collaborator-configuration-file-format
 #fi
@@ -1183,10 +1183,12 @@ python3 -m pipx install credslayer # https://github.com/ShellCode33/credslayer
 
 clear && echo "-- Installing bettercap"
 URL_BETTERCAP=$(url_latest 'https://api.github.com/repos/bettercap/bettercap/releases/latest' 'bettercap_linux_amd64_')
+URL_BETTERCAP_BACKUP='https://github.com/bettercap/bettercap/releases/download/v2.31.1/bettercap_linux_amd64_v2.31.1.zip'
 sudo apt-get -qq install libnetfilter-queue-dev
 mkdir /opt/bettercap
 cd /opt/bettercap/
 wget -q $URL_BETTERCAP
+[ -f *.zip ] || wget -q $URL_BETTERCAP_BACKUP
 unzip -o bettercap_linux_amd64_*.zip
 sudo rm bettercap*.zip
 wget -q 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O '/opt/bettercap/logo.png'
