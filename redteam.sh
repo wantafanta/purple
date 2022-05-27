@@ -14,7 +14,7 @@ fi
 # check ubuntu version
 py2_support() {
   local version=$(lsb_release -rs)
-  local py2=$(if [[ $version == "20.04" || "21.10" || "22.04" || "22.10" ]]; then echo "false"; else echo "true"; fi)
+  local py2=$(if [[ $version == "18.04" ]]; then echo "true"; else echo "false"; fi)
   echo $py2
 }
 
@@ -31,8 +31,8 @@ sudo chmod +x /usr/bin/checksudo
 clear && echo "-- Lets begin ..."
 
 # static urls (manually update)
-URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.2.19.13940.deb' # https://www.maltego.com/downloads/
-URL_MONO='https://dl.winehq.org/wine/wine-mono/7.0.0/wine-mono-7.0.0-x86.msi' # https://dl.winehq.org/wine/wine-mono/
+URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.3.0.deb' # https://www.maltego.com/downloads/
+URL_MONO='https://dl.winehq.org/wine/wine-mono/7.2.0/wine-mono-7.2.0-x86.msi' # https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz' # https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
 
 # function to scrape latest release from github api
@@ -64,7 +64,16 @@ clear && echo "-- Installing Ubuntu OS updates"
 sudo apt-get -qq update && sudo apt-get -qq upgrade
 
 clear && echo "-- Installing apt packages"
-sudo apt-get -qq install open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc mlocate curl rename python3-pip libcanberra-gtk-module libgconf-2-4 jq gnome-tweak-tool wireguard
+sudo apt-get -qq install open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc mlocate curl rename python3-pip libcanberra-gtk-module libgconf-2-4 jq wireguard libfuse2 symlinks
+
+if [[ ! $(lsb_release -rs) == "20.04" ]]
+then
+  sudo apt-get -qq install gnome-shell-extension-manager
+else
+  sudo apt-get -qq install gnome-tweak-tool
+fi
+
+hash jq 2>/dev/null || { echo >&2 "something went wrong"; exit 1; }
 if [[ $(py2_support) == "false" ]]; then
   sudo apt-get -qq install python-is-python3
 else
@@ -124,16 +133,16 @@ if [[ $(py2_support) == "true" ]]; then # not in 20.04 repo
   clear && echo "-- Installing zenmap"
   sudo apt-get -qq install zenmap
 fi
-sudo wget -q 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
+sudo wget -nc -q 'https://raw.githubusercontent.com/vulnersCom/nmap-vulners/master/vulners.nse' -O '/usr/share/nmap/scripts/vulners.nse'
 sudo git clone -q --depth 1 'https://github.com/scipag/vulscan' '/usr/share/nmap/scripts/vulscan'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -O '/usr/share/nmap/scripts/vulscan/osvdb.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -O '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -O '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -O '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
-sudo wget -q 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -O '/usr/share/nmap/scripts/vulscan/xforce.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/cve.csv' -O '/usr/share/nmap/scripts/vulscan/cve.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/exploitdb.csv' -O '/usr/share/nmap/scripts/vulscan/exploitdb.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/openvas.csv' -O '/usr/share/nmap/scripts/vulscan/openvas.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/osvdb.csv' -O '/usr/share/nmap/scripts/vulscan/osvdb.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/scipvuldb.csv' -O '/usr/share/nmap/scripts/vulscan/scipvuldb.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/securityfocus.csv' -O '/usr/share/nmap/scripts/vulscan/securityfocus.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/securitytracker.csv' -O '/usr/share/nmap/scripts/vulscan/securitytracker.csv'
+sudo wget -nc -q 'http://www.computec.ch/projekte/vulscan/download/xforce.csv' -O '/usr/share/nmap/scripts/vulscan/xforce.csv'
 sudo nmap --script-updatedb
 
 clear && echo "-- Installing powershell"
@@ -161,7 +170,6 @@ cd /opt/
 
 git clone -q --depth 1 'https://github.com/aanarchyy/bully'
 git clone -q --depth 1 'https://github.com/actuated/msf-exploit-loop'
-git clone -q --depth 1 'https://github.com/BC-SECURITY/empire'
 git clone -q --depth 1 'https://github.com/beefproject/beef'
 git clone -q --depth 1 'https://github.com/BloodHoundAD/bloodhound'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
@@ -216,7 +224,9 @@ git clone -q --depth 1 'https://github.com/xl7dev/WebShell' '/opt/webshells/webs
 
 #-- /OPT/ SCRIPTS
 bash -c 'echo -e "#!/bin/bash\nclear\nls | xargs -I{} git -C {} pull\nclear\npipx upgrade-all\nclear\nsudo airodump-ng-oui-update\nclear\nnikto -update\nclear\nwpscan --update\nclear\nsudo updatedb" > /opt/update.sh'
-bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/*/ ~/Desktop/" > /opt/map-shares.sh'
+bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/* ~/Desktop/\nsymlinks -d ~/Desktop/" > /opt/map-shares.sh'
+[ -d ~/.config/autostart/ ] && echo "~/.config/autostart already exists." || mkdir ~/.config/autostart
+bash -c 'echo -e "[Desktop Entry]\nType=Application\nExec=/opt/map-shares.sh\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=true\nName[en_GB]=map shares\nName=map shares\nComment[en_GB]=\nComment=" > ~/.config/autostart/map-shares.sh.desktop'
 sudo chmod +x /opt/*.sh
 
 #-- DESKTOP
@@ -238,6 +248,18 @@ sudo ln -sf /opt/responder/Responder.py /usr/local/bin/responder
 sudo ln -sf /opt/unicorn/unicorn.py /usr/local/bin/unicorn
 sudo sed -i 's/^#!\/usr\/bin\/env python/#!\/usr\/bin\/env python2/g' /opt/usernamer/usernamer.py
 sudo ln -sf /opt/usernamer/usernamer.py /usr/local/bin/usernamer
+
+if [[ ! $(lsb_release -rs) == "20.04" ]] # since 22.04, firefox is a snap package - which does not allow you to view local .html files.
+then
+  clear && echo "-- Installing Firefox"
+  sudo snap remove firefox
+  wget -q 'https://download.mozilla.org/?product=firefox-latest-ssl&os=linux64&lang=en-GB' -O '/opt/firefox.tar.bz2'
+  cd /opt/
+  tar xf firefox.tar.bz2
+  sudo wget -q 'https://raw.githubusercontent.com/mozilla/sumo-kb/main/install-firefox-linux/firefox.desktop' -O '/usr/share/applications/firefox.desktop'
+  sudo sed -i 's/^Exec=firefox %u.*/Exec=\/opt\/firefox\/firefox %u/g' '/usr/share/applications/firefox.desktop'
+  sudo ln -sf /opt/firefox/firefox /usr/local/bin/firefox
+fi
 
 clear && echo "-- Installing Metasploit"
 sudo apt-get -qq install postgresql
@@ -287,7 +309,7 @@ URL_SHELLTER='https://www.shellterproject.com/Downloads/Shellter/Latest/shellter
 URL_SHELLTER_README='https://www.shellterproject.com/Downloads/Shellter/Readme.txt'
 cd /opt/
 wget -q -U firefox $URL_SHELLTER
-unzip shellter.zip
+unzip -n shellter.zip
 sudo rm shellter.zip
 cd /opt/shellter/
 wget -q -U firefox $URL_SHELLTER_README
@@ -308,7 +330,7 @@ URL_MIMIKATZ=$(url_latest 'https://api.github.com/repos/gentilkiwi/mimikatz/rele
 mkdir /opt/mimikatz
 wget -q $URL_MIMIKATZ -O '/opt/mimikatz/mimikatz.zip'
 cd /opt/mimikatz/
-unzip mimikatz.zip
+unzip -n mimikatz.zip
 sudo rm mimikatz.zip
 #doesn't work in wine
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/mimikatz/x64/ && wine mimikatz.exe \"\$@\")" > /usr/bin/mimikatz'
@@ -327,7 +349,7 @@ clear && echo "-- Installing NTDSDumpEx"
 URL_NTDSDUMPEX=$(url_latest 'https://api.github.com/repos/zcgonvh/NTDSDumpEx/releases/latest' 'NTDSDumpEx.zip')
 cd /opt/
 wget -q $URL_NTDSDUMPEX
-unzip NTDSDumpEx.zip -d ntdsdumpex
+unzip -n NTDSDumpEx.zip -d ntdsdumpex
 sudo rm NTDSDumpEx.zip
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntdsdumpex && wine NTDSDumpEx.exe \"\$@\")" > /usr/bin/ntdsdumpex'
 sudo chmod +x /usr/bin/ntdsdumpex
@@ -341,7 +363,7 @@ sudo apt-get -qq install p7zip-full
 mkdir /opt/merlin
 cd /opt/merlin/
 wget -q $URL_MERLIN
-7z x merlinServer*.7z -p'merlin'
+7z -aos x merlinServer*.7z -p'merlin'
 sudo rm merlinServer-Linux-x64*.7z
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/merlin && sudo ./merlinServer-Linux-x64 \"\$@\")" > /usr/bin/merlin'
 sudo chmod +x /usr/bin/merlin
@@ -370,24 +392,6 @@ check_app 'dnscan' '/opt/dnscan/dnscan.py'
 clear && echo "-- Installing DeathStar"
 clear && python3 -m pipx install deathstar-empire
 
-clear && clear && echo "-- Installing Empire"
-#echo
-#echo "Empire PowerShell modules will require preobfuscation. When prompted, enter \`y\` twice."
-#echo
-#echo "Press Enter to continue."
-#read -p "" </dev/tty
-cd /opt/empire/
-sudo apt-get -qq install python3-m2crypto
-sudo ./setup/install.sh
-sudo pip3 install pyparsing
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/empire && sudo ./ps-empire \"\$@\")" > /usr/bin/empire'
-sudo chmod +x /usr/bin/empire
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- empire client\nIcon=/opt/empire/empire/server/data/misc/apptemplateResources/icon/stormtrooper.icns\nCategories=Application;\nActions=app1;app2;app3;\n\n[Desktop Action app1]\nName=Start Team Server\nExec=gnome-terminal --window -- empire server\n[Desktop Action app2]\nName=Starkiller GUI\nExec=starkiller\n[Desktop Action app3]\nName=DeathStar\nExec=gnome-terminal --window -- bash -c '\''read -p \"Enter REST API username: \" user && read -p \"Enter REST API password: \" pass && deathstar -u \$user -p \$pass && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/empire.desktop'
-bash -c 'echo -e "preobfuscate\nexit" > /opt/empire/obf.rc'
-empire -r /opt/empire/obf.rc
-sudo rm /opt/empire/obf.rc
-check_app 'empire' '/opt/empire/ps-empire'
-
 clear && echo "-- Installing Starkiller (Empire GUI)"
 cd /opt/
 URL_STARKILLER=$(url_latest 'https://api.github.com/repos/BC-SECURITY/Starkiller/releases/latest' '.AppImage')
@@ -397,6 +401,7 @@ sudo chmod +x /opt/starkiller/starkiller.AppImage
 sudo ln -sf /opt/starkiller/starkiller.AppImage /usr/local/bin/starkiller
 wget -q 'https://raw.githubusercontent.com/BC-SECURITY/Starkiller/master/src/assets/icon.png' -O '/opt/starkiller/icon.png'
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Starkiller\nExec=starkiller\nIcon=/opt/starkiller/icon.png\nCategories=Application;" > /usr/share/applications/starkiller.desktop'
+mkdir "/home/${USER}/.local/share/appimagekit/" && touch "/home/${USER}/.local/share/appimagekit/no_desktopintegration"
 check_app 'starkiller' '/opt/starkiller/starkiller.AppImage'
 
 clear && echo "-- Installing Dotnet Core 3.1 (Covenant)"
@@ -429,7 +434,7 @@ check_app 'crackmapexec' "/home/${USER}/.local/bin/cme"
 
 mkdir "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/"
 mkdir "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/"
-cp "/opt/empire/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1" "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/Invoke-Mimikatz.ps1"
+#cp "/opt/empire/empire/server/data/module_source/credentials/Invoke-Mimikatz.ps1" "/home/${USER}/.local/pipx/venvs/crackmapexec/lib/python3.8/site-packages/cme/data/powersploit/Exfiltration/Invoke-Mimikatz.ps1"
 
 clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
 clear && python3 -m pipx inject activereign impacket
@@ -443,9 +448,10 @@ clear && echo "-- Installing BloodHound"
 URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
 cd /opt/
 wget -q $URL_BLOODHOUND
-unzip BloodHound-linux-x64.zip
+unzip -n BloodHound-linux-x64.zip
 sudo rm BloodHound*.zip
 mv BloodHound-linux-x64/ bloodhound-bin/
+sudo chmod +x /opt/bloodhound-bin/BloodHound
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BloodHound\nExec=\"/opt/bloodhound-bin/BloodHound\"\nIcon=/opt/bloodhound/src/img/icon.ico\nCategories=Application;" > /usr/share/applications/bloodhound.desktop'
 check_app 'bloodhound' '/opt/bloodhound-bin/BloodHound'
 
@@ -502,7 +508,7 @@ curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash # https://docs.microsoft.
 clear && echo "-- Installing AWS CLI" # https://awscli.amazonaws.com/v2/documentation/api/latest/index.html
 cd /opt/
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" # https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2-linux.html
-unzip awscliv2.zip
+unzip -n awscliv2.zip
 sudo ./aws/install
 sudo rm awscliv2.zip
 
@@ -565,9 +571,19 @@ sudo wget -q $URL_DOCKERCOMPOSE -O /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 check_app 'docker-compose' '/usr/local/bin/docker-compose'
 
-clear && echo "-- Installing Camradar (docker)"
+clear && clear && echo "-- Installing Empire (docker)"
+sudo docker pull bcsecurity/empire:latest
+mkdir /opt/empire
+wget -q 'https://raw.githubusercontent.com/BC-SECURITY/Empire/master/empire/server/data/misc/apptemplateResources/icon/stormtrooper.icns' -O '/opt/empire/stormtrooper.icns'
+sudo bash -c 'echo -e "#!/bin/bash\n(sudo docker run -it -p 1337:1337 -p 5000:5000 bcsecurity/empire:latest \"\$@\")" > /usr/local/bin/empire' && sudo chmod +x /usr/local/bin/empire
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Empire\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && sudo docker container ls && printf \"\\\n\\\n\" && read -p \"Enter the container id: \" int && clear && sudo docker exec -it \$int ./ps-empire client'\''\nIcon=/opt/empire/stormtrooper.icns\nCategories=Application;\nActions=app1;app2;app3;\n\n[Desktop Action app1]\nName=Start Team Server\nExec=gnome-terminal --window -- empire\n[Desktop Action app2]\nName=Starkiller GUI\nExec=starkiller\n[Desktop Action app3]\nName=DeathStar\nExec=gnome-terminal --window -- bash -c '\''read -p \"Enter REST API username: \" user && read -p \"Enter REST API password: \" pass && deathstar -u \$user -p \$pass && read -p \"Press Enter to close.\" </dev/tty'\''" > /usr/share/applications/empire.desktop'
+
+clear && echo "-- Installing Cameradar (docker)"
 sudo docker pull ullaakut/cameradar
+mkdir /opt/cameradar
+wget -q 'https://raw.githubusercontent.com/Ullaakut/cameradar/master/images/Cameradar.png' -O '/opt/cameradar/icon.png'
 sudo bash -c 'echo -e "#!/bin/bash\n(sudo docker run -t ullaakut/cameradar \"\$@\")" > /usr/local/bin/cameradar' && sudo chmod +x /usr/local/bin/cameradar
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Cameradar\nExec=gnome-terminal -- bash -c \"cameradar;$SHELL\"\nIcon=/opt/cameradar/icon.png\nCategories=Application;" > /usr/share/applications/cameradar.desktop'
 
 clear && echo "-- Installing Pwndoc (docker)"
 git clone -q --depth 1 'https://github.com/pwndoc/pwndoc' '/opt/pwndoc'
@@ -577,7 +593,7 @@ sudo docker-compose up -d --build
 sudo docker-compose stop
 sudo docker update --restart no pwndoc-backend
 sudo docker update --restart no pwndoc-frontend
-docker update --restart no mongo-pwndoc
+sudo docker update --restart no mongo-pwndoc
 # admin / admin
 
 clear && echo "-- Installing credmap"
@@ -610,7 +626,7 @@ URL_AQUATONE=$(url_latest 'https://api.github.com/repos/michenriksen/aquatone/re
 mkdir /opt/aquatone
 cd /opt/aquatone
 wget -q $URL_AQUATONE
-unzip aquatone*.zip
+unzip -n aquatone*.zip
 sudo rm aquatone*.zip
 sudo chmod +x aquatone
 sudo ln -sf /opt/aquatone/aquatone /usr/local/bin/aquatone
@@ -703,7 +719,7 @@ sudo apt-get -qq install autoconf
 git clone -q --depth 1 'https://github.com/glv2/bruteforce-salted-openssl' '/opt/bruteforce-salted-openssl'
 cd /opt/bruteforce-salted-openssl
 bash autogen.sh
-./configure
+bash configure
 make
 sudo make install
 check_app 'bruteforce-salted-openssl' '/usr/local/bin/bruteforce-salted-openssl'
@@ -781,17 +797,20 @@ check_app 'kerbrute' '/opt/kerbrute/kerbrute_linux_amd64'
 ########## ---------- ##########
 
 clear && echo "-- Installing sippts"
-sudo cpan -i IO:Socket:Timeout NetAddr:IP String:HexConvert Net:Pcap Net::Address::IP::Local DBI DBD::SQLite
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipscan.pl \"\$@\")" > /usr/bin/sipscan'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipexten.pl \"\$@\")" > /usr/bin/sipexten'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipcracker.pl \"\$@\")" > /usr/bin/sipcracker'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipinvite.pl \"\$@\")" > /usr/bin/sipinvite'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipsniff.pl \"\$@\")" > /usr/bin/sipsniff'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipspy.pl \"\$@\")" > /usr/bin/sipspy'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipdigestleak.pl \"\$@\")" > /usr/bin/sipdigestleak'
-sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && perl sipreport.pl \"\$@\")" > /usr/bin/sipreport'
+#sudo cpan -i IO:Socket:Timeout NetAddr:IP String:HexConvert Net:Pcap Net::Address::IP::Local DBI DBD::SQLite
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipcrack.py \"\$@\")" > /usr/bin/sipcrack'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipdigestleak.py \"\$@\")" > /usr/bin/sipdigestleak'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipdump.py \"\$@\")" > /usr/bin/sipdump'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipenumerate.py \"\$@\")" > /usr/bin/sipenumerate'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipexten.py \"\$@\")" > /usr/bin/sipexten'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipflood.py \"\$@\")" > /usr/bin/sipflood'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipinvite.py \"\$@\")" > /usr/bin/sipinvite'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./siprcrack.py \"\$@\")" > /usr/bin/siprcrack'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipscan.py \"\$@\")" > /usr/bin/sipscan'
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sippts/ && python3 ./sipsend.py \"\$@\")" > /usr/bin/sipsend'
+
 sudo chmod +x /usr/bin/sip*
-check_app 'sippts' '/opt/sippts/sipscan.pl'
+check_app 'sippts' '/opt/sippts/sipscan.py'
 
 ########## ---------- ##########
 # Wireless
@@ -816,7 +835,8 @@ cd /opt/
 sudo rm -r cowpatty-*
 
 clear && echo "-- Installing Fluxion"
-sudo apt-get -qq install hostapd lighttpd macchanger mdk4 dsniff php-cgi xterm isc-dhcp-server
+sudo apt-get -qq install hostapd lighttpd mdk4 dsniff php-cgi xterm isc-dhcp-server
+luit -encoding ISO-8859-1 sudo apt-get -qq install macchanger
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")" > /usr/bin/fluxion'
 sudo chmod +x /usr/bin/fluxion
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logos/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
@@ -839,7 +859,7 @@ clear && echo "-- Installing hashcat"
 URL_HASHCAT=$(url_latest 'https://api.github.com/repos/hashcat/hashcat/releases/latest' 'hashcat')
 cd /opt/
 wget -q $URL_HASHCAT
-7zr x hashcat-*.7z
+7zr -aos x hashcat-*.7z
 sudo rm hashcat-*.7z
 mv hashcat-*/ hashcat/
 sudo ln -sf /opt/hashcat/hashcat.bin /usr/local/bin/hashcat
@@ -861,10 +881,24 @@ clear && echo "-- Installing hashcat-utils"
 URL_HASHCAT_UTILS=$(url_latest 'https://api.github.com/repos/hashcat/hashcat-utils/releases/latest' 'hashcat-utils')
 cd /opt/
 wget -q $URL_HASHCAT_UTILS
-7zr x hashcat-utils-*.7z
+7zr -aos x hashcat-utils-*.7z
 sudo rm hashcat-utils-*.7z
 mv hashcat-utils-*/ hashcat-utils/
 check_app 'hashcat-utils' '/opt/hashcat-utils/bin/cap2hccapx.bin'
+
+clear && echo "-- Installing Crackerjack (hashcat GUI)"
+git clone --depth 1 'https://github.com/ctxis/crackerjack' '/opt/crackerjack'
+cd /opt/crackerjack/
+pipenv --bare --three install -r requirements.txt
+pipenv --bare --three install packaging
+pipenv run flask db init
+pipenv run flask db migrate
+pipenv run flask db upgrade
+export FLASK_ENV=development
+export FLASK_APP=app
+#sudo chown -R www-data:www-data /opt/crackerjack
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Crackerjack\nExec=firefox http://127.0.0.1:5000\nIcon=/opt/crackerjack/app/static/images/favicon.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Start Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/crackerjack && pipenv run flask run'\''" > /usr/share/applications/crackerjack.desktop'
+check_app 'crackerjack' '/opt/crackerjack/wsgi.py'
 
 ########## ---------- ##########
 # Web
@@ -959,7 +993,7 @@ URL_CYBERCHEF=$(url_latest 'https://api.github.com/repos/gchq/cyberchef/releases
 mkdir /opt/cyberchef/
 cd /opt/cyberchef/
 wget -q $URL_CYBERCHEF
-unzip CyberChef_*
+unzip -n CyberChef_*
 sudo rm CyberChef_*.zip
 mv CyberChef*.html CyberChef.html
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=CyberChef\nExec=firefox /opt/cyberchef/CyberChef.html\nIcon=/opt/cyberchef/images/cyberchef-128x128.png\nCategories=Application;" > /usr/share/applications/cyberchef.desktop'
@@ -1025,7 +1059,7 @@ URL_GOBUSTER=$(url_latest 'https://api.github.com/repos/OJ/gobuster/releases/lat
 mkdir /opt/gobuster
 cd /opt/gobuster/
 wget -q $URL_GOBUSTER
-7z x gobuster-linux-amd64.7z
+7zr -aos x gobuster-linux-amd64.7z
 mv gobuster-linux-amd64/gobuster .
 sudo rm gobuster-linux-amd64.7z
 sudo rm gobuster-linux-amd64
@@ -1045,7 +1079,7 @@ clear && echo "-- Installing dirble"
 URL_DIRBLE=$(url_latest 'https://api.github.com/repos/nccgroup/dirble/releases/latest' 'x86_64-linux')
 cd /opt/
 wget -q $URL_DIRBLE
-unzip dirble*.zip
+unzip -n dirble*.zip
 sudo rm dirble*.zip
 sudo ln -sf /opt/dirble/dirble /usr/local/bin/dirble
 check_app 'dirble' '/opt/dirble/dirble'
@@ -1096,7 +1130,7 @@ if [[ $(py2_support) == "true" ]]; then # requires python 3.6, 3.8 used in Ubunt
   wget -q $URL_ODAT
   tar xvf odat*.tar.gz
   sudo rm odat*.tar.gz
-  unzip odat*.zip
+  unzip -n odat*.zip
   sudo rm odat*.zip
   mv odat*/ odat/
   sudo ln -sf /opt/odat/odat* /usr/local/bin/odat
@@ -1189,7 +1223,7 @@ mkdir /opt/bettercap
 cd /opt/bettercap/
 wget -q $URL_BETTERCAP
 [ -f *.zip ] || wget -q $URL_BETTERCAP_BACKUP
-unzip -o bettercap_linux_amd64_*.zip
+unzip -n bettercap_linux_amd64_*.zip
 sudo rm bettercap*.zip
 wget -q 'https://raw.githubusercontent.com/bettercap/media/master/logo.png' -O '/opt/bettercap/logo.png'
 sudo ./bettercap -eval "caplets.update; ui.update; q"
@@ -1390,7 +1424,7 @@ python3 -m pipx install pymetadata
 
 clear && echo "-- Installing theHarvester"
 cd /opt/theharvester/
-pipenv --bare --three install
+pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && if [ \$(checksudo) = 0 ]; then (pipenv run python3 theHarvester.py \"\$@\");fi)" > /usr/bin/theharvester'
 sudo chmod +x /usr/bin/theharvester
 
@@ -1452,7 +1486,7 @@ URL_EVILGINX=$(url_latest 'https://api.github.com/repos/kgretzky/evilginx2/relea
 mkdir /opt/evilginx
 cd /opt/evilginx/
 wget -q $URL_EVILGINX
-unzip *.zip
+unzip -n *.zip
 sudo rm *.zip
 sudo bash install.sh
 sudo chmod +x /usr/local/bin/evilginx
@@ -1472,6 +1506,13 @@ sudo ln -sf /opt/modlishka/Modlishka-linux-amd64 /usr/local/bin/modlishka
 clear && echo "-- Installing Kismet"
 sudo apt-get -qq install kismet
 sudo usermod -aG kismet ${USER}
+
+# git clone --depth=1 'https://github.com/p0dalirius/crEAP' /opt/creap
+# cd /opt/creap/
+# pipenv --bare --three install
+#sudo apt-get install python3-scapy
+#sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/creap/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 crEAP.py \"\$@\");fi)" > /usr/bin/creap'
+#sudo chmod +x /usr/bin/creap
 
 if [[ $(py2_support) == "true" ]]; then
   clear && echo "-- Installing crEAP"
@@ -1558,14 +1599,11 @@ git clone -q --depth 1 'https://github.com/michenriksen/drawio-threatmodeling' '
 
 clear && echo "-- Installing Obsidian"
 cd /opt/
-URL_OBSIDIAN=$(url_latest 'https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest' '.AppImage')
-mkdir /opt/obsidian
-wget -q $URL_OBSIDIAN -O '/opt/obsidian/obsidian.AppImage'
-sudo chmod +x /opt/obsidian/obsidian.AppImage
-sudo ln -sf /opt/obsidian/obsidian.AppImage /usr/local/bin/obsidian
-wget -q 'https://raw.githubusercontent.com/kmaasrud/awesome-obsidian/master/media/obsidian_logo.png' -O '/opt/obsidian/icon.png'
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Obsidian\nExec=obsidian\nIcon=/opt/obsidian/icon.png\nCategories=Application;" > /usr/share/applications/obsidian.desktop'
-mkdir "/home/${USER}/.local/share/appimagekit/" && touch "/home/${USER}/.local/share/appimagekit/no_desktopintegration"
+URL_OBSIDIAN=$(url_latest 'https://api.github.com/repos/obsidianmd/obsidian-releases/releases/latest' '.deb')
+wget -q $URL_OBSIDIAN -O 'obsidian.deb'
+sudo apt-get -qq install ./obsidian.deb
+sudo rm obsidian.deb
+check_app 'obsidian' '/opt/Obsidian/obsidian'
 
 clear && echo '-- Installing some "Gitbooks"'
 mkdir /opt/gitbook/
@@ -1596,12 +1634,13 @@ git clone -q --depth 1 'https://github.com/The-Viper-One/Pentest-everything' '/o
 #fi
 #sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=cve-search\nExec=firefox http://localhost:5000\nIcon=/opt/cve-search/web/static/img/favicon.ico\nCategories=Application;" > /usr/share/applications/cve-search.desktop'
 
+clear
 ########## ---------- ##########
 # End
 ########## ---------- ##########
 
 # Reset the Dock favourites
-sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'cyberchef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'wireshark.desktop','pwndoc.desktop','obsidian.desktop']"
+sudo -u ${USER} DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/${RUSER_UID}/bus" dconf write /org/gnome/shell/favorite-apps "['firefox.desktop', 'org.gnome.Nautilus.desktop', 'org.gnome.Terminal.desktop',  'google-chrome.desktop', 'nessus.desktop', 'BurpSuiteCommunity.desktop', 'BurpSuitePro.desktop', 'cyberchef.desktop', 'metasploit-framework.desktop', 'covenant.desktop', 'empire.desktop', 'bloodhound.desktop', 'bettercap.desktop', 'org.wireshark.Wireshark.desktop','pwndoc.desktop','obsidian.desktop']"
 
 # Services fixes
 # sudo systemctl stop apache2.service #eaphammer
@@ -1611,11 +1650,6 @@ sudo systemctl disable lighttpd.service #fluxion
 
 # Cleanup apt
 sudo apt-get autoremove -y
-# fix empire
-sudo pip3 install -r /opt/empire/setup/requirements.txt
-sudo pip3 install pyparsing
-#cd /opt/empire/
-#sudo ./setup/reset.sh
 
 # Fix VMware display
 sudo sed -i 's/Before=cloud-init-local.service/Before=cloud-init-local.service\nAfter=display-manager.service/g' /lib/systemd/system/open-vm-tools.service

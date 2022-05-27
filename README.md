@@ -1,5 +1,5 @@
 ### redteam.sh
-Tested on Ubuntu 19.10 & 20.04 Desktop (minimal) in VMware Workstation.
+Tested on Ubuntu > 20.04 Desktop (minimal) in VMware Workstation.
 
 Run without sudo.
 
@@ -37,16 +37,16 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * ~~[cve-search](https://github.com/cve-search/cve-search)~~
 * [CyberChef](https://gchq.github.io/CyberChef/)
 * [DBeaver](https://github.com/dbeaver/dbeaver)
+* [DeathStar](https://github.com/byt3bl33d3r/deathstar)
 * [dirble](https://github.com/nccgroup/dirble)
 * [DNScan](https://github.com/rbsec/dnscan)
 * Docker
   * [cameradar](https://github.com/Ullaakut/cameradar)
+  * [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
+  * [PwnDoc](https://github.com/pwndoc/pwndoc)
 * [draw.io](https://github.com/jgraph/drawio-desktop)
 * [droopescan](https://github.com/droope/droopescan)
 * ~~[eaphammer](https://github.com/s0lst1c3/eaphammer)~~
-* [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
-  * [DeathStar](https://github.com/byt3bl33d3r/deathstar)
-  * [Starkiller](https://github.com/BC-SECURITY/Starkiller)
 * [enumdb](https://github.com/m8r0wn/enumdb)
 * [EvilClippy](https://github.com/outflanknl/EvilClippy)
 * [evilginx2](https://github.com/kgretzky/evilginx2)
@@ -74,6 +74,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [h8mail](https://github.com/khast3x/h8mail)
 * [hashcat](https://github.com/hashcat/hashcat)
   * [hashcat-utils](https://github.com/hashcat/hashcat-utils)
+  * [CrackerJack](https://github.com/ctxis/crackerjack)
 * [Hash-Buster](https://github.com/s0md3v/hash-buster)
 * [hcxtools](https://github.com/ZerBea/hcxtools)
 * [hcxdumptool](https://github.com/ZerBea/hcxdumptool)
@@ -112,6 +113,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [NTDSDumpEx](https://github.com/zcgonvh/NTDSDumpEx)
 * [NTLMRecon](https://github.com/sachinkamath/NTLMRecon)
 * [NTLMv1 Mutlitool](https://github.com/evilmog/ntlmv1-multi)
+* [Obsidian](https://github.com/obsidianmd/obsidian-releases)
 * [ODAT: Oracle Database Attacking Tool](https://github.com/quentinhardy/odat/)
 * [okadminfinder3](https://github.com/mIcHyAmRaNe/okadminfinder3)
 * [OnionShare](https://onionshare.org/)
@@ -129,7 +131,6 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [pymeta](https://github.com/m8r0wn/pymeta)
 * [pypykatz](https://github.com/skelsec/pypykatz)
 * [pwndb](https://github.com/davidtavarez/pwndb)
-* [PwnDoc](https://github.com/pwndoc/pwndoc)
 * [pwndrop](https://github.com/kgretzky/pwndrop)
 * [rdesktop](https://github.com/rdesktop)
 * [Recon-ng](https://github.com/lanmaster53/recon-ng)
@@ -151,6 +152,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [Sqlmap](https://github.com/sqlmapproject/sqlmap)
 * [Spraying Toolkit](https://github.com/byt3bl33d3r/sprayingtoolkit) (issues with pip requirements in Ubuntu 20.04)
 * [sshuttle](https://github.com/sshuttle/sshuttle)
+* [Starkiller](https://github.com/BC-SECURITY/Starkiller)
 * [statistically-likely-usernames](https://github.com/insidetrust/statistically-likely-usernames)
 * [Sudomy](https://github.com/Screetsec/sudomy)
 * [Swagger-EZ](https://github.com/RhinoSecurityLabs/swagger-ez)
