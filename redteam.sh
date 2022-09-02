@@ -32,7 +32,7 @@ clear && echo "-- Lets begin ..."
 
 # static urls (manually update)
 URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.3.0.deb' # https://www.maltego.com/downloads/
-URL_MONO='https://dl.winehq.org/wine/wine-mono/7.2.0/wine-mono-7.2.0-x86.msi' # https://dl.winehq.org/wine/wine-mono/
+URL_MONO='https://dl.winehq.org/wine/wine-mono/7.3.0/wine-mono-7.3.0-x86.msi' # https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz' # https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
 
 # function to scrape latest release from github api
@@ -86,6 +86,10 @@ clear && echo "-- Installing pipx"
 sudo apt-get -qq install python3-venv
 python3 -m pip install --user pipx
 python3 -m pipx ensurepath
+
+mkdir /opt/pipx
+cp .local/bin/pipx /usr/local/bin/
+# sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install PACKAGE
 
 clear && echo "-- Installing pip modules"
 if [[ $(py2_support) == "true" ]]; then
@@ -171,7 +175,6 @@ cd /opt/
 git clone -q --depth 1 'https://github.com/aanarchyy/bully'
 git clone -q --depth 1 'https://github.com/actuated/msf-exploit-loop'
 git clone -q --depth 1 'https://github.com/beefproject/beef'
-git clone -q --depth 1 'https://github.com/BloodHoundAD/bloodhound'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/silenttrinity'
 git clone -q --depth 1 'https://github.com/byt3bl33d3r/sprayingtoolkit'
 git clone -q --depth 1 --recurse-submodules 'https://github.com/cobbr/covenant'
@@ -238,7 +241,8 @@ bash -c "echo -e '[Desktop Entry]\nName=Link to GTFOBins\nType=Application\nExec
 sudo chown -R ${USER}:${USER} "/home/${USER}/Desktop/*.desktop"
 
 #-- BASH ALIASES
-bash -c "echo -e 'alias nse=\"ls /usr/share/nmap/scripts/ | grep \"' >> /home/${USER}/.bash_aliases"
+bash -c "echo -e 'alias nse=\"locate -r '\''\\.nse$'\''\"' >> /home/${USER}/.bash_aliases"
+
 #. ~/.bashrc
 
 #-- SYMBOLIC LINKS
@@ -389,6 +393,14 @@ sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnscan/ && if [ \$(checksudo) = 0 ]
 sudo chmod +x /usr/bin/dnscan
 check_app 'dnscan' '/opt/dnscan/dnscan.py'
 
+clear && echo "-- Installing knockpy"
+git clone -q --depth 1 'https://github.com/guelfoweb/knock' '/opt/knockpy'
+cd /opt/knockpy/
+pipenv --bare --three install -r requirements.txt
+sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/knockpy/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 knockpy.py \"\$@\");fi)" > /usr/bin/knockpy'
+sudo chmod +x /usr/bin/knockpy
+check_app 'knockpy' '/opt/knockpy/knockpy.py'
+
 clear && echo "-- Installing DeathStar"
 clear && python3 -m pipx install deathstar-empire
 
@@ -445,6 +457,7 @@ clear && echo "-- Installing evil-winrm"
 sudo gem install evil-winrm # https://github.com/Hackplayers/evil-winrm
 
 clear && echo "-- Installing BloodHound"
+git clone -q --depth 1 'https://github.com/BloodHoundAD/bloodhound' '/opt/bloodhound'
 URL_BLOODHOUND=$(url_latest 'https://api.github.com/repos/BloodHoundAD/BloodHound/releases/latest' 'linux-x64')
 cd /opt/
 wget -q $URL_BLOODHOUND
@@ -467,6 +480,17 @@ sudo apt-get -qq install neo4j
 #sudo sed -i 's/#dbms.security.auth_enabled=false/dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
 #sudo systemctl start neo4j.service
 sudo systemctl enable neo4j.service
+
+clear && echo "-- Installing BlueHound"
+URL_BLUEHOUND=$(url_latest 'https://api.github.com/repos/zeronetworks/BlueHound/releases/latest' 'linux-x64')
+cd /opt/
+wget -q $URL_BLUEHOUND
+unzip -n bluehound*.zip
+sudo rm bluehound*.zip
+mv bluehound-*/ bluehound-bin/
+sudo chmod +x /opt/bluehound-bin/bluehound
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BlueHound\nExec=\"/opt/bluehound-bin/bluehound\"\nIcon=/opt/bluehound-bin/resources/app/dist/favicon.ico\nCategories=Application;" > /usr/share/applications/bluehound.desktop'
+check_app 'bluehound' '/opt/bluehound-bin/bluehound'
 
 clear && echo "-- Installing cypher-shell"
 URL_CYPHERSHELL=$(url_latest 'https://api.github.com/repos/neo4j/cypher-shell/releases/latest' '.deb')
@@ -719,7 +743,7 @@ sudo apt-get -qq install autoconf
 git clone -q --depth 1 'https://github.com/glv2/bruteforce-salted-openssl' '/opt/bruteforce-salted-openssl'
 cd /opt/bruteforce-salted-openssl
 bash autogen.sh
-bash configure
+bash ./configure
 make
 sudo make install
 check_app 'bruteforce-salted-openssl' '/usr/local/bin/bruteforce-salted-openssl'
@@ -928,7 +952,7 @@ check_app 'crackerjack' '/opt/crackerjack/wsgi.py'
 #then
   clear && echo "-- Installing Burp Suite Professional Edition"
   curl 'https://portswigger.net/burp/releases/download?product=pro&type=Linux' -o /opt/install.sh && sudo chmod +x /opt/install.sh
-  sudo sudo /opt/install.sh -dir /opt/burpsuitepro -overwrite -q
+  sudo /opt/install.sh -dir /opt/burpsuitepro -overwrite -q
   sudo rm /opt/install.sh
   sudo rename -d "s/(?:.*)BurpSuitePro.desktop/BurpSuitePro.desktop/" /usr/share/applications/*BurpSuitePro.desktop
   sudo bash -c "echo -e '\nActions=app1;\n\n[Desktop Action app1]\nName=Start Collaborator Server\nExec=gnome-terminal --window -- bash -c '\''echo \"config file location: /opt/burpsuitepro/\" && echo \"\" && cd /opt/burpsuitepro/ && sudo java -Xms10m -Xmx200m -XX:GCTimeRatio=19 -jar burpsuite_pro.jar --collaborator-server --collaborator-config=collaborator.config'\''' >> '/usr/share/applications/BurpSuitePro.desktop'"
@@ -1066,6 +1090,13 @@ sudo rm gobuster-linux-amd64
 sudo chmod +x gobuster
 sudo ln -sf /opt/gobuster/gobuster /usr/local/bin/gobuster
 check_app 'gobuster' '/opt/gobuster/gobuster'
+
+clear && echo "--Installing feroxbuster"
+mkdir /opt/feroxbuster
+cd /opt/feroxbuster/
+curl -sL https://raw.githubusercontent.com/epi052/feroxbuster/master/install-nix.sh | bash
+sudo chmod +x feroxbuster
+sudo ln -sf /opt/feroxbuster/feroxbuster /usr/local/bin/feroxbuster
 
 #dirbuster directory lists
 URL_DIRBUSTER_LISTS='https://netix.dl.sourceforge.net/project/dirbuster/DirBuster%20Lists/Current/DirBuster-Lists.tar.bz2'
@@ -1290,7 +1321,8 @@ if [[ $(py2_support) == "true" ]]; then
 fi
 
 clear && echo "-- Installing snmpwalk"
-sudo apt-get -qq install snmp
+sudo apt-get -qq install snmp snmp-mibs-downloader
+# comment out "mibs :" in `/etc/snmp/snmp.conf` to enable MIB files
 
 clear && echo "-- Installing nbtscan"
 sudo apt-get -qq install nbtscan
@@ -1573,6 +1605,10 @@ if [[ $(py2_support) == "true" ]]; then # not in < 20.04 repo
   sudo apt-get -qq update
 fi
 sudo apt-get -qq install golang-go
+
+clear && echo "-- Installing updog"
+python3 -m pipx install updog # https://github.com/sc0tfree/updog
+sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install updog # sudo
 
 clear && echo "-- Installing pwndrop"
 URL_PWNDROP=$(url_latest 'https://api.github.com/repos/kgretzky/pwndrop/releases/latest' 'linux-amd64')
