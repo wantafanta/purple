@@ -31,8 +31,8 @@ sudo chmod +x /usr/bin/checksudo
 clear && echo "-- Lets begin ..."
 
 # static urls (manually update)
-URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.3.0.deb' # https://www.maltego.com/downloads/
-URL_MONO='https://dl.winehq.org/wine/wine-mono/7.3.0/wine-mono-7.3.0-x86.msi' # https://dl.winehq.org/wine/wine-mono/
+URL_MALTEGO='https://maltego-downloads.s3.us-east-2.amazonaws.com/linux/Maltego.v4.3.1.deb' # https://www.maltego.com/downloads/
+URL_MONO='https://dl.winehq.org/wine/wine-mono/7.4.0/wine-mono-7.4.0-x86.msi' # https://dl.winehq.org/wine/wine-mono/
 URL_OPENCL='http://registrationcenter-download.intel.com/akdlm/irc_nas/vcp/15532/l_opencl_p_18.1.0.015.tgz' # https://software.intel.com/en-us/articles/opencl-runtime-release-notes/
 
 # function to scrape latest release from github api
@@ -103,6 +103,7 @@ clear && python3 -m pipx install pypykatz # https://github.com/skelsec/pypykatz
 clear && python3 -m pipx install shodan # https://github.com/achillean/shodan-python
 clear && python3 -m pipx install droopescan # https://github.com/droope/droopescan/
 clear && python3 -m pipx install h8mail # https://github.com/khast3x/h8mail
+clear && python3 -m pipx install dtrx # https://github.com/dtrx-py/dtrx/
 
 #clear && echo "-- Installing poetry"
 #curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
@@ -198,7 +199,7 @@ git clone -q --depth 1 'https://github.com/lightos/credmap'
 git clone -q --depth 1 'https://github.com/m8r0wn/nullinux'
 git clone -q --depth 1 --recursive 'https://github.com/mdsecresearch/lyncsniper'
 git clone -q --depth 1 'https://github.com/mIcHyAmRaNe/okadminfinder3'
-git clone -q --depth 1 'https://github.com/offensive-security/exploitdb'
+git clone -q --depth 1 'https://gitlab.com/exploit-database/exploitdb'
 git clone -q --depth 1 'https://github.com/Pepelux/sippts'
 git clone -q --depth 1 'https://github.com/r3motecontrol/Ghostpack-CompiledBinaries' ghostpack #https://github.com/GhostPack
 git clone -q --depth 1 'https://github.com/rezasp/joomscan'
@@ -226,7 +227,7 @@ git clone -q --depth 1 'https://github.com/flozz/p0wny-shell' '/opt/webshells/p0
 git clone -q --depth 1 'https://github.com/xl7dev/WebShell' '/opt/webshells/webshell-collection'
 
 #-- /OPT/ SCRIPTS
-bash -c 'echo -e "#!/bin/bash\nclear\nls | xargs -I{} git -C {} pull\nclear\npipx upgrade-all\nclear\nsudo airodump-ng-oui-update\nclear\nnikto -update\nclear\nwpscan --update\nclear\nsudo updatedb" > /opt/update.sh'
+bash -c 'echo -e "#!/bin/bash\nclear\nls | xargs -I{} git -C {} pull\nclear\npipx upgrade-all\nclear\nsudo airodump-ng-oui-update\nclear\nclear\nwpscan --update\nclear\nsudo updatedb" > /opt/update.sh'
 bash -c 'echo -e "#!/bin/bash\nsudo /usr/bin/vmhgfs-fuse .host:/ /mnt/hgfs/ -o subtype=vmhgfs-fuse,allow_other\nln -sf /mnt/hgfs/* ~/Desktop/\nsymlinks -d ~/Desktop/" > /opt/map-shares.sh'
 [ -d ~/.config/autostart/ ] && echo "~/.config/autostart already exists." || mkdir ~/.config/autostart
 bash -c 'echo -e "[Desktop Entry]\nType=Application\nExec=/opt/map-shares.sh\nHidden=false\nNoDisplay=false\nX-GNOME-Autostart-enabled=true\nName[en_GB]=map shares\nName=map shares\nComment[en_GB]=\nComment=" > ~/.config/autostart/map-shares.sh.desktop'
@@ -418,7 +419,7 @@ check_app 'starkiller' '/opt/starkiller/starkiller.AppImage'
 
 clear && echo "-- Installing Dotnet Core 3.1 (Covenant)"
 cd /opt/
-wget -q 'https://download.visualstudio.microsoft.com/download/pr/8db2b522-7fa2-4903-97ec-d6d04d297a01/f467006b9098c2de256e40d2e2f36fea/dotnet-sdk-3.1.301-linux-x64.tar.gz'
+wget -q 'https://download.visualstudio.microsoft.com/download/pr/e89c4f00-5cbb-4810-897d-f5300165ee60/027ace0fdcfb834ae0a13469f0b1a4c8/dotnet-sdk-3.1.426-linux-x64.tar.gz'
 mkdir -p /opt/dotnet && tar zxf dotnet-sdk-*.tar.gz -C /opt/dotnet
 sudo ln -sf /opt/dotnet/dotnet /usr/bin/dotnet
 export DOTNET_ROOT=/opt/dotnet
@@ -473,7 +474,7 @@ cd /opt/
 sudo apt-get remove -y java-common
 sudo apt-get -qq install openjdk-11-jre-headless
 wget -q --no-check-certificate -O - 'https://debian.neo4j.com/neotechnology.gpg.key' | sudo apt-key add -
-echo 'deb https://debian.neo4j.com stable 4.0' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
+echo 'deb https://debian.neo4j.com stable latest' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
 sudo apt-get -qq update
 sudo apt-get -qq install neo4j
 #sudo systemctl stop neo4j.service
@@ -485,11 +486,11 @@ clear && echo "-- Installing BlueHound"
 URL_BLUEHOUND=$(url_latest 'https://api.github.com/repos/zeronetworks/BlueHound/releases/latest' 'linux-x64')
 cd /opt/
 wget -q $URL_BLUEHOUND
-unzip -n bluehound*.zip
-sudo rm bluehound*.zip
-mv bluehound-*/ bluehound-bin/
+unzip -n BlueHound*.zip
+sudo rm BlueHound*.zip
+mv BlueHound-*/ bluehound-bin/
 sudo chmod +x /opt/bluehound-bin/bluehound
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BlueHound\nExec=\"/opt/bluehound-bin/bluehound\"\nIcon=/opt/bluehound-bin/resources/app/dist/favicon.ico\nCategories=Application;" > /usr/share/applications/bluehound.desktop'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BlueHound\nExec=\"/opt/bluehound-bin/BlueHound\"\nIcon=/opt/bluehound-bin/resources/app/dist/favicon.ico\nCategories=Application;" > /usr/share/applications/bluehound.desktop'
 check_app 'bluehound' '/opt/bluehound-bin/bluehound'
 
 clear && echo "-- Installing cypher-shell"
@@ -1056,8 +1057,10 @@ sudo chmod +x /usr/bin/whatwaf
 check_app 'whatwaf' '/opt/whatwaf/whatwaf'
 
 clear && echo "-- Installing nikto"
-sudo apt-get -qq install nikto
-nikto -update
+git clone -q 'https://github.com/sullo/nikto' '/opt/nikto'
+cd /opt/nikto/program
+git checkout nikto-2.5.0
+sudo ln -sf /opt/nikto/program/nikto.pl /usr/local/bin/nikto
 
 clear && echo "-- Installing ffuf"
 URL_FFUF=$(url_latest 'https://api.github.com/repos/ffuf/ffuf/releases/latest' 'linux_amd64.tar.gz')
@@ -1079,14 +1082,12 @@ sudo chmod +x /usr/bin/testssl.sh
 check_app 'testssl.sh' '/opt/testssl.sh/testssl.sh'
 
 clear && echo "-- Installing Gobuster"
-URL_GOBUSTER=$(url_latest 'https://api.github.com/repos/OJ/gobuster/releases/latest' 'gobuster-linux-amd64.7z')
+URL_GOBUSTER=$(url_latest 'https://api.github.com/repos/OJ/gobuster/releases/latest' 'Linux_x86_64')
 mkdir /opt/gobuster
 cd /opt/gobuster/
-wget -q $URL_GOBUSTER
-7zr -aos x gobuster-linux-amd64.7z
-mv gobuster-linux-amd64/gobuster .
-sudo rm gobuster-linux-amd64.7z
-sudo rm gobuster-linux-amd64
+wget -q $URL_GOBUSTER -O 'gobuster.tar.gz'
+tar xvf 'gobuster.tar.gz'
+sudo rm 'gobuster.tar.gz'
 sudo chmod +x gobuster
 sudo ln -sf /opt/gobuster/gobuster /usr/local/bin/gobuster
 check_app 'gobuster' '/opt/gobuster/gobuster'
@@ -1336,8 +1337,7 @@ check_app 'ntlmrecon' '/opt/ntlmrecon/setup.py'
 
 trap '' INT
 clear && echo "-- Installing Nessus"
-ID_NESSUS=$(curl -s 'https://www.tenable.com/downloads/nessus?loginAttempted=true' | grep -oE 'id=.?__NEXT_DATA__[^<>]*>[^<>]+' | cut -d'>' -f2 | jq -c '[ .props.pageProps.page.downloads[] | select( .description | contains("20.04")) ][] | select(.file | startswith("Nessus-10"))' | jq -r .id)
-URL_NESSUS="https://www.tenable.com/downloads/api/v1/public/pages/nessus/downloads/$ID_NESSUS/download?i_agree_to_tenable_license_agreement=true"
+URL_NESSUS=curl -s 'https://www.tenable.com/downloads/api/v2/pages/nessus' | jq -r '.releases | .latest | ."Nessus - 10.4.1"[] | select(.os | contains("Linux")) | select(.file | contains("ubuntu"))' | jq -r 'select(.file | contains("amd64"))' | jq -r ".file_url"
 # nesus: https://www.tenable.com/downloads/nessus
 cd /opt/
 curl -O -J -L $URL_NESSUS
@@ -1508,6 +1508,18 @@ cd /opt/bopscrk/
 pipenv --bare --three install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bopscrk && if [ \$(checksudo) = 0 ]; then (pipenv run python bopscrk.py \"\$@\");fi)" > /usr/bin/bopscrk'
 sudo chmod +x /usr/bin/bopscrk
+
+clear && echo "-- Installing smap"
+URL_SMAP=$(url_latest 'https://api.github.com/repos/s0md3v/Smap/releases/latest' 'linux_amd64.tar.')
+mkdir /opt/smap/
+cd /opt/smap/
+wget -q $URL_SMAP
+tar xvf *linux_amd64.tar.*
+mv smap_*/* .
+rm -r *linux_amd64.tar.* smap_*
+chmod +x smap
+sudo ln -sf /opt/smap/smap /usr/local/bin/smap
+check_app 'smap' '/opt/smap/smap'
 
 ########## ---------- ##########
 # Phishing
