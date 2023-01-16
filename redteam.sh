@@ -1337,7 +1337,7 @@ check_app 'ntlmrecon' '/opt/ntlmrecon/setup.py'
 
 trap '' INT
 clear && echo "-- Installing Nessus"
-URL_NESSUS=curl -s 'https://www.tenable.com/downloads/api/v2/pages/nessus' | jq -r '.releases | .latest | ."Nessus - 10.4.1"[] | select(.os | contains("Linux")) | select(.file | contains("ubuntu"))' | jq -r 'select(.file | contains("amd64"))' | jq -r ".file_url"
+URL_NESSUS=$(curl -s 'https://www.tenable.com/downloads/api/v2/pages/nessus' | jq -r '.releases | .latest | ."Nessus - 10.4.1"[] | select(.os | contains("Linux")) | select(.file | contains("ubuntu"))' | jq -r 'select(.file | contains("amd64"))' | jq -r ".file_url")
 # nesus: https://www.tenable.com/downloads/nessus
 cd /opt/
 curl -O -J -L $URL_NESSUS
