@@ -44,7 +44,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * Docker
   * [cameradar](https://github.com/Ullaakut/cameradar)
   * [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
-  * [PwnDoc](https://github.com/pwndoc/pwndoc)
+  * [PwnDoc-ng](https://github.com/pwndoc-ng/pwndoc-ng)
 * [draw.io](https://github.com/jgraph/drawio-desktop)
 * [droopescan](https://github.com/droope/droopescan)
 * ~~[eaphammer](https://github.com/s0lst1c3/eaphammer)~~

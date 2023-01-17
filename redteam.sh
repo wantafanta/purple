@@ -610,10 +610,10 @@ wget -q 'https://raw.githubusercontent.com/Ullaakut/cameradar/master/images/Came
 sudo bash -c 'echo -e "#!/bin/bash\n(sudo docker run -t ullaakut/cameradar \"\$@\")" > /usr/local/bin/cameradar' && sudo chmod +x /usr/local/bin/cameradar
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Cameradar\nExec=gnome-terminal -- bash -c \"cameradar;$SHELL\"\nIcon=/opt/cameradar/icon.png\nCategories=Application;" > /usr/share/applications/cameradar.desktop'
 
-clear && echo "-- Installing Pwndoc (docker)"
-git clone -q --depth 1 'https://github.com/pwndoc/pwndoc' '/opt/pwndoc'
-sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Pwndoc\nExec=firefox https://localhost:8443\nIcon=/opt/pwndoc/frontend/public/favicon.ico\nCategories=Application;\nActions=app1;app2;\n\n[Desktop Action app1]\nName=Start Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/pwndoc && sudo docker-compose start && read -p \"Press Enter to close.\"'\''\n\n[Desktop Action app2]\nName=Stop Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/pwndoc && sudo docker-compose stop && read -p \"Press Enter to close.\"'\''" > /usr/share/applications/pwndoc.desktop'
-cd /opt/pwndoc
+clear && echo "-- Installing PwnDoc-ng (docker)"
+git clone -q --depth 1 'https://github.com/pwndoc-ng/pwndoc-ng' '/opt/pwndoc-ng'
+sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=PwnDoc-ng\nExec=firefox https://localhost:8443\nIcon=/opt/pwndoc-ng/frontend/public/favicon.ico\nCategories=Application;\nActions=app1;app2;\n\n[Desktop Action app1]\nName=Start Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/pwndoc-ng && sudo docker-compose start && read -p \"Press Enter to close.\"'\''\n\n[Desktop Action app2]\nName=Stop Server\nExec=gnome-terminal --window -- bash -c '\''cd /opt/pwndoc-ng && sudo docker-compose stop && read -p \"Press Enter to close.\"'\''" > /usr/share/applications/pwndoc-ng.desktop'
+cd /opt/pwndoc-ng
 sudo docker-compose up -d --build
 sudo docker-compose stop
 sudo docker update --restart no pwndoc-backend
