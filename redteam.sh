@@ -103,7 +103,12 @@ clear && python3 -m pipx install pypykatz # https://github.com/skelsec/pypykatz
 clear && python3 -m pipx install shodan # https://github.com/achillean/shodan-python
 clear && python3 -m pipx install droopescan # https://github.com/droope/droopescan/
 clear && python3 -m pipx install h8mail # https://github.com/khast3x/h8mail
-clear && python3 -m pipx install dtrx # https://github.com/dtrx-py/dtrx/
+
+clear && echo "-- Installing dtrx"
+git clone --depth 1 'https://github.com/dtrx-py/dtrx/' '/opt/dtrx'
+cd /opt/dtrx/
+sudo python3 setup.py install
+check_app 'dtrx' '/usr/local/bin/dtrx'
 
 #clear && echo "-- Installing poetry"
 #curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
@@ -744,7 +749,7 @@ sudo apt-get -qq install autoconf
 git clone -q --depth 1 'https://github.com/glv2/bruteforce-salted-openssl' '/opt/bruteforce-salted-openssl'
 cd /opt/bruteforce-salted-openssl
 bash autogen.sh
-bash ./configure
+bash configure
 make
 sudo make install
 check_app 'bruteforce-salted-openssl' '/usr/local/bin/bruteforce-salted-openssl'
