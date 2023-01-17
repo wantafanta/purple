@@ -489,9 +489,9 @@ wget -q $URL_BLUEHOUND
 unzip -n BlueHound*.zip
 sudo rm BlueHound*.zip
 mv BlueHound-*/ bluehound-bin/
-sudo chmod +x /opt/bluehound-bin/bluehound
+sudo chmod +x /opt/bluehound-bin/BlueHound
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=BlueHound\nExec=\"/opt/bluehound-bin/BlueHound\"\nIcon=/opt/bluehound-bin/resources/app/dist/favicon.ico\nCategories=Application;" > /usr/share/applications/bluehound.desktop'
-check_app 'bluehound' '/opt/bluehound-bin/bluehound'
+check_app 'bluehound' '/opt/bluehound-bin/BlueHound'
 
 clear && echo "-- Installing cypher-shell"
 URL_CYPHERSHELL=$(url_latest 'https://api.github.com/repos/neo4j/cypher-shell/releases/latest' '.deb')
