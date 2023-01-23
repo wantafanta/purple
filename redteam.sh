@@ -168,12 +168,19 @@ sudo apt-get -qq install -y powershell
 sudo rm 'packages-microsoft-prod.deb'
 
 clear && echo "-- Installing snaps"
-sudo snap install code --classic
-sudo snap install remmina
+sudo snap install remmina # best version, most maintained
+sudo snap connect remmina:audio-record :audio-record
 sudo snap connect remmina:avahi-observe :avahi-observe
 sudo snap connect remmina:cups-control :cups-control
 sudo snap connect remmina:mount-observe :mount-observe
 sudo snap connect remmina:password-manager-service :password-manager-service
+sudo snap connect remmina:ssh-keys :ssh-keys
+sudo snap connect remmina:ssh-public-keys :ssh-public-keys
+
+clear && echo "-- Installing VSCodium" # instead of vscode snap
+wget -qO - https://gitlab.com/paulcarroty/vscodium-deb-rpm-repo/raw/master/pub.gpg | gpg --dearmor | sudo dd of=/usr/share/keyrings/vscodium-archive-keyring.gpg
+echo 'deb [ signed-by=/usr/share/keyrings/vscodium-archive-keyring.gpg ] https://download.vscodium.com/debs vscodium main' | sudo tee /etc/apt/sources.list.d/vscodium.list
+sudo apt -qq update && sudo apt -qq install -y codium
 
 clear && echo "-- Cloning repositories"
 cd /opt/
@@ -554,7 +561,7 @@ sudo rm torghost-*-amd64.deb
 #set network.dns.blockDotOnion;false
 
 clear && echo "-- Installing onionshare"
-sudo add-apt-repository -y ppa:micahflee/ppa
+sudo apt-add-repository -y ppa:micahflee/ppa
 sudo apt-get update
 sudo apt-get -qq install onionshare
 
@@ -1618,7 +1625,7 @@ fi
 
 clear && echo "-- Installing Go"
 if [[ $(py2_support) == "true" ]]; then # not in < 20.04 repo
-  sudo add-apt-repository -y ppa:longsleep/golang-backports
+  sudo apt-add-repository -y ppa:longsleep/golang-backports
   sudo apt-get -qq update
 fi
 sudo apt-get -qq install golang-go
