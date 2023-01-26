@@ -86,6 +86,7 @@ sudo apt-get -qq install -y chrome-gnome-shell #firefox gnome extensions pre-req
 clear && echo "-- Installing pipx"
 sudo apt-get -qq install -y python3-venv
 python3 -m pip install --user pipx
+sudo python3 -m pip install --user pipx # for sudo
 python3 -m pipx ensurepath
 
 mkdir /opt/pipx
@@ -108,12 +109,12 @@ clear && python3 -m pipx install h8mail # https://github.com/khast3x/h8mail
 clear && python3 -m pipx install wesng # https://github.com/bitsadmin/wesng
 clear && python3 -m pipx install deathstar-empire
 clear && python3 -m pipx install mitm6 # https://github.com/fox-it/mitm6/
+clear && sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install mitm6
 #sudo ln -sf "/home/${USER}/.local/bin/mitm6" /usr/local/bin/
-sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install mitm6
 check_app 'mitm6' "/home/${USER}/.local/bin/mitm6"
 clear && python3 -m pipx install impacket # https://github.com/SecureAuthCorp/impacket - https://www.secureauth.com/labs/open-source-tools/impacket
+clear && sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install impacket
 #sudo ln -sf "/home/${USER}/.local/bin/"*.py /usr/local/bin/
-sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install impacket
 clear && python3 -m pipx install activereign # https://github.com/m8r0wn/activereign
 clear && python3 -m pipx inject activereign impacket
 clear && python3 -m pipx install adidnsdump # https://github.com/dirkjanm/adidnsdump
@@ -125,7 +126,6 @@ clear && python3 -m pipx install wfuzz # https://github.com/xmendez/wfuzz
 clear && python3 -m pipx install credslayer # https://github.com/ShellCode33/credslayer
 clear && python3 -m pipx install pymetadata # https://github.com/m8sec/pymeta/
 clear && python3 -m pipx install updog # https://github.com/sc0tfree/updog
-sudo PIPX_HOME=/opt/pipx PIPX_BIN_DIR=/usr/local/bin pipx install updog
 # sudo ~/.local/bin/
 
 clear && echo "-- Installing dtrx"
@@ -133,9 +133,6 @@ git clone --depth 1 'https://github.com/dtrx-py/dtrx/' '/opt/dtrx'
 cd /opt/dtrx/
 sudo python3 setup.py install
 check_app 'dtrx' '/usr/local/bin/dtrx'
-
-#clear && echo "-- Installing poetry"
-#curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
 
 clear && echo "Configuring TMUX"
 echo 'set -g default-terminal "screen-256color"' > "/home/${USER}/.tmux.conf"
@@ -190,6 +187,10 @@ sudo dpkg -i packages-microsoft-prod.deb
 sudo apt-get -qq update
 sudo apt-get -qq install -y powershell
 sudo rm 'packages-microsoft-prod.deb'
+
+mkdir /opt/scripts/
+# https://www.hub.trimarcsecurity.com/post/securing-active-directory-performing-an-active-directory-security-review
+wget  -nc -q 'https://gist.githubusercontent.com/wantafanta/995b1f5d4a5ef3b7aca9026a5249ec07/raw/e7a9eb9e8ae7a6f726b600927f4fa4dc9ef8256f/Invoke-TrimarcADChecks.ps1' -O '/opt/scripts/Invoke-TrimarcADChecks.ps1'
 
 clear && echo "-- Installing snaps"
 sudo snap install remmina # best version, most maintained
@@ -335,7 +336,7 @@ check_app 'searchsploit' '/opt/exploitdb/searchsploit'
 
 clear && echo "-- Installing routersploit"
 cd /opt/routersploit/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/routersploit && if [ \$(checksudo) = 0 ]; then (pipenv run python3 rsf.py \"\$@\");fi)" > /usr/local/bin/rsf'
 sudo chmod +x /usr/local/bin/rsf
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/routersploit && if [ \$(checksudo) = 0 ]; then (pipenv run python3 rsf.py \"\$@\");fi)" > /usr/local/bin/routersploit'
@@ -423,7 +424,7 @@ fi
 
 clear && echo "-- Installing DNScan"
 cd /opt/dnscan/
-pipenv --bare --three install
+pipenv --bare install
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnscan/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 dnscan.py \"\$@\");fi)" > /usr/local/bin/dnscan'
 sudo chmod +x /usr/local/bin/dnscan
 check_app 'dnscan' '/opt/dnscan/dnscan.py'
@@ -431,7 +432,7 @@ check_app 'dnscan' '/opt/dnscan/dnscan.py'
 clear && echo "-- Installing knockpy"
 git clone -q --depth 1 'https://github.com/guelfoweb/knock' '/opt/knockpy'
 cd /opt/knockpy/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/knockpy/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 knockpy.py \"\$@\");fi)" > /usr/local/bin/knockpy'
 sudo chmod +x /usr/local/bin/knockpy
 check_app 'knockpy' '/opt/knockpy/knockpy.py'
@@ -471,14 +472,14 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 pip install setuptools_rust
 git clone -q --depth 1 'https://github.com/Porchetta-Industries/crackmapexec' /opt/crackmapexec
 cd /opt/crackmapexec
-poetry install
+PYTHON_KEYRING_BACKEND=keyring.backends.null.Keyring poetry install
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (poetry run cme \"\$@\");fi)" > /usr/local/bin/cme'
 sudo chmod +x /usr/local/bin/cme
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/crackmapexec/ && if [ \$(checksudo) = 0 ]; then (poetry run cmedb \"\$@\");fi)" > /usr/local/bin/cmedb'
 sudo chmod +x /usr/local/bin/cmedb
 check_app 'crackmapexec' '/home/user/.cache/pypoetry/virtualenvs/crackmapexec-*/bin/cme'
 # https://github.com/Porchetta-Industries/CrackMapExec/issues/719
-sudo sed -i 's/DYNVC_DATA_FIRST | DYNVC_DATA)/DYNVC_DATA_FIRST or DYNVC_DATA)/' /home/user/.cache/pypoetry/virtualenvs/crackmapexec-*/lib/python3.8/site-packages/aardwolf/extensions/RDPEDYC/vchannels/__init__.py
+sudo sed -i 's/DYNVC_DATA_FIRST|DYNVC_DATA)/DYNVC_DATA_FIRST or DYNVC_DATA)/' /home/user/.cache/pypoetry/virtualenvs/crackmapexec-*/lib/python3.8/site-packages/aardwolf/extensions/RDPEDYC/vchannels/__init__.py
 
 clear && echo "-- Installing evil-winrm"
 sudo gem install evil-winrm # https://github.com/Hackplayers/evil-winrm
@@ -533,15 +534,15 @@ curl 'https://raw.githubusercontent.com/hausec/Bloodhound-Custom-Queries/master/
 
 clear && echo "-- Installing bloodhound.py"
 cd /opt/bloodhound.py/
-pipenv --bare --three run python3 setup.py install --record files.txt
+pipenv --bare run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bloodhound.py/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 bloodhound.py \"\$@\");fi)" > /usr/local/bin/bloodhound.py'
 sudo chmod +x /usr/local/bin/bloodhound.py
-check_app 'bloodhound.py' '/usr/bin/bloodhound.py'
+check_app 'bloodhound.py' '/usr/local/bin/bloodhound.py'
 
 clear && echo "-- Installing Scout Suite"
 git clone -q --depth 1 'https://github.com/nccgroup/scoutsuite' '/opt/scoutsuite'
 cd /opt/scoutsuite/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/scoutsuite && if [ \$(checksudo) = 0 ]; then (pipenv run python3 scout.py \"\$@\");fi)" > /usr/local/bin/scoutsuite'
 sudo chmod +x /usr/local/bin/scoutsuite
 check_app 'scoutsuite.py' '/opt/scoutsuite/scout.py'
@@ -574,7 +575,7 @@ sudo apt-get -qq install -y onionshare
 
 clear && echo "-- Installing fireprox"
 cd /opt/fireprox/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/fireprox && if [ \$(checksudo) = 0 ]; then (pipenv run python3 fire.py \"\$@\");fi)" > /usr/local/bin/fireprox'
 sudo chmod +x /usr/local/bin/fireprox
 check_app 'fireprox' '/opt/fireprox/fire.py'
@@ -688,7 +689,7 @@ check_app 'ruler' '/opt/ruler/ruler-linux64'
 clear && echo "-- Installing SilentTrinity"
 cd /opt/silenttrinity/
 wget -q 'https://user-images.githubusercontent.com/5151193/45964397-e462e280-bfe2-11e8-88a7-69212e0f0355.png' -O '/opt/silenttrinity/logo.png'
-pipenv --bare --three run sudo pip3 install -r requirements.txt
+pipenv --bare run sudo pip3 install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/silenttrinity/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 st.py \"\$@\");fi)" > /usr/local/bin/silenttrinity'
 sudo chmod +x /usr/local/bin/silenttrinity
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=SilentTrinity\nExec=gnome-terminal --window -- silenttrinity client\nIcon=/opt/silenttrinity/logo.png\nCategories=Application;\nActions=app1;\n\n[Desktop Action app1]\nName=Start Teamserver\nExec=gnome-terminal --window -- bash -c '\''printf \"\\\n\\\n\" && nmcli d show | grep .ADDRESS && printf \"\\\n\\\n\" && read -p \"Enter the IP address to use: \" ip &&  read -p \"Enter the password to use: \" pass && clear && silenttrinity teamserver \$ip \$pass'\''\n" > /usr/share/applications/silenttrinity.desktop'
@@ -697,7 +698,7 @@ check_app 'silenttrinity' '/opt/silenttrinity/st.py'
 if [[ $(py2_support) == "true" ]]; then # pip requirements compile errors
   clear && echo "-- Installing SprayingToolkit"
   cd /opt/sprayingtoolkit/
-  pipenv --bare --three run sudo pip3 install -r requirements.txt
+  pipenv --bare run sudo pip3 install -r requirements.txt
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 aerosol.py \"\$@\");fi)" > /usr/local/bin/aerosol'
   sudo chmod +x /usr/local/bin/aerosol
   sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sprayingtoolkit/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 atomizer.py \"\$@\");fi)" > /usr/local/bin/atomizer'
@@ -780,7 +781,7 @@ sudo apt-get -qq install -y ldap-utils # ldapsearch
 sudo apt-get -qq install -y libmysqlclient-dev # mysqlclient-python
 sudo apt-get -qq install -y ike-scan unzip default-jdk
 sudo apt-get -qq install -y libsqlite3-dev libsqlcipher-dev # pysqlcipher
-#pipenv --bare --three run sudo python setup.py install --record files.txt
+#pipenv --bare run sudo python setup.py install --record files.txt
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/patator/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo patator.py \"\$@\");fi)" > /usr/local/bin/patator'
 #sudo chmod +x /usr/local/bin/patator
 python3 -m pipx install patator
@@ -884,11 +885,11 @@ luit -encoding ISO-8859-1 sudo apt-get -qq install -y macchanger
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")" > /usr/local/bin/fluxion'
 sudo chmod +x /usr/local/bin/fluxion
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logos/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
-check_app 'fluxion' '/usr/bin/fluxion'
+check_app 'fluxion' '/usr/local/bin/fluxion'
 
 #clear && echo "-- Installing BeaconGraph"
 #cd /opt/beacongraph/
-#pipenv --bare --three install -r requirements.txt
+#pipenv --bare install -r requirements.txt
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/beacongraph/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 BeaconGraph.py \"\$@\");fi)" > /usr/local/bin/beacongraph'
 #sudo chmod +x /usr/local/bin/beacongraph
 
@@ -933,8 +934,8 @@ check_app 'hashcat-utils' '/opt/hashcat-utils/bin/cap2hccapx.bin'
 clear && echo "-- Installing Crackerjack (hashcat GUI)"
 git clone --depth 1 'https://github.com/ctxis/crackerjack' '/opt/crackerjack'
 cd /opt/crackerjack/
-pipenv --bare --three install -r requirements.txt
-pipenv --bare --three install packaging
+pipenv --bare install -r requirements.txt
+pipenv --bare install packaging
 pipenv run flask db init
 pipenv run flask db migrate
 pipenv run flask db upgrade
@@ -1070,7 +1071,7 @@ check_app 'jd-gui' '/opt/jd-gui/jd-gui.jar'
 clear && echo "-- Installing Whatwaf"
 git clone -q --depth 1 'https://github.com/Ekultek/whatwaf' '/opt/whatwaf'
 cd /opt/whatwaf/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/whatwaf && if [ \$(checksudo) = 0 ]; then (pipenv run python3 whatwaf \"\$@\");fi)" > /usr/local/bin/whatwaf'
 sudo chmod +x /usr/local/bin/whatwaf
 check_app 'whatwaf' '/opt/whatwaf/whatwaf'
@@ -1145,14 +1146,14 @@ check_app 'recursebuster' '/opt/recursebuster/recursebuster_elf'
 
 clear && echo "-- Installing okadminfinder3"
 cd /opt/okadminfinder3/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/okadminfinder3 && if [ \$(checksudo) = 0 ]; then (pipenv run python3 okadminfinder.py \"\$@\");fi)" > /usr/local/bin/okadminfinder3'
 sudo chmod +x /usr/local/bin/okadminfinder3
 check_app 'okadminfinder3' '/opt/okadminfinder3/okadminfinder.py'
 
 clear && echo "-- Installing XSStrike"
 cd /opt/xsstrike/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/xsstrike && if [ \$(checksudo) = 0 ]; then (pipenv run python3 xsstrike.py \"\$@\");fi)" > /usr/local/bin/xsstrike'
 sudo chmod +x /usr/local/bin/xsstrike
 URL_GECKODRIVER=$(url_latest 'https://api.github.com/repos/mozilla/geckodriver/releases/latest' 'linux64')
@@ -1187,7 +1188,7 @@ fi
 clear && echo "-- Installing fuxploider"
 git clone -q --depth 1 'https://github.com/almandin/fuxploider' '/opt/fuxploider'
 cd /opt/fuxploider/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/fuxploider && if [ \$(checksudo) = 0 ]; then (pipenv run python3 fuxploider.py \"\$@\");fi)" > /usr/local/bin/fuxploider'
 sudo chmod +x /usr/local/bin/fuxploider
 check_app 'fuxploider' '/opt/fuxploider/fuxploider.py'
@@ -1228,7 +1229,7 @@ check_app 'nmapautomator' '/opt/nmapautomator/nmapAutomator.sh'
 clear && echo "-- Installing dnsrecon"
 git clone -q --depth 1 'https://github.com/darkoperator/dnsrecon' '/opt/dnsrecon'
 cd /opt/dnsrecon/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/dnsrecon && if [ \$(checksudo) = 0 ]; then (pipenv run python3 dnsrecon.py \"\$@\");fi)" > /usr/local/bin/dnsrecon'
 sudo chmod +x /usr/local/bin/dnsrecon
 check_app 'dnsrecon' '/opt/dnsrecon/dnsrecon.py'
@@ -1344,7 +1345,7 @@ sudo apt-get -qq install -y nbtscan
 
 clear && echo "-- Installing NTLMRecon"
 cd /opt/ntlmrecon/
-pipenv --bare --three run python3 setup.py install --record files.txt
+pipenv --bare run python3 setup.py install --record files.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/ntlmrecon && if [ \$(checksudo) = 0 ]; then (pipenv run ntlmrecon \"\$@\");fi)" > /usr/local/bin/ntlmrecon'
 sudo chmod +x /usr/local/bin/ntlmrecon
 check_app 'ntlmrecon' '/opt/ntlmrecon/setup.py'
@@ -1377,6 +1378,17 @@ fi
 trap - INT
 wget -q -U firefox 'https://gist.githubusercontent.com/wantafanta/0d31a15974b41862b1fcbcb804c571be/raw/fd0b4cd4feff5f2eaed55a34db4e1f3be9e60fac/nessus-merge.py' -O '/opt/nessus-merge.py'
 check_app 'nessus' '/opt/nessus/sbin/nessuscli'
+
+clear && echo "-- Installing nuclei"
+URL_NUCLEI=$(url_latest 'https://api.github.com/repos/projectdiscovery/nuclei/releases/latest' 'linux_amd64')
+mkdir /opt/nuclei
+cd /opt/nuclei/
+wget -q $URL_NUCLEI
+unzip -n *.zip
+sudo rm *.zip
+sudo ln -sf /opt/nuclei/nuclei /usr/local/bin/nuclei
+check_app 'nuclei' '/opt/nuclei/nuclei'
+nuclei -ut # download templates
 
 clear && echo "-- Installing frogger2"
 git clone -q --depth 1 'https://github.com/commonexploits/vlan-hopping' '/opt/vlan-hopping'
@@ -1442,7 +1454,7 @@ sudo rm Maltego*.deb
 
 clear && echo "-- Installing Cr3d0v3r"
 cd /opt/cr3dov3r/
-pipenv --bare --three install
+pipenv --bare install
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cr3dov3r && if [ \$(checksudo) = 0 ]; then (pipenv run python3 Cr3d0v3r.py \"\$@\");fi)" > /usr/local/bin/credover'
 sudo chmod +x /usr/local/bin/credover
 
@@ -1461,25 +1473,25 @@ fi
 
 clear && echo "-- Installing pwndb"
 cd /opt/pwndb/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/pwndb && if [ \$(checksudo) = 0 ]; then (pipenv run python3 pwndb.py \"\$@\");fi)" > /usr/local/bin/pwndb'
 sudo chmod +x /usr/local/bin/pwndb
 
 clear && echo "-- Installing theHarvester"
 cd /opt/theharvester/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/theharvester && if [ \$(checksudo) = 0 ]; then (pipenv run python3 theHarvester.py \"\$@\");fi)" > /usr/local/bin/theharvester'
 sudo chmod +x /usr/local/bin/theharvester
 
 clear && echo "-- Installing Photon"
 cd /opt/photon/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/photon && if [ \$(checksudo) = 0 ]; then (pipenv run python3 photon.py \"\$@\");fi)" > /usr/local/bin/photon'
 sudo chmod +x /usr/local/bin/photon
 
 clear && echo "-- Installing Recon-ng"
 cd /opt/recon-ng/
-pipenv --bare --three install -r REQUIREMENTS
+pipenv --bare install -r REQUIREMENTS
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 recon-ng \"\$@\");fi)" > /usr/local/bin/recon-ng'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 recon-cli \"\$@\");fi)" > /usr/local/bin/recon-cli'
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/recon-ng/ && if [ \$(checksudo) = 0 ]; then (pipenv run python3 recon-web \"\$@\");fi)" > /usr/local/bin/recon-web'
@@ -1501,7 +1513,7 @@ bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys a
 #sudo apt-get -qq install -y phantomjs npm
 #sudo npm i -g wappalyzer --unsafe-perm=true
 #cd /opt/sudomy/
-#pipenv --bare --three install -r requirements.txt
+#pipenv --bare install -r requirements.txt
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/sudomy && if [ \$(checksudo) = 0 ]; then (pipenv run bash sudomy \"\$@\");fi)" > /usr/local/bin/sudomy'
 #sudo chmod +x /usr/local/bin/sudomy
 
@@ -1516,7 +1528,7 @@ bash -c 'echo -e "keys add binaryedge_api <key>\nkeys add bing_api <key>\nkeys a
 clear && echo "bopscrk (Before Outset PaSsword CRacKing)"
 git clone -q --depth 1 'https://github.com/r3nt0n/bopscrk' '/opt/bopscrk'
 cd /opt/bopscrk/
-pipenv --bare --three install -r requirements.txt
+pipenv --bare install -r requirements.txt
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/bopscrk && if [ \$(checksudo) = 0 ]; then (pipenv run python bopscrk.py \"\$@\");fi)" > /usr/local/bin/bopscrk'
 sudo chmod +x /usr/local/bin/bopscrk
 
@@ -1564,7 +1576,7 @@ sudo usermod -aG kismet ${USER}
 
 # git clone --depth=1 'https://github.com/p0dalirius/crEAP' /opt/creap
 # cd /opt/creap/
-# pipenv --bare --three install
+# pipenv --bare install
 #sudo apt-get install python3-scapy
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/creap/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 crEAP.py \"\$@\");fi)" > /usr/local/bin/creap'
 #sudo chmod +x /usr/local/bin/creap
@@ -1587,7 +1599,7 @@ fi
 #clear && echo "-- Installing eaphammer"
 #cd /opt/eaphammer/
 #sudo ./kali-setup
-#pipenv --bare --three run sudo pip3 install -r pip.req
+#pipenv --bare run sudo pip3 install -r pip.req
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/eaphammer/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 eaphammer \"\$@\");fi)" > /usr/local/bin/eaphammer'
 #sudo chmod +x /usr/local/bin/eaphammer
 
@@ -1669,7 +1681,7 @@ git clone -q --depth 1 'https://github.com/The-Viper-One/Pentest-everything' '/o
 # moved to end of script due to time of populating the database
 #clear && echo "-- Installing cve-search"
 #cd /opt/cve-search/
-#pipenv --bare --three install -r requirements.txt
+#pipenv --bare install -r requirements.txt
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 bin/search.py \"\$@\");fi)" > /usr/local/bin/cve-search'
 #sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/cve-search/ && if [ \$(checksudo) = 0 ]; then (pipenv run sudo python3 web/index.py \"\$@\");fi)" > /usr/local/bin/cve-search-webui'
 #sudo chmod +x /usr/local/bin/cve-search*
