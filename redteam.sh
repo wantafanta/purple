@@ -1388,7 +1388,17 @@ unzip -n *.zip
 sudo rm *.zip
 sudo ln -sf /opt/nuclei/nuclei /usr/local/bin/nuclei
 check_app 'nuclei' '/opt/nuclei/nuclei'
-nuclei -ut # download templates
+nuclei -ut -ud '/opt/nuclei/templates/'
+
+clear && echo "-- Installing smbeagle"
+URL_SMBEAGLE=$(url_latest 'https://api.github.com/repos/punk-security/smbeagle/releases/latest' 'linux_amd64')
+mkdir /opt/smbeagle
+cd /opt/smbeagle/
+wget -q $URL_SMBEAGLE
+unzip -n *.zip
+sudo rm *.zip
+sudo ln -sf /opt/smbeagle/SMBeagle /usr/local/bin/smbeagle
+check_app 'smbeagle' '/opt/smbeagle/SMBeagle'
 
 clear && echo "-- Installing frogger2"
 git clone -q --depth 1 'https://github.com/commonexploits/vlan-hopping' '/opt/vlan-hopping'
