@@ -1744,7 +1744,8 @@ sudo chown -R ${USER}:${USER} /opt/
 sudo chmod -R 777 /opt/natlas/
 
 # Set neo4j database password to "bloodhound"
-sudo neo4j-admin dbms set-initial-password bloodhound
+sudo neo4j-admin set-initial-password bloodhound #neo4j v4
+sudo neo4j-admin dbms set-initial-password bloodhound #neo4j v5
 #echo "ALTER USER neo4j SET PASSWORD 'bloodhound'" | cypher-shell -d system
 #sudo systemctl stop neo4j.service
 #sudo sed -i 's/dbms.security.auth_enabled=false/#dbms.security.auth_enabled=false/g' /etc/neo4j/neo4j.conf
