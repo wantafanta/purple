@@ -64,7 +64,7 @@ clear && echo "-- Installing Ubuntu OS updates"
 sudo apt-get -qq update && sudo apt-get -qq upgrade
 
 clear && echo "-- Installing apt packages"
-sudo apt-get -qq install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc mlocate curl rename python3-pip libcanberra-gtk-module libgconf-2-4 jq wireguard libfuse2 symlinks
+sudo apt-get -qq install -y open-vm-tools open-vm-tools-desktop net-tools git tmux whois ipcalc mlocate curl rename python3-pip libcanberra-gtk-module libgconf-2-4 jq libfuse2 symlinks
 
 if [[ ! $(lsb_release -rs) == "20.04" ]]
 then
@@ -145,6 +145,10 @@ clear && echo "-- Installing Firewall"
 sudo apt-get -qq install -y gufw
 sudo ufw disable
 git clone --depth 1 'https://github.com/halfer/ufw-vpn' '/opt/ufw-vpn'
+
+clear && echo "-- Installing VPN Clients"
+sudo apt-get -qq install -y wireguard
+sudo apt-get -qq install -y openconnect network-manager-openconnect network-manager-openconnect-gnome # openconnect
 
 clear && echo "-- Installing FileZilla"
 sudo apt-get -qq install -y filezilla
@@ -501,7 +505,7 @@ cd /opt/
 sudo apt-get purge -y java-common
 sudo apt-get -qq install -y openjdk-11-jre-headless
 wget -q --no-check-certificate -O - 'https://debian.neo4j.com/neotechnology.gpg.key' | sudo apt-key add -
-echo 'deb https://debian.neo4j.com stable latest' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
+echo 'deb https://debian.neo4j.com stable 4.4' | sudo tee -a /etc/apt/sources.list.d/neo4j.list
 sudo apt-get -qq update
 sudo apt-get -qq install -y neo4j
 #sudo systemctl stop neo4j.service
