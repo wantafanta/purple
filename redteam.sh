@@ -1691,6 +1691,7 @@ mkdir /opt/gitbook/
 git clone -q --depth 1 'https://github.com/carlospolop/hacktricks' '/opt/gitbook/hacktricks'
 git clone -q --depth 1 'https://github.com/swisskyrepo/PayloadsAllTheThings' '/opt/gitbook/payloadsallthethings'
 git clone -q --depth 1 'https://github.com/The-Viper-One/Pentest-everything' '/opt/gitbook/pentest-everything'
+git clone -q --depth 1 'https://github.com/mantvydasb/RedTeaming-Tactics-and-Techniques' '/opt/gitbook/redteaming-tactics-and-techniques'
 
 # moved to end of script due to time of populating the database
 #clear && echo "-- Installing cve-search"
