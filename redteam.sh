@@ -885,7 +885,7 @@ sudo rm -r cowpatty-*
 
 clear && echo "-- Installing Fluxion"
 sudo apt-get -qq install -y hostapd lighttpd mdk4 dsniff php-cgi xterm isc-dhcp-server
-luit -encoding ISO-8859-1 sudo apt-get -qq install -y macchanger
+luit -encoding ISO-8859-1 sudo DEBIAN_FRONTEND=noninteractive apt-get -qq install -y macchanger
 sudo bash -c 'echo -e "#!/bin/bash\n(cd /opt/fluxion && ./fluxion.sh \"\$@\")" > /usr/local/bin/fluxion'
 sudo chmod +x /usr/local/bin/fluxion
 sudo bash -c 'echo -e "#!/usr/bin/env xdg-open\n[Desktop Entry]\nType=Application\nName=Fluxion\nExec=gnome-terminal --window -- sudo fluxion\nIcon=/opt/fluxion/logos/logo.jpg\nCategories=Application;" > /usr/share/applications/fluxion.desktop'
@@ -1249,7 +1249,7 @@ if [[ $(py2_support) == "true" ]]; then
 fi
 
 clear && echo "-- Installing Wireshark"
-sudo apt-get -qq install -y wireshark
+sudo DEBIAN_FRONTEND=noninteractive apt-get -qq install -y wireshark apt-get -qq install -y wireshark
 sudo chmod +x /usr/local/bin/dumpcap
 #to change user permission with gui: sudo dpkg-reconfigure wireshark-common
 usermod -a -G wireshark ${USER}
@@ -1649,11 +1649,9 @@ if [[ $(py2_support) == "true" ]]; then # libqt4-dev not in 20.04 repo
 fi
 
 clear && echo "-- Installing Go"
-if [[ $(py2_support) == "true" ]]; then # not in < 20.04 repo
-  sudo apt-add-repository -y ppa:longsleep/golang-backports
-  sudo apt-get -qq update
-fi
-sudo apt-get -qq install -y golang-go
+wget "https://dl.google.com/go/$(curl https://go.dev/VERSION?m=text).linux-amd64.tar.gz" -O - | sudo tar -xz -C /usr/local
+export PATH=$PATH:/usr/local/go/bin
+source ~/.profile
 
 clear && echo "-- Installing pwndrop"
 URL_PWNDROP=$(url_latest 'https://api.github.com/repos/kgretzky/pwndrop/releases/latest' 'linux-amd64')
