@@ -1249,7 +1249,7 @@ if [[ $(py2_support) == "true" ]]; then
 fi
 
 clear && echo "-- Installing Wireshark"
-sudo DEBIAN_FRONTEND=noninteractive apt-get -qq install -y wireshark apt-get -qq install -y wireshark
+sudo DEBIAN_FRONTEND=noninteractive apt-get -qq install -y wireshark
 sudo chmod +x /usr/local/bin/dumpcap
 #to change user permission with gui: sudo dpkg-reconfigure wireshark-common
 usermod -a -G wireshark ${USER}
