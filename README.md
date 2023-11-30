@@ -1,11 +1,7 @@
 ### redteam.sh
-Tested on Ubuntu > 20.04 Desktop (minimal) in VMware Workstation.
+Tested on Ubuntu 22.04 Desktop (minimal) in VMware Workstation and VMM.
 
 Run without sudo.
-
-`
-bash redteam.sh | tee redteam.log
-`
 
 Press enter a few times, choose yes, next etc.
 
@@ -20,18 +16,19 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html)
 * [BeEF](https://github.com/beefproject/beef)
 * [bettercap](https://github.com/bettercap/bettercap)
-* [BloodHound](https://github.com/BloodHoundAD/bloodhound)
-  * [neo4j](https://debian.neo4j.org)
+* [BloodHound Community Edition](https://github.com/BloodHoundAD/bloodhound)
+  * ~~[neo4j](https://debian.neo4j.org)~~
   * [Aclpwn](https://github.com/fox-it/aclpwn.py)
   * [BloodHound.py](https://github.com/fox-it/bloodhound.py)
   * [BloodHound Custom Queries](https://github.com/hausec/Bloodhound-Custom-Queries/)
-* [BlueHound](https://github.com/zeronetworks/BlueHound)
+* ~~[BlueHound](https://github.com/zeronetworks/BlueHound)~~
 * [bopscrk (Before Outset PaSsword CRacKing)](https://github.com/r3nt0n/bopscrk)
 * [Bully](https://github.com/aanarchyy/bully)
-* [Burp Suite](https://portswigger.net/burp)
-  * Community Edition or Professional
-* [Covenant](https://github.com/cobbr/Covenant)
+* [Burp Suite Professional](https://portswigger.net/burp)
+* ~~[Covenant](https://github.com/cobbr/Covenant)~~
 * [CrackMapExec](https://github.com/byt3bl33d3r/crackmapexec)
+ * [NetExec](https://github.com/Pennyw0rth/netexec)
+* [crEAP](https://github.com/p0dalirius/crEAP)
 * [Credmap](https://github.com/lightos/credmap)
 * [Cr3d0v3r](https://github.com/D4Vinci/cr3dov3r)
 * [CredSlayer](https://github.com/ShellCode33/CredSLayer)
@@ -44,7 +41,8 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * Docker
   * [cameradar](https://github.com/Ullaakut/cameradar)
   * [Empire (BC-Security Fork)](https://github.com/BC-SECURITY/empire)
-  * [PwnDoc-ng](https://github.com/pwndoc-ng/pwndoc-ng)
+  * [PwnDoc](https://github.com/pwndoc/pwndoc)
+  * ~~[PwnDoc-ng](https://github.com/pwndoc-ng/pwndoc-ng)~~
 * [draw.io](https://github.com/jgraph/drawio-desktop)
 * [droopescan](https://github.com/droope/droopescan)
 * ~~[eaphammer](https://github.com/s0lst1c3/eaphammer)~~
@@ -102,7 +100,7 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [mitm6](https://github.com/fox-it/mitm6)
 * [Modlishka](https://github.com/drk1wi/Modlishka)
 * [natlas](https://github.com/natlas/natlas/)
-* [navi](https://github.com/denisidoro/navi)
+* ~~[navi](https://github.com/denisidoro/navi)~~
 * nbtscan
 * [Nessus](https://www.tenable.com/downloads/nessus)
 * [nikto](https://github.com/sullo/nikto)
@@ -128,6 +126,10 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
   * [LyncSniper](https://github.com/mdsecresearch/lyncsniper)
   * [Mailsniper](https://github.com/dafthack/mailsniper)
   * [PowerSploit](https://github.com/PowerShellMafia/powersploit)
+* [ProjectDiscovery's Open Source Tool Manager (PDTM)](https://github.com/projectdiscovery/pdtm/cmd/pdtm)
+  * [mapcidr](https://github.com/projectdiscovery/mapcidr)
+  * [naabu](https://github.com/projectdiscovery/naabu)
+  * [nuclei](https://github.com/projectdiscovery/nuclei)
 * [Proxmark3](https://github.com/Proxmark/proxmark3)
 * [privexchange](https://github.com/dirkjanm/privexchange)
 * [proxychains-ng/proxychains4](https://github.com/rofl0r/proxychains-ng)
@@ -180,7 +182,6 @@ Grabs the latest version of all tools. Where possible run in a virtual environme
 * [XSStrike](https://github.com/s0md3v/xsstrike)
 
 #### Python 2 (will be skipped in Ubuntu 20.04)
-* [crEAP](https://github.com/Shellntel/scripts)
 * [Don't Kill MY Cat (DKMC)](https://github.com/Mr-Un1k0d3r/dkmc)
 * [Jackit](https://github.com/insecurityofthings/jackit)
 * [LinkedInt](https://github.com/vysec/linkedint)
